@@ -1,0 +1,146 @@
+{
+    "_id": "1",
+    "Name": "Shoes",
+    "ProductRefId": "SS-123",
+    "CollectibleOptions": [
+        {
+            "Title": "Normal price",
+            "ValidDate": "2019-12-31",
+            "ExpiredDate": "2019-12-31",
+            "Currency": "THB",
+            "ApplyDataFieldSets": [
+                {
+                    "Amount": 100.5,
+                    "ApplyDataFields": []
+                },
+                {
+                    "Amount": 150.5,
+                    "ApplyDataFields": [
+                        {
+                            "TitleKey": "color",
+                            "Value": "Green"
+                        }
+                    ]
+                },
+                {
+                    "Amount": 170.5,
+                    "ApplyDataFields": [
+                        {
+                            "TitleKey": "color",
+                            "Value": "Red"
+                        },
+                        {
+                            "TitleKey": "shoelace",
+                            "Value": "Green"
+                        }
+                    ]
+                }
+            ],
+            "CollectibleItems": [
+                {
+                    "_t": "CartCouponItem",
+                    "ValidDate": "2019-12-31",
+                    "ExpiredDate": "2019-12-31",
+                    "ApplyDataFieldSets": [
+                        {
+                            "Amount": 50,
+                            "ApplyDataFields": [
+                                {
+                                    "TitleKey": "color",
+                                    "Value": "Green"
+                                }
+                            ]
+                        },
+                        {
+                            "Amount": 45,
+                            "ApplyDataFields": [
+                                {
+                                    "TitleKey": "color",
+                                    "Value": "Red"
+                                },
+                                {
+                                    "TitleKey": "shoelace",
+                                    "Value": "Green"
+                                }
+                            ]
+                        }
+                    ],
+                    "CartCouponId": "CP-123"
+                },
+                {
+                    "_t": "MembershipPointItem",
+                    "ValidDate": "2019-12-31",
+                    "ExpiredDate": "2019-12-31",
+                    "Currency": "THB",
+                    "ApplyDataFieldSets": [],
+                    "ConsumeRate": 5,
+                    "DiscountRate": 3,
+                    "MaximumUse": 50.5,
+                    "MerchantId": "MCT-123456"
+                },
+                {
+                    "_t": "ManaPointItem",
+                    "ValidDate": "2019-12-31",
+                    "ExpiredDate": "2019-12-31",
+                    "Currency": "THB",
+                    "ApplyDataFieldSets": [],
+                    "ConsumeRate": 5,
+                    "DiscountRate": 3,
+                    "MaximumUse": 50.5
+                }
+            ]
+        }
+    ],
+    "Stocks": [
+        {
+            "Title": "แดงสดๆ",
+            "Stock": 10,
+            "ApplyDataFields": [
+                {
+                    "TitleKey": "color",
+                    "Value": "Red"
+                },
+                {
+                    "TitleKey": "size",
+                    "Value": "S"
+                },
+                {
+                    "TitleKey": "shoelace",
+                    "Value": "Red"
+                }
+            ]
+        }
+    ],
+    "DataFields": [
+        {
+            "Name": "Color",
+            "TitleKey": "color",
+            "Title": "สี",
+            "Values": [
+                "Red",
+                "Green",
+                "Blue"
+            ]
+        },
+        {
+            "Name": "Size",
+            "TitleKey": "size",
+            "Title": "ขนาด",
+            "Values": [
+                "S",
+                "M",
+                "L"
+            ]
+        },
+        {
+            "Name": "Shoelace",
+            "TitleKey": "shoelace",
+            "Title": "สีเชือก",
+            "Values": [
+                "Red",
+                "Green",
+                "Blue"
+            ]
+        }
+    ]
+}

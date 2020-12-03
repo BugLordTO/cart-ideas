@@ -1,0 +1,141 @@
+Inovation Cart
+    - ProductCartItem
+    - CouponCartItem
+        - CouponId : 123456Inovation
+    - MembershipCartItem
+    - Options
+        - Partial Options
+            - OptionItems
+                - CouponItem
+                    CouponStubId : Inovation1stDay
+                    Currency : THB
+                    Discount : 50
+            - OptionItems
+                - PhysicalCurrencyItem
+                    Currency : THB
+                    Value : -
+
+    - SelectedOption //user payment options
+        - Partial Options
+            - OptionItems
+                - CouponItem
+                    CouponStubId : Inovation1stDay
+                    Currency : THB
+                    Discount : 50
+            - OptionItems
+                - PhysicalCurrencyItem
+                    Currency : THB
+                    Value : 199
+
+    - Discount(s) //discount from user payment option (CouponItem)
+        - CouponItem
+            CouponStubId : Inovation1stDay
+            Currency : THB
+            Discount : 50
+    - TotalPrice(s) //total price from user payment option(PhysicalCurrencyItem, DigitalCurrencyItem)
+        THB: 199
+    - GrandTotal(s)
+        THB: 149
+
+**********************************************
+
+Shopping Cart
+    - ProductCartItem
+        - iPhone XI
+            - Options
+                - Partial Options
+                    - OptionItems
+                        - CouponItem
+                            CouponStubId : MANA100
+                            Currency : THB
+                            Discount : 100
+                - Full Options
+                    - OptionItems
+                        - PhysicalCurrencyItem
+                            Currency : JPY
+                            Value : 3000
+                        - PhysicalCurrencyItem
+                            Currency : THB
+                            Value : 3000
+        
+        - iPad 2019
+            - Options
+                - Full Options
+                    - OptionItems
+                        - PhysicalCurrencyItem
+                            Currency : JPY
+                            Value : 15000
+
+    - CouponCartItem
+        - MANA99
+    - MembershipCartItem
+    - Options
+
+    - SelectedOption //user payment options
+        - iPhone XI
+            - Partial Options
+                - OptionItems
+                    - CouponItem
+                        CouponStubId : MANA100
+                        Currency : THB
+                        Discount : 100
+            - Full Options
+                - OptionItems
+                    - PhysicalCurrencyItem
+                        Currency : JPY
+                        Value : 3000
+                        
+        - iPad 2019
+            - Full Options
+                - OptionItems
+                    - PhysicalCurrencyItem
+                        Currency : JPY
+                        Value : 15000
+
+    - Discount(s) //discount from user payment option (CouponItem)
+        - CouponItem
+            CouponStubId : MANA100
+            Currency : THB
+            Discount : 100
+    - TotalPrice(s) //total price from user payment option(PhysicalCurrencyItem, DigitalCurrencyItem)
+        THB: 1500
+        JPY: 15000
+    - GrandTotal
+        THB: 1400
+        JPY: 15000
+
+**********************************************
+
+Privillege Cart
+    - ProductCartItem
+        - ProductAforCouponA
+            - Options
+                - Full Options
+                    - OptionItems
+                        - MembershipPointItem
+                            MerchantId : Promome
+                            Value : 50
+    - CouponCartItem
+    - MembershipCartItem
+        - Item
+            - MemberId : ohae
+            - Point : 999 ??จำเป็นต้องมีมั้ย
+    - Options
+
+    - SelectedOption //user payment options
+        - ProductAforCouponA
+            - Full Options
+                - OptionItems
+                    - MembershipPointItem
+                        MerchantId : Promome
+                        Value : 50
+
+    - Discount(s) //discount from user payment option (CouponItem)
+    - TotalPrice(s) //total price from user payment option(PhysicalCurrencyItem, DigitalCurrencyItem)
+        Point: 50
+    - GrandTotal
+        Point: 50
+
+**********************************************
+Q&A
+    Partial option can mix currency??
