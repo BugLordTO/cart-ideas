@@ -1,0 +1,28 @@
+ย้าย WF ทั้งหมดมาไว้ใน 
+ปรับ shorten urls
+    - แก้ตามที่ review
+    
+WIB (คุยหาแนวทาง เสนอพี่อ้น)
+    - DEMO ของที่ทีม UI ทำมา
+    - idea คือ ยังไม่ต้องรอเรื่อง cart สมบูรณ์ ใช้ของที่มีไปก่อน เพราะเป็นระบบที่เราทำเอง ดูแลเอง
+    - design api contract & model + เชื่อม UI ส่วนจัดการข้อมูลฝั่ง POS 
+    - mana เพิ่ม api register adhoc cart ที่มี products ข้างใน (ไม่ต้อง register product กับ mana)
+    - POS ยิงไป 3rd api register adhoc
+    - ลูกค้าเดินมารับกาแฟ + สแกนจ่ายเงิน
+        - QR ร้านปกติ กดปุ่มกรอก ref number => ไปหน้าจ่ายเงิน adhoc
+        - QR adhoc จาก POS หน้าเค้าเตอร์ => ไปหน้าจ่ายเงิน adhoc
+    
+Mongo transaction & revise update + ตัดเงิน
+    - inherit class lib พี่อ้นแล้วเขียนต่อได้แล้ว
+    - inc ลองแล้วใช้งานได้ ติดแค่ decimal
+    - inc ใน array ใช้วิธี fixed index ไปก่อน เพราะตอนนี้มีกระเป๋าเดียว
+    - รอพี่อ้นเรื่อง version mongoDB ของประเด็น decimal
+
+Mobile privilege flow
+ทำ Cart จ่ายเงินโดยใช้ standard flow (แต้มแลกของ & model)
+    - DEMO ของที่ทีม UI ทำมา
+    - ลอง design api/model แล้วให้พี่อ้นดู
+    - https://docs.google.com/spreadsheets/d/183mCSmgcP3dzffOEhKTV8NfaCnWMpwX1Y_w9j_YxaL8/edit#gid=621041834&range=A68
+
+แยก environment event grid dev/prod
+ย้ายงานไป devops

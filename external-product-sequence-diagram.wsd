@@ -1,0 +1,63 @@
+
+@startuml product
+title Product IDEA
+
+actor user
+box "MANA"
+    participant client
+    participant "mana API" as ma
+    participant "product gateway" as pg
+    participant "product api" as pa
+end box
+box "3rd"
+    participant "product api" as 3rdpa
+end box
+
+user -> client : QRCode, endpoint
+note right
+    https://s.manal.ink/np/npdtext-pdt123456
+end note
+client -> ma : request product data
+activate ma
+ma -> ma : determine product endpoint type
+alt Registed product
+ma -> pg : request product data
+pg -> pa : request product data
+pa --> pg : response product data
+pg --> ma : response product data
+
+else External product
+ma -> pg : request product data (** https://dev.com/api/product?id=pdt123456 **)
+pg -> 3rdpa : request product data (** https://dev.com/api/product?id=pdt123456 **)
+3rdpa --> ma : response product data
+end
+
+note right
+** IDEA **
+- endpoint ปกติ แบบ register product กับ mana
+    https://s.manal.ink/np/npdtdtl-{productid}
+- endpoint external product
+    https://s.manal.ink/np/npdtext-{merchantid}-{productid}
+    npdtext แค่ตัวอย่าง
+    [constrain]
+    - ต้อง register mcontent หน้าแสดง product เหมือนเดิม
+    - ต้อง register product api ที่จะให้ mana ดึงข้อมูล
+    - product api ที่ register จะต้องทำตาม format ที่ mana วางไว้
+        model
+        route
+        ฯลฯ
+    - ตอนที่ mana request ไป จะแนบ query string productId ไปกับ url ที่ register ไว้
+    - 3rd สามารถกำหนด id ได้เองเลย
+    
+end note
+ma --> client : response product data
+deactivate ma
+client -> client : display product page
+
+newpage Subscribe service
+
+user -> client : merchant subscribe service
+user -> client : merchant subscribe service
+
+
+@enduml

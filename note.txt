@@ -1,0 +1,221 @@
+*ProductId จะใช้ยังไง มานะสร้างให้หรือใช้ของเค้า 
+    - case product เดียวกันคนละสี 3rd สร้างคนละ id
+        shirt001redm, shirt002blacks
+    - case product เดียวกันคนละสี 3rd สร้าง id เดิมแต่ใส่ option 
+        shirt001 [color:red, size:m] 50$
+        shirt001 [color:bck, size:s] 55$
+
+*Product เดียวกัน แต่ใช้คนละ service รายละเอียดอาจจะต่างกันได้
+    - เช่น สั่งทั่ร้านราคานึง สั่ง online ราคานึง
+    - เพิ่ม option เพิ่มราคา
+
+    nprdext-{serviceid}.{merchantid}|{productid}
+    nprdext-{ManaProductId}
+    
+Product mapping
+    |ManaProductId | 3rdProductId | ServiceId | MerchantId | [TBD]MContentId* |
+    |m001          | shirt001     | xxx1      | yyy        | zzz              |
+    |m002          | shirt001     | xxx2      | yyy        | zzz              |
+
+    *MContentId อยู่ที่ mapping หรืออยู่กับรายละเอียด product
+
+scenario
+    wib pos
+    wib delivery
+
+    |ManaProductId |3rdProductId    | Option                                                    | 
+    |m001          |shirt001        |[{ref:"shirt001",size:"42",color:"red",price:"30",stock:"0",},
+                                      {ref:"shirt001",size:"40",color:"green",price:"30",stock:"2",},
+                                      {ref:"shirt001",size:"41",color:"blue",price:"35",stock:"4",}] | 
+    |m002          |shirt001        |[{ref:"shirt001",size:"42",color:"red",price:"40",stock:"4",},
+                                      {ref:"shirt001",size:"40",color:"green",price:"40",stock:"3",},
+                                      {ref:"shirt001",size:"41",color:"blue",price:"45",stock:"0",}] | 
+
+**********************************************************
+
+    npdtdtl-{ManaProductId} -> endpoint เดียว -> ดูตาราง mapping(external product) ก่อน -> ถ้าไม่มี ให้ไปดู mana product -
+
+    wib db
+    | productid | name  | Option                                                    | 
+    | wib01     | latte | [ {ref:"latte",size:"s", syrup:"vanilla", type:"hot", price:"30",stock:"999",}, 
+                            {ref:"latte",size:"m", syrup:"vanilla", type:"ice", price:"35",stock:"999",}, 
+                            {ref:"latte",size:"s", syrup:"vanilla", type:"frappe", price:"40",stock:"999",}] | 
+
+    mana mapping
+    | manaproductid (prefix+refid) | refid | ServiceId | MerchantId |
+    | pf248746736335611015           | wib01 | pos       | wibwib     |   
+    | m02           | wib01 | delivery  | wibwib     |
+    | m03           | wib01 | pos       | wibwib     | *key -> refid + serviceid
+
+ prefix = serviceid + merchantid
+
+**************************************************************************************************
+
+    3rd party prefix
+    | prefix                  | serviceid                | merchantid             |
+    | pf248746736335611015    | 637062046248746736       | 637062046335611015     |
+    | pf292444472379102904    | 637062046292444472       | 637062046379102904     |
+    
+    *มานะสร้าง prefix ให้ เมื่อ service ได้รับการ subscribe จาก merchant (dev สามารถเก็บ prefix ไว้ดึงข้อมูล external ได้) หรือ register mapping ภายหลังก็ได้
+
+npdtdtl-{prefix}.{refid}
+npdtdtl-pf248746736335611015.shirt001br40
+    * 3rd ต้อง confiq External product api url
+
+WIB
+    npdtdtl-pf24874673633561xxxx.{refid:coffee001:capuchino}
+    npdtdtl-pf24874673633561xxxx.{refid:coffee001:capuchino}.milk
+    npdtdtl-pf24874673633561xxxx.{refid:coffee001:capuchino}.milk.kinnee
+    npdtdtl-pf248746736335611015.{refid:coffee002:latte}
+    npdtdtl-pf248746736335611015.{refid:coffee002:latte}.wiping
+    npdtdtl-pf248746736335611015.{refid:coffee002:latte}.wiping.cup
+    
+Shirt shop
+    npdtdtl-pf248746736335611015.{refid:shirtRedM}
+    npdtdtl-pf248746736335611015.{refid:shirtBluM}
+    npdtdtl-pf248746736335611015.{refid:shirtRedL}
+    npdtdtl-pf248746736335611015.{refid:shirt}.red.m
+    npdtdtl-pf248746736335611015.{refid:shirt}.blue.m
+    npdtdtl-pf248746736335611015.{refid:shirt}.red.l
+
+    | refid                   | name              | price | description | extenddata1 | extenddata2 | ... | extenddataX |
+    | {generatedid:coffee001} | capuchino         |       |             |             |             |     |             |
+    | {generatedid:coffee002} | latte             |       |             |             |             |     |             |
+    | {generatedid:shirtRedM} | Red shirt size M  |       |             |             |             |     |             |
+    | {generatedid:shirtBluM} | Blue shirt size M |       |             |             |             |     |             |
+    | {generatedid:shirtRedL} | Red shirt size L  |       |             |             |             |     |             |
+    | {generatedid:shirt}     | shirt             |       |             |             |             |     |             |
+
+    npdtdtl-{manaproductid}
+            \/
+    | manaproductid | name      | price | description | refid     | extenddata1 | extenddata2 | ... | extenddataX |
+    | {generatedid} | capuchino |       |             |           |             |             |     |             |
+
+    {GUID}
+    ซ้ำยาก
+    ใช้ง่าย
+    ไม่มีความหมายในตัว
+
+    {DateTimeTicks}
+    ใช้ง่าย
+    ซ้ำง่าย
+    ไม่มีความหมายในตัว
+
+    {DateTimeTicks}{MerchantId}
+    ใช้ง่าย
+    สามารถรู้ได้เลยว่าเป็นของร้านไหน
+
+    {DateTimeTicks}{ServiceId}{MerchantId}
+    ใช้ง่าย
+    สามารถรู้ได้เลยว่าเป็นของร้านไหน
+    สามารถรู้ได้เลยว่าเดฟไหนสร้างให้ แต่ไม่มีประเด็นในการใช้งาน
+
+    {SKU}{MerchantId}
+
+    {GUID}{MerchantId}
+
+
+internal api
+    - mana provide
+    [crud] product catalog [id name detail deafult-option default-stock deafult-price]
+        [create/update]
+        {
+            "name" : string,
+            "thumbnailUrl" : string,
+            "detail" : string,
+            "description" : string,
+            "UPC" : string,
+            "refid" : string,
+            "tags" : string[],
+            "options" : string[],
+            "quantity" : int,
+            "price" : decimal,
+            "currency" : string,
+        }
+        response model
+        {
+            "productid" : string,
+            "stockid" : string,
+        }
+
+        [delete] .../{productid}
+        [read] .../{productid}
+
+    [crud] product stock [options stock default-price] .../product/{productid}/stock
+        [create]
+        {
+            "options" : string[], // apply SKU ???
+            "quantity" : int,
+            "price" : decimal,
+            "currency" : string,
+        }
+        response model
+        {
+            "productid" : string,
+            "stockid" : string,
+        }
+
+        [read] .../{stockid}
+        [update] edit stock .../product/stock/{stockid}
+        [update] decrease stock .../{stockid}/{decreaseAmount}
+        [delete] .../{stockid}
+
+==========================================================================================================================================
+
+    [crud] product optional price [full option => only be currency] .../product/{productid}/fulloption
+        [create]
+        {
+            "title" : string,
+            "price" : decimal,
+            "currency" : string,
+            "condition":[{
+                "???" : "???",
+            }],
+        }
+
+    [crud] product optional point [partial option => point] .../product/{productid}/partialoption/point
+        [create]
+        {
+            "title" : string,
+            "consume" : decimal,
+            "discountPerConsume" : decimal,
+            "minPoint" : decimal,
+            "maxPoint" : decimal,
+            "currency" : string,
+            "condition":[{
+                "???" : "???",
+            }],
+        }
+
+    [crud] product optional coupon [partial option => coupon] .../product/{productid}/partialoption/coupon
+        [create]
+        {
+            "title" : string,
+            "coupontid" : string,
+            "condition":[{
+                "???" : "???",
+            }],
+        }
+        [read] { }
+        [update] .../{optionid}/{price}/{option}
+        [delete] .../{optionid}     
+
+external api (required register api url)
+    - mana provide
+    [read] 3rd prefix id api
+    [obsolete][crud] mapping (optional) by default dev can use prefix combine to refid for create endpoint
+
+    - dev provide
+    [read] get product detail api (base on mana model)
+    [read] get product stock (base on mana model)
+
+
+
+
+
+
+    ===============================================================================================================
+
+
+
+

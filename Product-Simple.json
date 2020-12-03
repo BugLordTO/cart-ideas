@@ -1,0 +1,28 @@
+{
+    "_id": "1",
+    "Name": "Shoes",
+    "ProductRefId": "SS-123",
+    "CollectibleOptions": [
+        {
+            "Title": "Normal price",
+            "ValidDate": "2019-12-31",
+            "ExpiredDate": "2019-12-31",
+            "Currency": "THB",
+            "ApplyDataFieldSets": [
+                {
+                    "Price": 100.5,
+                    "ApplyDataFields": []
+                }
+            ],
+            "CollectibleItems": []
+        }
+    ],
+    "Stocks": [
+        {
+            "Title": "Shoes",
+            "Stock": 10,
+            "ApplyDataFields": []
+        }
+    ],
+    "DataFields": []
+}
