@@ -1,0 +1,37 @@
+//BizAccount
+interface IBizCenterController
+{
+    OpeningTime GetOpeningTime(string bizId, string serviceId);
+    void UpdateOpeningTime(string bizId, string serviceId, OpeningTime bizTime);
+
+    void SetTemporaryClose(string bizId , string serviceId, DateTime TemporaryCloseThruTime);
+
+    IEnumerable<BizAccount> GetOpeningBiz(string serviceId);
+}
+
+class BizAccount
+{
+    public string id { get; set; }
+    public string Name { get; set; }
+}
+  
+class OpeningTime
+{
+    public IEnumerable<Period> Sunday { get; set; }
+    public IEnumerable<Period> Monday { get; set; }
+    public IEnumerable<Period> Tuesday { get; set; }
+    public IEnumerable<Period> Wednesday { get; set; }
+    public IEnumerable<Period> Thursday { get; set; }
+    public IEnumerable<Period> Friday { get; set; }
+    public IEnumerable<Period> Saturday { get; set; }
+
+    //เวลาร้านชั่วคราวถึงเวลา
+    public DateTime? TemporaryCloseThruTime { get; set; }
+}
+
+class Period
+{
+    // 24h formate  : hhmm => 0800 , 2200
+    public int OrderFromTime { get; set; }
+    public int OrderThruTime { get; set; }
+}

@@ -1,0 +1,174 @@
+Carry id
+- manaid
+    - devid
+        x walletid
+        x baid
+            x walletid
+        - serviceid (ใช้ใน grant)
+            x hook
+            - mcontentid
+                - reminderid
+        - dbschema???
+
+?เวอร์ชั่น จะรองรับยังไง
+ย้ายบางอย่างที่จำเป้น
+
+*บังคับ ชื่อ collection product
+
+
+
+Hook
+    - data
+    - product  
+    - cart      
+    - order
+    - payment
+    - consent ??
+    - contract   
+    - employee
+Mcontent
+    - mcontentPage
+    - mcontentForm
+    - mcontentOption
+
+
+x product
+x Reminder ???
+dbschema ???
+db ??
+blob ??
+}
+
+[GET] /api/{serviceId}/Hooks //List all hooks
+[GET] /api/{serviceId}/Hooks/{id} //Get a hook info
+[DELETE] /api/{serviceId}/Hooks/{id} //Delete the hook
+
+[POST] /api/{serviceId}/Hooks/data //Register url white list => can call from svc.CallApiGet(mcid, url); directly
+
+//[POST] /api/{serviceId}/Hooks/product //Register the product hook => ไม่มี hook ตัวกลาง ใช้ของแต่ละอันไปเลย โดยการ map mcid กับ product tags
+[POST] /api/{serviceId}/Hooks/cart //Register the cart hook and the resolution
+[POST] /api/{serviceId}/Hooks/order //Register the order hook
+[POST] /api/{serviceId}/Hooks/payment //Register the payment hook
+
+[POST] /api/{serviceId}/Hooks/receiveeslip //Register the receive eslip hook
+[POST] /api/{serviceId}/Hooks/useeslip //Register the use eslip hook
+
+[POST] /api/{serviceId}/Hooks/contract //Register contract the hook
+[POST] /api/{serviceId}/Hooks/employee //Register employee the hook
+[POST] /api/{serviceId}/Hooks/membership //Register membership the hook => register, leave
+[POST] /api/{serviceId}/Hooks/subscribe //Register subscribe the hook
+
+[POST] /api/{deveId}/Hooks/sandboxpublish //Register sandbox publish the hook
+[POST] /api/{deveId}/Hooks/productionpublish //Register production publish the hook
+
+// reminder ไม่มี hook ตัวกลาง ใช้ของแต่ละอันไปเลย
+// applicationForm => form เอาไว้ submit ข้อมูล ใช้ตอน innovation => ไม่มี hook ตัวกลาง ใช้ของแต่ละอันไปเลย
+
+
+
+
+
+
+// [POST] /api/{serviceId}/Hooks/checkout //Register the checkout hook => เปลี่ยนเป็น order hook
+// [POST] /api/{serviceId}/Hooks/privilege //Register the Privilege hook => ใช้ order hook
+// [POST] /api/{serviceId}/Hooks/payback //Register the payback hook
+// [PUT] /api/{serviceId}/Hooks/{id}/expiration //Update the expiration hook => rely to service instead of itself
+
+
+
+# issue
+- map mcid กับ product tags แทน product hook
+class ProductMap {
+    public string Id { get; set; }
+    public List<string> ProductTags { get; set; }
+    public string MContentId { get; set; }
+    public string ServiceId { get; set; }
+    - DataHook
+    - FormPostHook
+    // - ShowGpsCount
+    - IsRequireMembership
+    - CanPinToShortcut
+    - RequireSecurityOptions
+}
+- มีอันไหนต้องมี hook ของแต่ละ endpoint เองอีกบ้าง
+    - product
+    - reminder
+        class reminderReg {
+            public string Id { get; set; }
+            public string MContentId { get; set; }
+            public string ServiceId { get; set; }
+            public string BizAccountId { get; set; }
+            - DataHook
+            - FormPostHook
+            - ShowGpsCount
+            - IsRequireMembership // เช่น daily reward
+            - CanPinToShortcut // เช่น daily reward
+            - RequireSecurityOptions // เช่น ประมูล
+        }
+    - application form
+        class applicationFormReg {
+            public string Id { get; set; }
+            public string MContentId { get; set; }
+            public string ServiceId { get; set; }
+            public string BizAccountId { get; set; }
+            - DataHook
+            - FormPostHook 
+            - ShowGpsCount 
+            - IsRequireMembership
+            - CanPinToShortcut
+            - RequireSecurityOptions // เช่น egat, สแกน qr เปิดประตูห้องลับ
+        }
+    - biz home page
+        class BizPageReg {
+            public string Id { get; set; }
+            public string MContentId { get; set; }
+            public string ServiceId { get; set; }
+            public string BizAccountId { get; set; }
+            - DataHook
+            // - FormPostHook
+            - ShowGpsCount
+            - IsRequireMembership
+            - CanPinToShortcut
+            - RequireSecurityOptions // เช่น ร้านลับ
+        }
+- บังคับมี default mcontent ตอนจะ publish
+    - ที่ไหนบ้าง
+        - product  บังคับเฉพาะเปิด ใช้ Feature Cart
+    - ถ้าต้องบังคับมี default mcontent ในบางเรื่อง ต้องมีที่ config ว่า service นี้ใช้ feature อะไรบ้าง => บาง service ไม่ได้ทำเรื่่อง product
+- option ที่จะเพิ่มมาตอน map mcontent กับแต่ละ endpoint
+    - DataHook
+    - FormPostHook
+    - ShowGpsCount
+    - IsRequireMembership
+    - CanPinToShortcut
+    - RequireSecurityOptions
+
+- mcontent tags มีมั้ย ใช้ทำอะไร   ---------> ยังหา เคส ไม่ได้
+- mcontentpage มี MContentOption ได้มั้ย  ------> ยังหา เคส ไม่ได้
+- maximum mcontentcount register rely to service tier or purchase more quota
+
+
+
+
+# hook
+[GET] /api/{serviceId}/Hooks //List all hooks
+[GET] /api/{serviceId}/Hooks/{id} //Get a hook info
+[DELETE] /api/{serviceId}/Hooks/{id} //Delete the hook
+
+[POST] /api/{serviceId}/Hooks/data //Register url white list => can call from svc.CallApiGet(mcid, url); directly
+
+//[POST] /api/{serviceId}/Hooks/product //Register the product hook => ไม่มี hook ตัวกลาง ใช้ของแต่ละอันไปเลย โดยการ map mcid กับ product tags
+[POST] /api/{serviceId}/Hooks/cart //Register the cart hook and the resolution
+[POST] /api/{serviceId}/Hooks/order //Register the order hook
+[POST] /api/{serviceId}/Hooks/payment //Register the payment hook
+
+[POST] /api/{serviceId}/Hooks/receiveeslip //Register the receive eslip hook
+[POST] /api/{serviceId}/Hooks/useeslip //Register the use eslip hook
+
+[POST] /api/{serviceId}/Hooks/contract //Register contract the hook
+[POST] /api/{serviceId}/Hooks/employee //Register employee the hook
+[POST] /api/{serviceId}/Hooks/membership //Register membership the hook => register, leave
+[POST] /api/{serviceId}/Hooks/subscribe //Register subscribe the hook
+
+[POST] /api/{deveId}/Hooks/sandboxpublish //Register sandbox publish the hook
+[POST] /api/{deveId}/Hooks/productionpublish //Register production publish the hook

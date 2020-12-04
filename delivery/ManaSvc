@@ -1,0 +1,25 @@
+##Mana
+//Bizcenter 
+  // Subscribe
+  // เวลาเปิดปิด
+  // budget
+  // Employee
+  // Gps
+
+
+##3rd
+ManaLink GenerateMContentLink(string mcontentId);   //DeliveryPage , BizPage , ProductPage
+ManaLink GenerateProductLink(string productId);
+
+void RegisterBizPage(string bizId,string mcontentId); //พี่อ้นคิดต่อ
+
+
+//????? ใช้ซักแบบ ?? --> อาจจะใช้ Request ใน cart
+void RegisterOrderReminder(string reminderId);
+void OrderReminder(string cartid,string reminderId); 
+
+
+RegisterReminderPage
+SendReminder(string reminderId,string workflowState); //3rd อัพเดทสถานะของออเดอร์
+EndReminderSession
+CheckTokenInfo

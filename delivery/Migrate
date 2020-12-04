@@ -1,0 +1,71 @@
+
+ ## แผน migrate สัปดาห์
+   x account (joker) 
+   - (1) support Delivery Flow วิ่งได้  , new wallet (user, ร้าน ,delivery )
+   - (2) Delivery เก็บรายละเอียดหักเงินได้จริง , new wallet (เติม,ถอน,adhoc)
+ ## ไม่มีกำหนด ทำทีหลัง
+   - Membership
+
+
+
+
+
+
+
+
+
+
+
+## Migrate DB
+ - Profile (1)
+ - Wallet 
+    - balance (1)
+    - history (1) X
+ - Bizcenter 
+    - balance (1)
+    - history (1) X
+ - Membership 
+    - member (4)
+    - point (4)
+## Migrate API
+ - Device (1) /
+ - Profile (1)
+ - Home (1) /
+ - wallet (1)
+ - bizcenter (1)
+ - cart (1)
+     - adhoc (1)
+   
+ - Promome
+    - daily reward (1)
+    - membership page (1)
+ - Mcontent (1)
+ ? WorkflowUnit
+ - PPAY
+    - deposit (2)
+    - withdraw (2)
+    - payment (4)
+    - transfer(ยังไม่เปิดให้ใช้)
+ - reminder (3)
+
+## New
+ - QR Manager (เสร็จแล้ว)
+ - Cart 
+    - support delivery (2)
+ - BizCenter ตาม UI ใหม่ (3)
+ - Employee (3)
+ - Contract (3)
+ - Eslip (4)
+
+
+ - New Account (โจ๊ะทำแล้ว)
+ - new Wallet (1)
+    - User
+    - BA
+    - Dev
+ - Promptpay (2)
+    - deposit
+    - withdraw
+ - Delivery (2)
+ - Membership (3)
+ - Eslip (3)
