@@ -31,8 +31,8 @@ class EmployeeRequest
 class Employee
 {
     public string _id { get; set; }   
-    public string PAId { get; set; }  
-    public string BizId { get; set; }
+    public string PaId { get; set; }  
+    public string BaId { get; set; }
     public DateTime SignDate { get; set; } 
     public DateTime? ResignDate { get; set; } 
     public DateTime? SuspendDate { get; set; } 
