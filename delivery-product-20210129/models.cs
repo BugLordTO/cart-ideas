@@ -69,7 +69,7 @@ public class ShippingMethod
     public CurrencyAmount ShippingFees { get; set; }
 }
 
-//=========================================================================================
+//========================================================================================= DB
 
 public class Order {
     public string _id { get; set; }
@@ -99,6 +99,80 @@ public class Rider {
     public string Name { get; set; }
     public string ImageUrl { get; set; }
 }
+
+//========================================================================================= DTO
+
+public class DeliveryOrder {
+    public string EndpointId { get; set; }
+    public CartOrder Cart { get; set; }
+    public DateTime CreatedDate { get; set; }
+    public DateTime? CompletedDate { get; set; }
+    public DateTime? CanceledDate { get; set; }
+    public Rider Rider { get; set; }
+}
+public class Rider {
+    public string EmployeeId { get; set; }
+    public string RefId { get; set; }
+    public string Name { get; set; }
+    public string ImageUrl { get; set; }
+}
+public class CartOrder
+{
+    public string CartId { get; set; }
+    public string PaId { get; set; }
+    public DateTime CreatedDate { get; set; }
+    public DateTime? PaidDate { get; set; }
+    public DateTime? CanceledDate { get; set; }
+    public IEnumerable<CartProduct> Products { get; set; }
+    public Address ShippingAddress { get; set; }
+    public ShippingMethod ShippingMethod { get; set; }
+    public BizAccount BizAccount { get; set; }
+    public MonetaryValue TotalBeforeDiscount { get; set; }
+    public MonetaryValue Discount { get; set; }
+    public MonetaryValue TotalToPay { get; set; }
+    public int ItemCount { get; set; }
+    public int OrderCount { get; set; }
+}
+public class CartProduct
+{
+    public string ProductId { get; set; }
+    public string Name { get; set; }
+    public string PreviewImageUrl { get; set; }
+    public MonetaryValue UnitPrice { get; set; }
+    public MonetaryValue OptionPrice { get; set; }
+    public MonetaryValue UnitTotalPrice { get; set; }//per piece
+    public MonetaryValue TotalPrice { get; set; }// x quantity
+    public string Options { get; set; }
+    public IEnumerable<OptionNameValue> OptionNameValues { get; set; }
+    public int Quantity { get; set; }
+}
+public class OptionNameValue
+{
+    public string OptionId { get; set; }
+    public string Name { get; set; }
+    public string Value { get; set; }
+    public MonetaryValue UnitPrice { get; set; }
+}
+public class ShippingMethod
+{
+    public string BaId { get; set; }
+    public string RefId { get; set; }
+    public string Name { get; set; }
+    public string Logo { get; set; }
+    public MonetaryValue ShippingFees { get; set; }
+}
+public class BizAccount
+{
+    public string BaId { get; set; }
+    public string RefId { get; set; }
+    public string Name { get; set; }
+    public string Logo { get; set; }
+    public string EndpointUrl { get; set; }
+}
+public class Address { }
+
+
+
 
 
 
