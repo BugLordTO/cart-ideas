@@ -1,15 +1,20 @@
-[HttpPost("biz/{baId}")]
-public async Task<ActionResult<ServiceResponse>> CreateService(string baId, [FromBody]CreateServiceRequest request) { }
+[HttpPost("dev/{daId}/services")]
+public async Task<ActionResult<ServiceResponse>> CreateService(string daId, CreateServiceRequest request) { }
 
 public class CreateServiceRequest{
     public string Name { get; set; } //require
     public string Logo { get; set; } // หรือาจจะต้องไป upload ใส่ทีหลัง
-    public PublishData PublishData { get; set; }
-    public string SandboxBaseUrl { get; set; }
+    //public PublishData PublishData { get; set; } // ยิงมา update ทีหลัง
+    public string HostUrl { get; set; }
+    public string ServicePath { get; set; }
 }
 public class ServiceResponse{
+    // response เหมือน request หรือมากกว่า
     public string _id { get; set; }
-    public string Name { get; set; }
+    public string Name { get; set; } 
+    public string Logo { get; set; } 
+    public string HostUrl { get; set; }
+    public string ServicePath { get; set; }
 }
 
 //ServiceSandBoxDB
@@ -18,6 +23,7 @@ public class Service {
     public string BaId { get; set; }
     public string Name { get; set; }
     public string Logo { get; set; }
+    public string Description { get; set; }
     public PublishData PublishData { get; set; }
     public string SandboxBaseUrl { get; set; }
     public string ProductionBaseUrl { get; set; }
@@ -28,20 +34,24 @@ public class PublishData {
     public MonetaryValue Price { get; set; }   
     public DateTime? ReleaseDateSchedule  { get; set; }
     public IEnumerable<string> Tags { get; set; } //?? ใช้ทำอะไรบ้าง ต้องใส่ตอน create ไหม
-    public string Description { get; set; }
+    public string PublishNote { get; set; }
     //etc.รอ UI
 }
 
-[HttpPost("biz/{baId}/svc/{svcId}/hook/")]
-public async Task<ActionResult<ManaHookResponse>> RegisterHook(string baId, string svcId , RegisterHookRequest request){} 
+[HttpPost("dev/{daId}/services/{svcId}/hooks")]
+public async Task<ActionResult<ManaHookResponse>> RegisterHook(string daId, string svcId , RegisterHookRequest request){} 
 public class RegisterHookRequest{
     public string PathUrl { get; set; }
     public string HookType { get; set; }
 }
+//[HttpGet("dev/{daId}/services/{svcId}/hooks")] >> return all hook
+//[HttpGet("dev/{daId}/services/{svcId}/hooks/adhoc")] >> return adhoc hook
+//[HttpPut("dev/{daId}/services/{svcId}/hooks/adhoc")]
+//[HttpDelete("dev/{daId}/services/{svcId}/hooks/adhoc")]
 public class ManaHookResponse{
     public string _id { get; set; }
     public string HookType { get; set; }
-    public string FullUrl { get; set; }
+    public string HookUrl { get; set; }
 } 
 
 //HookDB
@@ -51,7 +61,7 @@ public class Hook
     public string ServiceId { get; set; }
     //Payment , Order , Product
     public string Type { get; set; }
-   // public string BaseUrl { get; set; }
+    public string BaseUrl { get; set; }
     public string PathUrl { get; set; }
     public DateTime CreateDateTime { get; set; }
     public DateTime? DeleteDateTime { get; set; }
