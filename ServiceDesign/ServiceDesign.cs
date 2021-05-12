@@ -5,12 +5,14 @@ public class CreateServiceRequest{
     public string Name { get; set; } //require
     public string Logo { get; set; } // หรือาจจะต้องไป upload ใส่ทีหลัง
     //public PublishData PublishData { get; set; } // ยิงมา update ทีหลัง
+    public string Description { get; set; }
+    public string[] Tags { get; set; }
     public string HostUrl { get; set; }
     public string ServicePath { get; set; }
 }
 public class ServiceResponse{
     // response เหมือน request หรือมากกว่า
-    public string _id { get; set; }
+    public string Id { get; set; }
     public string Name { get; set; } 
     public string Logo { get; set; } 
     public string HostUrl { get; set; }
@@ -49,7 +51,7 @@ public class RegisterHookRequest{
 //[HttpPut("dev/{daId}/services/{svcId}/hooks/adhoc")]
 //[HttpDelete("dev/{daId}/services/{svcId}/hooks/adhoc")]
 public class ManaHookResponse{
-    public string _id { get; set; }
+    public string Id { get; set; }
     public string HookType { get; set; }
     public string HookUrl { get; set; }
 } 
@@ -61,8 +63,8 @@ public class Hook
     public string ServiceId { get; set; }
     //Payment , Order , Product
     public string Type { get; set; }
-    public string BaseUrl { get; set; }
-    public string PathUrl { get; set; }
+    // public string BaseUrl { get; set; }
+    public string HookUrl { get; set; }
     public DateTime CreateDateTime { get; set; }
     public DateTime? DeleteDateTime { get; set; }
 }
