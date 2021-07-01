@@ -1,0 +1,39 @@
+- upload service
+    - get upload sas (count) >> upload to temp storage
+        - directoryId: {mcId}/{nptId}/{instance}/{directoryName}
+            - mcId <> daId, svcId
+            - nptId <> baId
+            - instance: temp
+        - response
+            - SaS: sas for directory
+            - Url: directory url
+            - []
+                - FileName
+    - submit upload (directoryId) >> commit temp upload state, create snapshot
+    - get read sas (directoryId)
+            - instance: temp, public, private, profile, ba, product, eslip, ฯ
+    - file content (directoryId)
+- upload api
+    - get upload sas (count) >> upload to temp storage
+        - [mana] {mcId}/{nptId}/{instance}/{fileName}
+        - [3rd] dev/{daId}/services/{svcId}/file/upload/{*directoryId}
+    - submit upload (directoryId) >> commit temp upload state, create snapshot
+        - [mana] {mcId}/{nptId}/{instance}/{fileName}[?from={instance??temp}]
+        - [3rd] dev/{daId}/services/{svcId}/file/submit/{*directoryId}[?from={instance??temp}]
+    - get read sas (directoryId)
+        - dev/{daId}/services/{svcId}/file/read/{*directoryId}[?from={instance??temp}]
+    - file content (directoryId)
+        - dev/{daId}/services/{svcId}/file/{*directoryId}
+        - dev/{daId}/services/{svcId}/file/{*directoryId}?{sas}
+- storage instance
+    - temp
+        - private
+        - public
+        - profile
+            - employee
+        - ba
+        - product
+            - product promotion
+        - eslip
+            - privilege
+                - privilege promotion

@@ -1,0 +1,87 @@
+@startuml FileService
+
+[3rdApp]
+[ManaApp]
+
+package "APIM" {
+    [KycApim]
+    [ProductApim]
+}
+
+package "McProxy" {
+    [ProfileApiProxy]
+    [BizAccountApiProxy]
+    [QrApiProxy]
+    [KycProxy]
+}
+
+package "Modules" {
+    [ProductApi]
+    [KycApi]
+    [ProfileApi]
+    [BizAccountApi]
+    [QrApi]
+    [FileServiceApi]
+}
+
+package "FileServiceApi" {
+    [TempFileApi]
+    [ProfileFileApi]
+    [QrFileApi]
+    [BizAccountFileApi]
+    [ProductFileApi]
+    [KycFileApi]
+    [KycTempFileApi]
+}
+
+database "Storage" {
+    [Temp]
+    [KycTemp]
+    [Ring]
+    [User]
+}
+
+database "Redis" {
+    [FileCache]
+}
+
+database "Database" {
+    [FileData]
+    note right: file owner\nfilter\nlist\netc.
+}
+
+3rdApp -down- [ProductApim]: call api
+[ProductApim] -down- [ProductApi]: map
+[ProductApi] -down- [ProductFileApi]
+3rdApp -down- [KycApim]: call api
+[KycApim] -down- [KycApi]: map
+[KycApi] -down- [KycFileApi]
+[KycApi] -down- [KycTempFileApi]
+
+ManaApp -down- [ProfileApiProxy]: call api
+[ProfileApiProxy] -down- [ProfileApi]: map
+[ProfileApi] -down- [ProfileFileApi]
+ManaApp -down- [KycProxy]: call api
+[KycProxy] -down- [KycApi]: map
+ManaApp -down- [BizAccountApiProxy]: call api
+[BizAccountApiProxy] -down- [BizAccountApi]: map
+[BizAccountApi] -down- [BizAccountFileApi]: ba image
+[BizAccountApi] -down- [BizAccountFileApi]: payment qr
+[BizAccountApi] -down- [QrApi]: create payment QR
+ManaApp -down- [QrApiProxy]: call api
+[QrApiProxy] -down- [QrApi]: map
+[QrApi] -down- [QrFileApi]
+
+[ProfileFileApi] -down- [User]
+[ProductFileApi] -down- [Ring]
+[BizAccountFileApi] -down- [Ring]
+[QrFileApi] -down- [Ring]
+[KycFileApi] -down- [Ring]
+[KycTempFileApi] -down- [KycTemp]
+[TempFileApi] -down- [Temp]
+
+AllMobileUpload -down- [TempFileApi]: Temp upload before move
+FileServiceApi -down- Redis: Cache copying file
+FileServiceApi -down- Database
+
+@enduml

@@ -1,0 +1,40 @@
+@startuml Upload profile image
+
+participant ionic
+participant Client
+participant ManaApi
+participant FileService
+participant Redis
+participant Storage
+
+ionic->Client : select file (dataType)
+activate Client
+Client->ManaApi : get upload blob sas
+ManaApi<->FileService : get upload blob sas
+Client<--ManaApi : upload blob sas
+ionic<--Client : (fileId)
+deactivate Client
+ionic->ionic : show file
+ionic->ionic : attach fileId to body
+
+ionic->Client : submit
+Client->Storage : upload file (upload blob sas, file)
+Client->ManaApi : submit data
+ManaApi->FileService : submit file(fileId)
+note left: TempFileService
+activate FileService
+FileService->FileService : create snapshot
+FileService->Redis : save
+ManaApi<--FileService : url
+deactivate FileService
+ManaApi->FileService : get access file (fileId, accessKey)
+note left: ProfileFileService
+activate FileService
+FileService->Redis : cache while moving
+ManaApi<--FileService : profile file url
+deactivate FileService
+ManaApi->ManaApi : save profile
+Client<--ManaApi : succes message
+ionic<--Client
+
+@enduml

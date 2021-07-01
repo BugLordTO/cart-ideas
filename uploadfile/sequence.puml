@@ -1,0 +1,54 @@
+@startuml Upload
+
+participant ionic
+participant Client
+participant ManaApi
+participant FileService
+participant Redis
+participant PartherApi
+participant Storage
+
+ionic->Client : select file (dataType)
+activate Client
+Client->ManaApi : get upload blob sas
+ManaApi<->FileService : get upload blob sas
+Client<--ManaApi : upload blob sas
+ionic<--Client : (fileId,rawFile)
+deactivate Client
+ionic->ionic : show file
+ionic->ionic : attach fileId to body
+
+ionic->Client : submit
+activate Client
+Client->Storage : upload file (upload blob sas, file)
+Client->ManaApi : submit data
+ManaApi->FileService : submit file(fileId)
+activate FileService
+note left: TempFileService
+FileService->FileService : create snapshot
+FileService->Redis : save
+ManaApi<--FileService : url
+deactivate FileService
+ManaApi->PartherApi : hook (submitBody)
+activate PartherApi
+Client<-ManaApi : succes message
+ionic<-Client
+deactivate Client
+FileService<-PartherApi : get read blob accessKey (fileId)
+note left: TempFileService
+activate FileService
+FileService->Redis : get read sas(fileId)
+FileService<--Redis
+FileService->FileService : check file metadata
+FileService-->PartherApi : snapshot read blob accessKey
+deactivate FileService
+PartherApi->FileService : get public file (accessKey)
+note left: PublicFileService
+activate FileService
+FileService->Redis : cache while moving
+PartherApi<--FileService : public file url + accessKey
+deactivate FileService
+PartherApi->PartherApi : process ...
+deactivate PartherApi
+
+@enduml

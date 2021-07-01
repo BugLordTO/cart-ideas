@@ -1,0 +1,99 @@
+@startuml Any upload file class
+
+!define COMMENT(x) <color:darkgreen>x</color>
+!define ROUTE(x) <color:brown>x</color>
+
+package essentials {
+    class AccessInfo {
+        COMMENT(// AzBlob | Http)
+        + Mode: string
+        COMMENT(// manauploaddev.blob.core.windows.net | upload.onmana.space)
+        + HostFqdn: string
+        + Resources: AccessResource[]
+    }
+    class AccessResource {
+        COMMENT(// generated file name >> {guid})
+        + FileName: string
+        COMMENT(// {instance}/{container}/{folder}/{guid})
+        + PathsAndQuery: string
+        COMMENT(// sas | api access key)
+        + AccessKey: string
+        + ExpiredDate: DateTime
+    }
+}
+
+essentials +--+ facing_models
+
+package facing_models {
+    abstract FileServiceBase {
+        - GetAccessKey(...): string
+        - ValidateAccessKey(accessKey: string, ...): bool
+    }
+
+    class manage extends FileServiceBase {
+        {method} COMMENT(// instance ชื่อ ไม่ซ้ำ >> เป็นชื่อ blob container เลยมั้ย?)
+        {method} COMMENT(// return instance fullaccess AccessInfo)
+        {method} ROUTE([POST] manage)
+        + RegisterAccount(request): AccessInfo
+
+        {method} COMMENT(// list container in instance)
+        {method} COMMENT(// return container fullaccess AccessInfo)
+        {method} ROUTE([GET] manage/{instance}?accessKey=accXxxXXx)
+        - GetContainer(instance, request): AccessInfo
+
+        {method} COMMENT(// create container in instance)
+        {method} COMMENT(// return container fullaccess AccessInfo)
+        {method} ROUTE([POST] manage/{instance}?accessKey=accXxxXXx)
+        + CreateContainer(instance, request, accessKey): AccessInfo
+
+        {method} COMMENT(// delete container in instance)
+        {method} ROUTE([DELETE] manage/{instance}/{container}?accessKey=conXxxXXx)
+        - DeleteContainer(instance, container, accessKey): bool
+
+        {method} COMMENT(// list folder in container)
+        {method} COMMENT(// return folder fullaccess AccessInfo)
+        {method} ROUTE([GET] manage/{instance}/{container}?accessKey=conXxxXXx)
+        - GetFolder(instance, container, accessKey): AccessInfo
+
+        {method} COMMENT(// create folder in container)
+        {method} COMMENT(// return folder fullaccess AccessInfo)
+        {method} ROUTE([POST] manage/{instance}/{container}?accessKey=conXxxXXx)
+        + CreateFolder(instance, container, request, accessKey): AccessInfo
+
+        {method} COMMENT(// delete folder in container)
+        {method} ROUTE([DELETE] manage/{instance}/{container}/{folder}?accessKey=folXxxXXx)
+        - DeleteFolder(instance, container, folder, accessKey): bool
+        
+        {method} COMMENT(// request new upload file AccessInfo for this folder)
+        {method} COMMENT(// return file fullaccess AccessInfo)
+        {method} ROUTE([PUT] manage/{instance}/{container}/{folder}?count=1&accessKey=folXxxXXx)
+        + StartFolderUpload(instance, container, folder, count, accessKey): AccessInfo
+
+        {method} COMMENT(// request folder AccessInfo for this folder)
+        {method} COMMENT(// return file readonly AccessInfo)
+        {method} ROUTE([GET] manage/{instance}/{container}/{folder}?accessKey=folXxxXXx)
+        + GetFolderAccess(instance, container, folder, accessKey): AccessInfo
+
+        {method} COMMENT(// delete file in folder)
+        {method} ROUTE([DELETE] data/{instance}/{container}/{folder}/{file}?accessKey=filXxxXXx)
+        - DeleteFile(instance, container, folder, file, accessKey, type): bool
+    }
+
+    class data extends FileServiceBase {
+        {method} COMMENT(// create or update file)
+        {method} COMMENT(// return file readonly AccessInfo)
+        {method} ROUTE([POST] data/{instance}/{container}/{folder}/{file}&accessKey=folXxxXXx)
+        + WriteFileContent(instance, container, folder, file, content, accessKey): AccessInfo
+
+        {method} COMMENT(// copy resource from other instance using AccessInfo)
+        {method} COMMENT(// return file readonly AccessInfo)
+        {method} ROUTE([PUT] data/{instance}/{container}/{folder}?accessKey=filXxxXXx)
+        + CopyFolderData(instance, container, folder, AccessInfo, accessKey): AccessInfo
+
+        {method} COMMENT(// return file content)
+        {method} ROUTE([GET] data/{instance}/{container}/{folder}/{file}?accessKey=filXxxXXx)
+        + GetFileContent(instance, container, folder, file, accessKey): Content
+    }
+}
+
+@enduml

@@ -1,0 +1,50 @@
+@startuml FileService
+
+"Developer"
+"Client"
+
+package "APIM" {
+    [PartnerApim]
+    [FileServiceApim]
+}
+
+package "McProxy" {
+    [ManaApiProxy]
+    [FileServiceProxy]
+}
+
+package "Modules" {
+    [PartnerApi]
+    [FileServiceApi]
+    [ManaApi]
+}
+
+database "Storage" {
+    [Temp]
+    [Ring]
+    [Profile]
+}
+
+Developer -down- [PartnerApim]: call api
+[PartnerApim] -down- [PartnerApi]: map
+[PartnerApi] -down- [FileServiceApi]
+
+Developer -down- [FileServiceApim]: call api / file content
+[FileServiceApim] -down- [FileServiceApi]: map
+
+[Developer] -down- [Temp]: Upload
+
+Client -down- [ManaApiProxy]: call api
+[ManaApiProxy] -down- [ManaApi]: map
+
+Client -down- [FileServiceProxy]: call api
+[FileServiceProxy] -down- [FileServiceApi]: map
+[FileServiceApi] -down- Storage
+
+Client -down- [Temp]: Upload
+Client -down- [FileServiceApim]: file content
+
+[ManaApi] -down- [FileServiceApi]
+
+
+@enduml

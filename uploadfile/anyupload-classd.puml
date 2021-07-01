@@ -1,0 +1,106 @@
+@startuml Any upload file class
+
+!define COMMENT(x) <color:darkgreen>x</color>
+!define ROUTE(x) <color:brown>x</color>
+
+package essentials {
+    class AccessInfo {
+        COMMENT(// upload.onmana.space)
+        + HostUrl: string
+        COMMENT(// {instance}/{cname}/{fname}/{guid})
+        Path: string?
+        COMMENT(// ?ak=QkJHjGJHG&d=2021-06-29T17:13:30Z&p=rwld)
+        + AccessKey: string
+        + ExpiredDate: DateTime
+        COMMENT(// biker-ba001-)
+        - Prefix: string
+    }
+
+    class UploadInfo {
+        COMMENT(// manauploaddev.blob.core.windows.net)
+        + Url: string
+        COMMENT(// generated file name >> {guid})
+        + FileName: string
+        COMMENT(// full path >> {instance}/{cname}/{fname}/{guid})
+        + FilePath: string
+        COMMENT(// blob sas)
+        + Sas: string
+    }
+}
+
+essentials +--+ facing_models
+
+package facing_models {
+    abstract FileServiceBase {
+        - GetAccessKey(...): string
+        - ValidateAccessKey(accessKey: string, ...): bool
+    }
+
+    class manage extends FileServiceBase {
+        {method} COMMENT(// instance ชื่อ ไม่ซ้ำ >> เป็นชื่อ blob container เลยมั้ย?)
+        {method} ROUTE([POST] manage/{instance})
+        + RegisterAccount(instance, request): AccessInfo
+
+        {method} COMMENT(// list container in instance)
+        {method} ROUTE([GET] manage/{instance}?accessKey=accXxxXXx)
+        - GetContainer(instance, request): AccessInfo[]
+
+        {method} ROUTE([POST] manage/{instance}/{cname}?accessKey=accXxxXXx)
+        + CreateContainer(instance, cname, accessKey): AccessInfo
+
+        {method} ROUTE([DELETE] manage/{instance}/{cname}?accessKey=conXxxXXx)
+        - DeleteContainer(instance, cname, accessKey): bool
+
+        {method} COMMENT(// list folder in container)
+        {method} ROUTE([GET] manage/{instance}/{cname}?accessKey=conXxxXXx)
+        - GetFolder(instance, cname, accessKey): AccessInfo[]
+
+        {method} ROUTE([POST] manage/{instance}/{cname}/{fname}?accessKey=conXxxXXx)
+        + CreateFolder(instance, cname, fname, accessKey): AccessInfo
+
+        {method} ROUTE([DELETE] manage/{instance}/{cname}/{fname}?accessKey=folXxxXXx)
+        - DeleteFolder(instance, cname, fname, accessKey): bool
+
+        {method} COMMENT(// list file in folder)
+        {method} ROUTE([GET] manage/{instance}/{cname}/{fname}?accessKey=folXxxXXx)
+        - GetFile(instance, cname, accessKey): AccessInfo[]
+        
+        {method} COMMENT(// request upload sas for this folder)
+        {method} ROUTE([GET] manage/{instance}/{cname}/{fname}?count=1&accessKey=folXxxXXx)
+        + GetFolderUpload(instance, cname, fname, count, accessKey): UploadInfo[]
+
+        {method} COMMENT(// ขอ AccessInfo ใหม่จาก input accessKey ที่เหนือกว่าหรือเท่ากับไฟล์นี้)
+        {method} ROUTE([GET] manage/{instance}/{cname}/{fname}?accessKey=folXxxXXx&p=rld)
+        - GetFolderAccess(instance, cname, fname, accessKey): AccessInfo
+
+        {method} COMMENT(// ขอ AccessInfo ใหม่จาก input accessKey ที่เหนือกว่าหรือเท่ากับไฟล์นี้)
+        {method} ROUTE([GET] manage/{instance}/{cname}/{fname}/{name}?accessKey=filXxxXXx&p=rld)
+        + GetFileAccess(instance, cname, fname, name, accessKey): AccessInfo
+
+        {method} ROUTE([DELETE] data/{instance}/{cname}/{fname}/{name}?accessKey=filXxxXXx)
+        - DeleteFile(fileId, accessKey, type): bool
+    }
+
+    class data extends FileServiceBase {
+        {method} ROUTE([POST] data/{instance}/{cname}/{fname}&accessKey=folXxxXXx)
+        + SubmitUpload(instance, cname, fname, files[], accessKey): AccessInfo[]
+
+        {method} COMMENT(// ใช้ copy folder จาก instance อื่นได้หาก input AccessInfo มาจาก instance อื่น)
+        {method} COMMENT(// แล้ว return readonly AccessInfo)
+        {method} ROUTE([PUT] data/{instance}/{cname}/{fname}?recursive=false&accessKey=folXxxXXx)
+        - CopyFolder(instance, cname, fname, AccessInfo, accessKey): AccessInfo
+
+        {method} ROUTE([GET] data/{instance}/{cname}/{fname}?accessKey=folXxxXXx)
+        - Content(instance, cname, fname, accessKey): AccessInfo[]
+
+        {method} COMMENT(// ใช้ copy file จาก instance อื่นได้หาก input AccessInfo มาจาก instance อื่น)
+        {method} COMMENT(// แล้ว return readonly AccessInfo)
+        {method} ROUTE([PUT] data/{instance}/{cname}/{fname}/{name}?accessKey=filXxxXXx)
+        + CopyFile(instance, cname, fname, name, AccessInfo, accessKey): AccessInfo
+
+        {method} ROUTE([GET] data/{instance}/{cname}/{fname}/{name}?accessKey=filXxxXXx)
+        + Content(instance, cname, fname, name, accessKey): Content
+    }
+}
+
+@enduml

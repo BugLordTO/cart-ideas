@@ -1,0 +1,76 @@
+group operation 
+- manage
+- file
+- data
+- folder
+
+// instance ชื่อ ไม่ซ้ำ >> เป็นชื่อ blob container เลยมั้ย?
+[POST] manage/{instance}
+RegisterAccount(instance, request): AccessInfo
+
+class AccessInfo {
+    HostUrl: string // upload.onmana.space
+    Path: string? // {instance}/{cname}/{fname}/{*sname}/{guid}
+    AccessKey: string // ?ak=QkJHjGJHG&cd=2021-06-29T17:13:30Z&p=rwd
+    ExpiredDate: string
+}
+
+[POST] manage/{instance}/{cname}?accessKey=xxx
+CreateContainer(instance, cname, accessKey): AccessInfo
+
+[DELETE] manage/{instance}/{cname}?accessKey=xxx
+DeleteContainer(instance, cname, accessKey): AccessInfo
+
+[POST] manage/{instance}/{cname}/{fname}?accessKey=xxx
+CreateFolder(instance, cname, fname, accessKey): AccessInfo
+
+[DELETE] manage/{instance}/{cname}/{fname}?accessKey=xxx
+DeleteFolder(instance, cname, accessKey): AccessInfo
+
+// reset ExpiredDate ของ input AccessInfo โดยใช้ input accessKey ที่เหนือกว่าหรือเท่ากับ AccessInfo นี้
+[PUT] access?accessKey=xxx
+RefreshAccess(AccessInfo, accessKey): AccessInfo
+
+
+
+[GET] file/{instance}/{cname}/{fname}/{*sname}?count=1&accessKey=xxx
+GetUploadSas(instance, cname, fname, sname, count, accessKey): UploadInfo[]
+
+[POST] file/{instance}/{cname}/{fname}/{*sname}&accessKey=xxx
+SubmitUpload(instance, cname, fname, sname, accessKey): AccessInfo[]
+
+class UploadInfo {
+    Url: string // manauploaddev.blob.core.windows.net
+    FileName: string // generated file name >> {guid}
+    FilePath: string // sname + FileName >> {instance}/{cname}/{fname}/{*sname}/{guid}
+    Sas: string // blob sas
+}
+
+// ขอ AccessInfo ใหม่จาก input accessKey ที่เหนือกว่าหรือเท่ากับไฟล์นี้
+[GET] file/{instance}/{cname}/{fname}/{*name}?accessKey=xxx&p=rwd
+GetFileAccess(instance, cname, fname, name, accessKey): AccessInfo
+
+// ขอ AccessInfo ใหม่จาก input accessKey ที่เหนือกว่าหรือเท่ากับไฟล์นี้ และใช้ย้ายมาจาก instance อื่นได้หาก input AccessInfo มาจาก instance อื่น
+[POST] file/{instance}/{cname}/{fname}/{*name}?accessKey=xxx
+GetFileAccess(instance, cname, fname, name, AccessInfo, accessKey): AccessInfo
+
+[DELETE] file/{instance}/{cname}/{fname}/{*name}?accessKey=xxx
+DeleteFile(fileId, accessKey, type): bool
+
+
+
+[GET] data/{instance}/{cname}/{fname}/{*name}?accessKey=xxx
+Content(instance, cname, fname, name, accessKey): Content
+
+
+
+// ขอ AccessInfo ใหม่จาก input accessKey ที่เหนือกว่าหรือเท่ากับโฟลเดอร์นี้
+[GET] folder/{instance}/{cname}/{fname}/{*sname}?accessKey=xxx&p=rwd
+GetSubFolderAccess(instance, cname, fname, sname, accessKey): AccessInfo
+
+// ขอ AccessInfo ใหม่จาก input accessKey ที่เหนือกว่าหรือเท่ากับโฟลเดอร์นี้ และใช้ย้ายมาจาก instance อื่นได้หาก input AccessInfo มาจาก instance อื่น
+[POST] folder/{instance}/{cname}/{fname}/{*sname}?accessKey=xxx
+GetSubFolderAccess(instance, cname, fname, sname, AccessInfo, accessKey): AccessInfo
+
+[DELETE] folder/{instance}/{cname}/{fname}/{*sname}?accessKey=xxx
+DeleteSubFolder(instance, cname, fname, sname, accessKey, type): bool

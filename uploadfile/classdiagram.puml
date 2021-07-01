@@ -1,0 +1,124 @@
+@startuml Upload file class
+
+!define COMMENT(x) <color:darkgreen>x</color>
+!define ROUTE(x) <color:brown>x</color>
+
+package essentials {
+    class FileBaseModel {
+        + FileId: string
+    }
+    class FileUploadSas extends FileBaseModel {
+        + Url: string
+        + FileName: string
+        + Sas: string // StorageKey
+    }
+
+    class SubmitRequest extends FileBaseModel {
+        + UploadFileName: string
+        + DataType: string
+    }
+
+    class FileAccessInfo extends FileBaseModel {
+        + Url: string
+        + AccessKey: string
+        + IsValid: bool
+    }
+}
+
+package facing.models {
+    class CacheFile extends FileBaseModel {
+        + FileUrl: string
+        + DataType: string
+        + AccessKeys: FileAccessKey[]
+    }
+
+    class FileAccessKey {
+        + CreatedDate: DateTime
+        + ExpiredDate: DateTime
+        + Permissions: KeyPermission
+    }
+
+    enum KeyPermission {
+        + READ
+        + WRITE
+        + DELETE
+    }
+
+    class FileData extends FileBaseModel {
+        + UploadFileName: string
+        // owner
+        // filter file
+        // etc.
+    }
+
+    abstract FileServiceBase {
+        COMMENT(// SecretKey equal to Azure storage ConnectionString key)
+        - SecretKey: string
+
+        {method} COMMENT(// grant equal to ContainerName >> dev/{daId}/services/{serviceId})
+        {method} COMMENT(// resourceId equal to folderPath & filePath)
+        {method} COMMENT(// someEncrypt(secretKey, fullUrl, dataType, date, permissions, ...))
+        - GetAccessKey(grant: string, resourceId: string): string
+        - ValidateAccessKey(accessKey: string, ...): bool
+
+        {abstract} GetUploadSas(folderPath: string, count: int?): FileUploadSas[]
+        {abstract} SubmitUpload(request: SubmitRequest): FileAccessInfo
+        {abstract} GetAccess(fileId: string): FileAccessInfo
+        {abstract} GetAccess(request: FileAccessInfo): FileAccessInfo
+
+        {abstract} RegenerateAccessKey(fileId: string)
+        {abstract} Delete(fileId: string)
+        {abstract} Content(fileId: string, accessKey: string)
+        {abstract} GetUploadSas(fileId: string): FileUploadSas
+        {abstract} List(resourceId: string)
+    }
+}
+
+package profile.api {
+    class ProfileFileService implements FileServiceBase {
+        - HostUrl: string
+
+        + GetUploadSas(folderPath: string, count: int?): FileUploadSas[]
+        + SubmitUpload(request: SubmitRequest): FileAccessInfo
+        + GetAccess(fileId: string): FileAccessInfo
+        + GetAccess(request: FileAccessInfo): FileAccessInfo
+
+        + RegenerateAccessKey(fileId: string): FileAccessInfo
+        + Delete(fileId: string)
+        + Content(fileId: string, accessKey: string)
+        + GetUploadSas(fileId: string): FileUploadSas
+        + List(resourceId: string)
+    }
+}
+
+package profile.fileapi {
+    class ProfileFileServiceApi implements FileServiceBase  {
+        - ConnectionString: string
+        - ContainerName: string
+        - AllowedDataTypes: string[]
+        - AccessKeyAge: TimeSpan
+        - IsPublic: bool
+
+        {method} ROUTE([GET] file/upload?folderPath=/&count=1&accessKey=xxx)
+        + GetUploadSas(folderPath: string, count: int?): FileUploadSas[]
+        {method} ROUTE([POST] file/submit&accessKey=xxx)
+        + SubmitUpload(request: SubmitRequest): FileAccessInfo
+        {method} ROUTE([GET] file/accesskey?fileId=/yyy/zzz&accessKey=xxx)
+        + GetAccess(fileId: string): FileAccessInfo
+        {method} ROUTE([POST] file/accesskey&accessKey=xxx)
+        + GetAccess(request: FileAccessInfo): FileAccessInfo
+
+        {method} ROUTE([PUT] file/accesskey/re?fileId=/yyy/zzz&accessKey=xxx)
+        + RegenerateAccessKey(fileId: string): FileAccessInfo
+        {method} ROUTE([DELETE] file/{fileName}/delete?fileId=/yyy/zzz&accessKey=xxx)
+        + Delete(fileId: string)
+        {method} ROUTE([GET] file?fileId=/yyy/zzz&accessKey=xxx)
+        + Content(fileId: string)
+        {method} ROUTE([GET] file/{*fileId}?accessKey=xxx)
+        + GetUploadSas(fileId: string): FileUploadSas
+        {method} ROUTE([GET] file/{*resourceId}?accessKey=xxx)
+        + List(resourceId: string): FileAccessInfo[]
+    }
+}
+
+@enduml

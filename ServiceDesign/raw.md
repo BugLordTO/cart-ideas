@@ -5,6 +5,7 @@
     - Description
     - Tags
     - HostUrl
+    - ServicePath
 
 - RegisterHook
     - PathUrl

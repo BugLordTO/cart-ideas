@@ -1,0 +1,24 @@
+@startuml Get file content
+
+participant Apim
+participant FileService
+participant Redis
+participant Storage
+
+Apim->FileService : request file content(url, accessKey?)
+FileService->Redis : get file data(fileId)
+FileService<--Redis
+FileService->FileService : check accessKey
+alt sas == null || sas has expired
+    FileService->Storage : get read sas(blobUrl)
+    FileService<--Storage
+end
+alt redirect
+    Apim<--FileService : file content stream>>{blobUrl}{sas}
+else stream content
+    FileService->Storage : read file(blobUrl,sas)
+    FileService<--Storage
+    Apim<--FileService : file content stream>>same url
+end
+
+@enduml
