@@ -116,3 +116,16 @@
     - expire
     - หลายอัน? > limit
 
+#########################################################
+
+# file api
+/- IFileService + IFileServiceFactory
+/- mana api do not use IFileService
+
+/- config yaml
+- content type
+- DB / redis
+    - snapshot > save to db/redis?
+    - manage api > account container folder > save/get from db
+    - data api > account container folder > get from db
+- access key

@@ -1,0 +1,35 @@
+@startuml DB
+
+!define COMMENT(x) <color:darkgreen>x</color>
+
+package DB {
+    class Account {
+        _id: string
+        Name: string
+        Instance: string
+    }
+
+    class Container {
+        _id: string
+        Name: string
+        AccountId: string
+    }
+    Account - Container
+
+    class Folder {
+        _id: string
+        Name: string
+        ContainerId: string
+    }
+    Container - Folder
+}
+package Redis {
+    class File {
+        Name: string
+        FolderId: string
+        Url: string COMMENT(// snapshot url without sas)
+    }
+    Folder - File
+}
+
+@enduml

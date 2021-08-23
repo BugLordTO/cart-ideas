@@ -1,0 +1,189 @@
+@startuml Any upload file class
+
+!define COMMENT(x) <color:darkgreen>x</color>
+!define ROUTE(x) <color:brown>x</color>
+
+package essentials {
+    class AccessInfo {
+        COMMENT(// AzBlob | AwsStorage | Http)
+        + Mode: string
+        COMMENT(// manauploaddev.blob.core.windows.net)
+        COMMENT(// ap-southeast-1.amazonaws.com)
+        COMMENT(// upload.onmana.space)
+        + HostFqdn: string
+        COMMENT(// data/{instance}/{container}/{folder})
+        + Path: string
+        + Grant: AccessKey
+        + NextPage: int
+        + Resources: AccessResource[]
+    }
+
+    class AccessResource {
+        + Name: string
+        + Grant: AccessKey
+    }
+    AccessInfo *-r- AccessResource
+
+    class AccessKey {
+        COMMENT(// sas | api access key)
+        COMMENT(// ak=QkJHjGJHG&d=2021-06-29T17:13:30Z&p=rwd)
+        + AccessKey: string
+        + ExpiredDate: DateTime
+        + Permissions: Permission
+    }
+    AccessInfo *-- AccessKey
+    AccessResource *-- AccessKey
+
+    class AccessInfoRequest {
+        + Operation: Operation
+        + DataType: AllowDataType?
+        COMMENT(// requesting new resource count)
+        + Count: int?
+        COMMENT(// requesting Permission of parent and resource)
+        + Permissions: Permission
+    }
+
+    enum Operation {
+        Create,
+        ParentAccess,
+        ResourceAccess,
+        RequestUpload,
+    }
+    AccessInfoRequest o-r- Operation
+
+    enum Permission {
+        Read,
+        Upload,
+        Delete,
+        Edit,
+    }
+    AccessKey o-r- Permission
+    AccessInfoRequest o-d- Permission
+
+    enum AllowedDataType {
+        Image,
+        Text,
+        Pfd,
+    }
+    AccessInfoRequest o-r- AllowedDataType
+}
+
+package facing_common {
+    abstract FileServiceBase {
+        - GetAccessKey(...): string
+        - ValidateAccessKey(accessKey: string, ...): bool
+    }
+
+    class manage extends FileServiceBase {
+        {method} COMMENT(============================== account / instance ==============================)
+
+        {method} COMMENT(// instance ชื่อ ไม่ซ้ำ >> เป็นชื่อ blob container เลยมั้ย?)
+        {method} COMMENT(// return instance fullaccess AccessInfo)
+        {method} ROUTE([POST] manage)
+        + RegisterAccount(): AccessInfo
+
+        {method} COMMENT(// request instance AccessInfo by specify instance name)
+        {method} COMMENT(// return containers AccessInfo)
+        {method} ROUTE([PUT] manage/{instance})
+        + InstanceAccess(instance, [B]AccessInfoRequest, [H]accessKey): AccessInfo
+
+        {method} COMMENT(============================== container ==============================)
+
+        {method} COMMENT(// request container AccessInfo)
+        {method} COMMENT(// return containers AccessInfo)
+        {method} ROUTE([POST] manage/{instance}?page=1)
+        + ContainerAccess(instance, [B]AccessInfoRequest, [H]accessKey): AccessInfo
+
+        {method} COMMENT(// request container AccessInfo by specify container name)
+        {method} COMMENT(// return containers AccessInfo)
+        {method} ROUTE([PUT] manage/{instance}/{container})
+        - ContainerAccess(instance, container, [B]AccessInfoRequest, [H]accessKey): AccessInfo
+
+        {method} COMMENT(// delete single container)
+        {method} ROUTE([DELETE] manage/{instance}/{container})
+        - DeleteContainer(instance, container, [H]accessKey): bool
+
+        {method} COMMENT(============================== folder ==============================)
+
+        {method} COMMENT(// request folder AccessInfo)
+        {method} COMMENT(// return folders AccessInfo)
+        {method} ROUTE([POST] manage/{instance}/{container}?page=1)
+        + FolderAccess(instance, container, [B]AccessInfoRequest, [H]accessKey): AccessInfo
+
+        {method} COMMENT(// request files AccessInfo from specify folder name)
+        {method} COMMENT(// return files AccessInfo AzBlob mode)
+        {method} ROUTE([PUT] manage/{instance}/{container}/{folder}?page=1)
+        + StartFolderUpload(instance, container, folder, [B]AccessInfoRequest, [H]accessKey): AccessInfo
+
+        {method} COMMENT(// delete single folder)
+        {method} ROUTE([DELETE] manage/{instance}/{container}/{folder})
+        - DeleteFolder(instance, container, folder, [H]accessKey): bool
+
+        {method} COMMENT(============================== file ==============================)
+
+        {method} COMMENT(// delete single file)
+        {method} ROUTE([DELETE] manage/{instance}/{container}/{folder}/{file})
+        - DeleteFile(instance, container, folder, file, [H]accessKey): bool
+    }
+
+    class data extends FileServiceBase {
+        {method} COMMENT(============================== upload / write ==============================)
+
+        {method} COMMENT(// create or update file)
+        {method} COMMENT(// return file AccessInfo)
+        {method} ROUTE([POST] data/{instance}/{container}/{folder}/{file})
+        + WriteFileContent(instance, container, folder, file, [B]content, [H]accessKey): AccessInfo
+
+        {method} COMMENT(// commit resource in AccessInfo or copy resource from other instance)
+        {method} COMMENT(// copy resource from other instance AccessInfo)
+        {method} COMMENT(// return files AccessInfo)
+        {method} ROUTE([PUT] data/{instance}/{container}/{folder})
+        + CopyFolderData(instance, container, folder, [B]AccessInfo, [H]accessKey): AccessInfo
+
+        {method} COMMENT(============================== read ==============================)
+
+        {method} COMMENT(// list containers AccessInfo)
+        {method} COMMENT(// return containers AccessInfo)
+        {method} ROUTE([GET] data/{instance}?page=1)
+        - GetContainers(instance, [H]accessKey): AccessInfo
+
+        {method} COMMENT(// list folder AccessInfo)
+        {method} COMMENT(// return folders AccessInfo)
+        {method} ROUTE([GET] data/{instance}/{container}?page=1)
+        - GetFolders(instance, container, [H]accessKey): AccessInfo
+
+        {method} COMMENT(// list files AccessInfo)
+        {method} COMMENT(// return files AccessInfo)
+        {method} ROUTE([GET] data/{instance}/{container}/{folder}?page=1)
+        - GetFiles(instance, container, folder, [H]accessKey): AccessInfo
+
+        {method} COMMENT(// return file content)
+        {method} ROUTE([GET] data/{instance}/{container}/{folder}/{file}?page=1)
+        + GetFileContent(instance, container, folder, file, [H]accessKey): Content
+    }
+}
+
+package DB {
+    class Account {
+        _id: string
+        Name: string
+        Instance: string
+    }
+    class Container {
+        _id: string
+        Name: string
+        AccountId: string
+    }
+    class Folder {
+        _id: string
+        Name: string
+        ContainerId: string
+    }
+    class File extends AccessInfo {
+        _id: string
+        Name: string
+        AccessInfo: AccessInfo
+    }
+}
+
+@enduml

@@ -1,0 +1,131 @@
+@startuml Profile upload
+
+participant Ionic
+participant Client
+participant ProfileApi
+participant TempFileApi
+participant ProfileFileApi
+participant Storage
+participant Redis
+
+Ionic->Client : select file (dataType)
+activate Client
+Client->ProfileApi : GetUploadAccessInfo(count: int)
+ProfileApi<->TempFileApi : StartFolderUpload(...)
+note right
+    PUT
+    headers: accessKey="?ak=QkJHjGJHG&d=2021-06-29T17:13:30Z&p=u"
+    queries: instance=TempFileApi&container=temp&folder=temp
+    body: {
+        Operation: RequestUpload,
+        DataType: Image,
+        Count: 1,
+        Permissions: Upload,
+    }
+end note
+Client<--ProfileApi : temp AccessInfo
+note right
+    {
+        Mode: AzBlob,
+        HostFqdn: manatemp.blob.core.windows.net,
+        Path: data/TempFileApi/temp/temp,
+        Grant: {
+            AccessKey: ?ak=QkJHjGJHG&d=2021-06-29T17:13:30Z&p=u,
+            ExpiredDate: 2021-06-29T17:13:30Z,
+            Permissions: Upload,
+        },
+        NextPage=-1,
+        Resources:[{
+            Name: bb123-cc456-dd789
+            Grant: {
+                AccessKey: ?ak=QkJHjGJHG&d=2021-06-29T17:13:30Z&p=u,
+                ExpiredDate: 2021-06-29T17:13:30Z,
+                Permissions: Upload,
+            },
+        }]
+    }
+end note
+Client->Client : Take photo / select photo
+Ionic<--Client : fileName, base64
+deactivate Client
+Ionic->Ionic : show file
+Ionic->Ionic : attach fileId to body
+
+Ionic->Client : submit()
+Client->Storage : upload file (upload blob sas, file)
+Client->ProfileApi : submitEndpoint(body, temp AccessInfo)
+ProfileApi->ProfileApi :  change AccessInfo mode
+ProfileApi->TempFileApi : CopyFolderData(temp AccessInfo)
+note right
+    {
+        Mode: Http,
+        HostFqdn: tempfileapi-dev.azurewebsites.net,
+        Path: data/TempFileApi/temp/temp,
+        Grant: {
+            AccessKey: ?ak=QkJHjGJHG&d=2021-06-29T17:13:30Z&p=u,
+            ExpiredDate: 2021-06-29T17:13:30Z,
+            Permissions: Upload,
+        },
+        NextPage=-1,
+        Resources:[{
+            Name: bb123-cc456-dd789
+            Grant: {
+                AccessKey: ?ak=QkJHjGJHG&d=2021-06-29T17:13:30Z&p=u,
+                ExpiredDate: 2021-06-29T17:13:30Z,
+                Permissions: Read,
+            },
+        }]
+    }
+end note
+activate TempFileApi
+TempFileApi->TempFileApi : create snapshot
+TempFileApi->Redis : save
+ProfileApi<--TempFileApi : temp readonly AccessInfo
+note right
+    {
+        Mode: Http,
+        HostFqdn: TempFileApi.onmana.space,
+        Path: data/TempFileApi/temp/temp,
+        Grant: null,
+        NextPage=-1,
+        Resources:[{
+            Name: bb123-cc456-dd789
+            Grant: {
+                AccessKey: ?ak=QkJHjGJHG&d=2021-06-29T17:13:30Z&p=r,
+                ExpiredDate: 2021-06-29T17:13:30Z,
+                Permissions: Read,
+            },
+        }]
+    }
+end note
+deactivate TempFileApi
+ProfileApi->ProfileFileApi : CopyFolderData(temp readonly AccessInfo)
+activate ProfileFileApi
+ProfileFileApi->Redis : cache while moving(temp readonly AccessInfo)
+ProfileApi<--ProfileFileApi : profile readonly AccessInfo
+note right
+    {
+        Mode: Http,
+        HostFqdn: ProfileFileApi.onmana.space,
+        Path: data/ProfileFileApi/ProfileImage/Image,
+        Grant: null,
+        NextPage=-1,
+        Resources:[{
+            Name: bb123-cc456-dd789
+            Grant: {
+                AccessKey: ?ak=QkJHjGJHG&d=2021-06-29T17:13:30Z&p=r,
+                ExpiredDate: 2021-06-29T17:13:30Z,
+                Permissions: Read,
+            },
+        }]
+    }
+end note
+deactivate ProfileFileApi
+ProfileApi->ProfileApi : save profile
+note right
+ProfileFileApi.onmana.space/data/ProfileFileApi/ProfileImage/Image/bb123-cc456-dd789
+end note
+Client<--ProfileApi : succes message
+Ionic<--Client
+
+@enduml

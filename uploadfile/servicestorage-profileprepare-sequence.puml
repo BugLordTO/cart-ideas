@@ -1,0 +1,56 @@
+@startuml Profile upload
+
+participant ManaDeveloper as dev
+participant ProfileFileApi as api
+participant Storage
+
+dev->api:InstanceAccess(AccessInfoRequest)
+note right
+    PUT
+    headers: accessKey="?ak=QkJHjGJHG&d=2021-06-29T17:13:30Z&p=c"
+    path: manage/ProfileFileApi
+    body: {
+        Operation: Create
+    }
+end note
+dev<--api:instance AccessInfo
+note right
+    {
+        Mode: Http,
+        HostFqdn: ProfileFileApi.onmana.space,
+        Path: data/ProfileFileApi,
+        Grant: {
+            AccessKey: ?ak=QkJHjGJHG&d=2021-06-29T17:13:30Z&p=rude,
+            ExpiredDate: 2021-06-29T17:13:30Z,
+            Permissions: Read|Upload|Delete|Edit,
+        },
+        NextPage=-1,
+        Resources:null
+    }
+end note
+dev->api:ContainerAccess(AccessInfoRequest)
+note right
+    POST
+    headers: accessKey="?ak=QkJHjGJHG&d=2021-06-29T17:13:30Z&p=c"
+    Path: manage/ProfileFileApi/ProfileImage
+    body: {
+        Operation: Create
+    }
+end note
+dev<--api:container AccessInfo
+note right
+    {
+        Mode: Http,
+        HostFqdn: ProfileFileApi.onmana.space,
+        Path: data/ProfileFileApi/ProfileImage,
+        Grant: {
+            AccessKey: ?ak=QkJHjGJHG&d=2021-06-29T17:13:30Z&p=rude,
+            ExpiredDate: 2021-06-29T17:13:30Z,
+            Permissions: Read|Upload|Delete|Edit,
+        },
+        NextPage=-1,
+        Resources:null
+    }
+end note
+
+@enduml

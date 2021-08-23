@@ -5,20 +5,27 @@
 
 package essentials {
     class AccessInfo {
-        COMMENT(// AzBlob | Http)
-        + Mode: string
-        COMMENT(// manauploaddev.blob.core.windows.net | upload.onmana.space)
+        COMMENT(// upload.onmana.space)
         + HostFqdn: string
-        + Resources: AccessResource[]
-    }
-    class AccessResource {
-        COMMENT(// generated file name >> {guid})
-        + FileName: string
         COMMENT(// {instance}/{container}/{folder}/{guid})
-        + PathsAndQuery: string
-        COMMENT(// sas | api access key)
-        + AccessKey: string
+        PathsAndQueries: string[]?
+        COMMENT(// ?ak=QkJHjGJHG&d=2021-06-29T17:13:30Z&p=rwld)
+        + AccessKeys: string[]
         + ExpiredDate: DateTime
+        COMMENT(// biker-ba001-)
+        - Prefix: string
+    }
+
+    class UploadInfo {
+        COMMENT(// manauploaddev.blob.core.windows.net)
+        + Url: string
+        + Mode: string // AzBlob, Http
+        COMMENT(// generated file name >> {guid})
+        + FileNames: string[]
+        COMMENT(// full path >> {instance}/{container}/{folder}/{guid})
+        + FilePaths: string[]
+        COMMENT(// blob sas)
+        + Sass: string[]
     }
 }
 
@@ -32,67 +39,70 @@ package facing_models {
 
     class manage extends FileServiceBase {
         {method} COMMENT(// instance ชื่อ ไม่ซ้ำ >> เป็นชื่อ blob container เลยมั้ย?)
-        {method} COMMENT(// return instance fullaccess AccessInfo)
         {method} ROUTE([POST] manage)
-        + RegisterAccount(request): AccessInfo
+        + RegisterAccount(instance, request): AccessInfo
 
         {method} COMMENT(// list container in instance)
-        {method} COMMENT(// return container fullaccess AccessInfo)
         {method} ROUTE([GET] manage/{instance}?accessKey=accXxxXXx)
-        - GetContainer(instance, request): AccessInfo
+        - GetContainer(instance, request): AccessInfo[]
 
-        {method} COMMENT(// create container in instance)
-        {method} COMMENT(// return container fullaccess AccessInfo)
         {method} ROUTE([POST] manage/{instance}?accessKey=accXxxXXx)
-        + CreateContainer(instance, request, accessKey): AccessInfo
+        + CreateContainer(instance, container, accessKey): AccessInfo
 
-        {method} COMMENT(// delete container in instance)
         {method} ROUTE([DELETE] manage/{instance}/{container}?accessKey=conXxxXXx)
         - DeleteContainer(instance, container, accessKey): bool
 
         {method} COMMENT(// list folder in container)
-        {method} COMMENT(// return folder fullaccess AccessInfo)
         {method} ROUTE([GET] manage/{instance}/{container}?accessKey=conXxxXXx)
-        - GetFolder(instance, container, accessKey): AccessInfo
+        - GetFolder(instance, container, accessKey): AccessInfo[]
 
-        {method} COMMENT(// create folder in container)
-        {method} COMMENT(// return folder fullaccess AccessInfo)
         {method} ROUTE([POST] manage/{instance}/{container}?accessKey=conXxxXXx)
-        + CreateFolder(instance, container, request, accessKey): AccessInfo
+        + CreateFolder(instance, container, folder, accessKey): AccessInfo
 
-        {method} COMMENT(// delete folder in container)
         {method} ROUTE([DELETE] manage/{instance}/{container}/{folder}?accessKey=folXxxXXx)
         - DeleteFolder(instance, container, folder, accessKey): bool
-        
-        {method} COMMENT(// request new upload file AccessInfo for this folder)
-        {method} COMMENT(// return file fullaccess AccessInfo)
-        {method} ROUTE([PUT] manage/{instance}/{container}/{folder}?count=1&accessKey=folXxxXXx)
-        + StartFolderUpload(instance, container, folder, count, accessKey): AccessInfo
 
-        {method} COMMENT(// request folder AccessInfo for this folder)
-        {method} COMMENT(// return file readonly AccessInfo)
+        {method} COMMENT(// list file in folder)
         {method} ROUTE([GET] manage/{instance}/{container}/{folder}?accessKey=folXxxXXx)
-        + GetFolderAccess(instance, container, folder, accessKey): AccessInfo
+        - GetFile(instance, container, accessKey): AccessInfo[]
+        
+        {method} COMMENT(// request upload sas for this folder)
+        {method} ROUTE([PUT] manage/{instance}/{container}/{folder}?count=1&accessKey=folXxxXXx)
+        + StartFolderUpload(instance, container, folder, count, accessKey): UploadInfo[]
 
-        {method} COMMENT(// delete file in folder)
-        {method} ROUTE([DELETE] data/{instance}/{container}/{folder}/{file}?accessKey=filXxxXXx)
-        - DeleteFile(instance, container, folder, file, accessKey, type): bool
+        {method} COMMENT(// ขอ AccessInfo ใหม่จาก input accessKey ที่เหนือกว่าหรือเท่ากับไฟล์นี้)
+        {method} ROUTE([GET] manage/{instance}/{container}/{folder}?accessKey=folXxxXXx&p=rld)
+        - GetFolderAccess(instance, container, folder, accessKey): AccessInfo
+
+        {method} COMMENT(// ขอ AccessInfo ใหม่จาก input accessKey ที่เหนือกว่าหรือเท่ากับไฟล์นี้)
+        {method} ROUTE([GET] manage/{instance}/{container}/{folder}/{name}?accessKey=filXxxXXx&p=rld)
+        + GetFileAccess(instance, container, folder, name, accessKey): AccessInfo
+
+        {method} ROUTE([DELETE] data/{instance}/{container}/{folder}/{name}?accessKey=filXxxXXx)
+        - DeleteFile(fileId, accessKey, type): bool
     }
 
     class data extends FileServiceBase {
-        {method} COMMENT(// create or update file)
-        {method} COMMENT(// return file readonly AccessInfo)
         {method} ROUTE([POST] data/{instance}/{container}/{folder}/{file}&accessKey=folXxxXXx)
-        + WriteFileContent(instance, container, folder, file, content, accessKey): AccessInfo
+        + WriteFileContent(instance, container, folder, file, content, accessKey): AccessInfo[]
 
-        {method} COMMENT(// copy resource from other instance using AccessInfo)
-        {method} COMMENT(// return file readonly AccessInfo)
+/*
+        {method} COMMENT(// ใช้ copy folder จาก instance อื่นได้หาก input AccessInfo มาจาก instance อื่น)
+        {method} COMMENT(// แล้ว return readonly AccessInfo)
+        {method} ROUTE([PUT] data/{instance}/{container}/{folder}?recursive=false&accessKey=folXxxXXx)
+        - CopyFolder(instance, container, folder, AccessInfo, accessKey): AccessInfo
+*/
+
+        {method} ROUTE([GET] data/{instance}/{container}/{folder}?accessKey=folXxxXXx)
+        - ListFilesInFolder(instance, container, folder, accessKey): AccessInfo[]
+
+        {method} COMMENT(// ใช้ copy file จาก instance อื่นได้หาก input AccessInfo มาจาก instance อื่น)
+        {method} COMMENT(// แล้ว return readonly AccessInfo)
         {method} ROUTE([PUT] data/{instance}/{container}/{folder}?accessKey=filXxxXXx)
         + CopyFolderData(instance, container, folder, AccessInfo, accessKey): AccessInfo
 
-        {method} COMMENT(// return file content)
-        {method} ROUTE([GET] data/{instance}/{container}/{folder}/{file}?accessKey=filXxxXXx)
-        + GetFileContent(instance, container, folder, file, accessKey): Content
+        {method} ROUTE([GET] data/{instance}/{container}/{folder}/{name}?accessKey=filXxxXXx)
+        + GetFileContent(instance, container, folder, name, accessKey): Content
     }
 }
 

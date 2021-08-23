@@ -1,0 +1,65 @@
+@startuml Profile upload
+participant ionic
+participant mobile
+participant manaapi
+participant backoffice
+participant idp
+participant tempfile
+participant kycfile
+
+== request kyc advance ==
+
+ionic->mobile: fill form
+ionic->mobile: take 5 pictures
+ionic->mobile: submit
+activate mobile
+mobile->manaapi: get sas(5)
+manaapi->tempfile: StartFolderUpload(5)
+manaapi-->mobile:accessInfo
+mobile->tempfile: upload 5 pictures
+mobile->manaapi: submit(form, 5 attachment)
+note right
+=issue: mapping 5 files นี้คือไฟล์อะไรบ้าง
+> map จาก fileId ที่ mobile gen
+> map fileId กับ attachments ด้วย
+end note
+manaapi->tempfile: FolderAccess(1)
+tempfile-->manaapi: json accessInfo
+manaapi->tempfile: WriteFileContent(json accessInfo)
+manaapi->manaapi: merge accessInfo
+manaapi->backoffice: accessInfo(6 files)
+manaapi-->mobile: success
+deactivate mobile
+
+== approve kyc advance ==
+
+backoffice->manaapi: approve kyc(accessInfo(6 files))
+activate backoffice
+manaapi->idp: kyc advance(accessInfo(6 files))
+idp->kycfile: CopyFolderData(accessInfo(6 files))
+idp->idp: store advance(userid,accessInfo,pid)
+idp-->manaapi
+manaapi-->backoffice
+deactivate backoffice
+
+== get kyc info ==
+
+backoffice->manaapi: GetKycInfo(daId, svcId, userid)
+activate backoffice
+manaapi->idp: GetKycInfo(daId, svcId, userid)
+idp->idp: lookup basic from userid
+idp->idp: lookup advance from userid
+idp-->manaapi: KycInfo
+manaapi-->backoffice: KycInfo
+deactivate backoffice
+
+== get user info ==
+
+backoffice->manaapi: GetUserInfo(daId, svcId, pid)
+activate backoffice
+manaapi->idp: GetUserInfo(daId, svcId, pid)
+idp->idp: lookup basic from pid
+idp-->manaapi: UserInfo
+manaapi-->backoffice: UserInfo
+deactivate backoffice
+@enduml

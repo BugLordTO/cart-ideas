@@ -1,0 +1,37 @@
+query
+    x quantity: int
+
+header
+    / Gps: Geolocation[] (lat,lon)
+    / accept/reject: int
+
+body
+    / Form: JsonElement
+    / attachments: AccessInfo
+    / exData: Dictionary<,> =>  (qty,employeeid)
+    - address: GpsAddressInfo[]
+
+
+
+register mcontent
+- configurable gps changed then => refresh or call js
+    - delivery m2 => refresh
+    - delivery m7 (cart) => call js
+        - callApiPost
+            - attach gps?
+- request data
+    - device
+        - gps
+        - file
+        - consent >> allow contact / allow contact from partner ฯ
+        - form validate data from mana เช่น กรอกเบอร์ mail แล้วมานะบอกว่าถูกมั้ย
+    - mana
+        - kyc ... ไม่ให้ 3rd ขอ ยกเว้น employee
+            - public/private/none
+            - selecting >> require/optional
+        - employeeNo
+
+- webview mContentUrl ส่ง gps ผ่าน header ทำทีหลัง อาจจะใช้ query
+
+
+- secure form >> ใช้ consent form มาคั่นก่อน

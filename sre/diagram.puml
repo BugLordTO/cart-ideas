@@ -1,0 +1,46 @@
+@startuml
+package kubernetes {
+    [k6] <<performance test>>
+    package DevA {
+        [api1 A]
+        [api2 A]
+        [wiremock A] <<integretion test>>
+    }
+    [k6]-d-DevA
+
+    package DevB {
+        [api1 B]
+        [api2 B]
+        [wiremock B] <<integretion test>>
+    }
+    [k6]-d-DevB
+
+    package infra_alert_rule {
+        () automated_scale
+        () attack
+        () crash_reprot
+        () SLI_SLO
+    }
+    package biz_alert_rule {
+        () login_attempts
+    }
+}
+
+package serilog {
+    [api1 insights]
+    [api2 insights]
+    [custom kql query]
+
+    [api1 A]-d-[api1 insights]
+    [api1 B]-d-[api1 insights]
+    [api2 A]-d-[api2 insights]
+    [api2 B]-d-[api2 insights]
+}
+
+database cosmos {
+    package db_alert_rule {
+
+    }
+}
+kubernetes-d-cosmos
+@enduml

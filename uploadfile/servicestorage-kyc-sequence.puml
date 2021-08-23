@@ -1,0 +1,72 @@
+@startuml Kyc request
+
+participant Ionic
+participant Client
+participant KycApi
+participant KycFileApi
+participant BackOfficeApi
+participant Redis
+
+Ionic->Client : submit()
+Client->KycApi : submitEndpoint(body)
+
+KycApi->KycFileApi : FolderAccess(AccessInfoRequest)
+note right
+    POST
+    headers: accessKey="?ak=QkJHjGJHG&d=2021-06-29T17:13:30Z&p=u"
+    queries: instance=KycFileApi&container=kyc
+    body: {
+        Operation: Create|RequestUpload,
+        DataType: Text,
+        Count: 1,
+        Permissions: Upload,
+    }
+end note
+KycApi<--KycFileApi : AccessInfo
+note right
+    {
+        Mode: Http,
+        HostFqdn: KycFileApi.onmana.space,
+        Path: data/KycFileApi/kyc/aa123-bb456,
+        Grant: null,
+        NextPage=-1,
+        Resources:[{
+            Name: bb123-cc456
+            Grant: {
+                AccessKey: ?ak=QkJHjGJHG&d=2021-06-29T17:13:30Z&p=u,
+                ExpiredDate: 2021-06-29T17:13:30Z,
+                Permissions: Upload,
+            },
+        }]
+    }
+end note
+
+KycApi->KycFileApi : WriteFileContent(content)
+KycFileApi->KycFileApi : create snapshot
+KycFileApi->Redis : save
+KycApi<--KycFileApi : readonly AccessInfo
+note right
+    {
+        Mode: Http,
+        HostFqdn: KycFileApi.onmana.space,
+        Path: data/KycFileApi/kyc/aa123-bb456,
+        Grant: null,
+        NextPage=-1,
+        Resources:[{
+            Name: bb123-cc456
+            Grant: {
+                AccessKey: ?ak=QkJHjGJHG&d=2021-06-29T17:13:30Z&p=r,
+                ExpiredDate: 2021-06-29T17:13:30Z,
+                Permissions: Read,
+            },
+        }]
+    }
+end note
+KycApi->BackOfficeApi : hook
+note right
+KycFileApi.onmana.space/data/KycFileApi/kyc/aa123-bb456/bb123-cc456
+end note
+Client<--KycApi : succes message
+Ionic<--Client
+
+@enduml
