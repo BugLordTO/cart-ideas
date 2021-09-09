@@ -1,0 +1,21 @@
+@startuml
+
+start
+:trig alert;
+if (Is performance drop?) then (yes)
+    :scale;
+else (no)
+    if (Is resolvable by protocal?) then (yes)
+        :webhook to mana backoffice;
+        :operator handle;
+    else (no)
+        if (Is ...?) then (yes)
+            :aaa;
+        else (no)
+            :bbb;
+        endif
+    endif
+endif
+stop
+
+@enduml

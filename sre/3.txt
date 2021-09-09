@@ -1,0 +1,60 @@
+ Design a holistic monitoring strategy on Azure
+ (ออกแบบกลยุทธ์การตรวจสอบแบบองค์รวมบน Azure)
+ กล่าวถึงการออกแบบการตรวจสอบของทุกๆ solution ในแอป เพื่อลดประสิทธิภาพการทำงานที่ไม่ดีและความล้มเหลวของระบบในอนาคตได้อย่างรวดเร็ว
+
+ You use Application Insights to:
+
+Analyze and address issues and problems that affect your application's health and performance.
+Improve your application's development lifecycle.
+Measure your user experience, and analyze users' behavior.
+
+- Integrate Application Insights with your applications
+- Monitor your applications' performance
+- Analyzing user behavior
+- Monitor your application’s availability
+- Receive notifications and take action
+
+--------------------------------------------------------------------------------------------------------------------
+
+You use Azure Monitor VM insights to:
+
+View the health and performance of your VMs
+Monitor your VMs at-scale across multiple subscriptions and resource groups.
+Want a topology view that shows the processes, and network connection details of your VMs and scale sets.
+
+- Monitor your virtual machines at-scale
+
+--------------------------------------------------------------------------------------------------------------------
+
+You use Azure Monitor container insights to:
+
+View the health and performance of your Kubernetes workloads at-scale across multiple subscriptions and resource groups.
+Want visibility into memory and processor performance metrics from controllers, nodes, and containers.
+Want view and store container logs for real time and historical analysis.
+
+- Monitor Kubernetes clusters at-scale
+- Receive notifications and take action
+
+--------------------------------------------------------------------------------------------------------------------
+
+You use Security Center to:
+
+Understand the security posture of your architecture.
+Identify and address risks and threats to your infrastructure.
+Secure a complex infrastructure with traditional in-house skills and capital.
+Secure an infrastructure that consists of on-premises and cloud resources.
+
+- Protect against threats with Azure Security Center
+- Respond to threats with Azure Security Center
+
+--------------------------------------------------------------------------------------------------------------------
+
+You use Azure Sentinel to:
+
+Get a detailed overview of your organization, potentially across multiple clouds and on-premises locations.
+Avoid reliance on complex and disparate tools.
+Use enterprise-grade AI, built by experts, to identify and handle threats across your organization.
+
+- Use alerts to monitor your enterprise
+- Investigate incidents
+- Respond to threats with playbooks

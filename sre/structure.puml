@@ -1,0 +1,105 @@
+@startuml structure
+
+[<img:https://docs.microsoft.com/en-us/dotnet/architecture/modern-web-apps-azure/media/image5-8.png{scale=0.4}>] as layers #Black
+[<img:https://docs.microsoft.com/en-us/dotnet/architecture/modern-web-apps-azure/media/image5-10.png{scale=0.4}>] as unittests #Black
+[<img:https://docs.microsoft.com/en-us/dotnet/architecture/modern-web-apps-azure/media/image5-11.png{scale=0.4}>] as integretiontests #Black
+layers -[hidden]r-> UserInterface
+unittests -[hidden]> Tests
+integretiontests -[hidden]-> unittests
+
+package UserInterface #DodgerBlue {
+
+    package ApiController {
+        [ProfileController]
+        [ProfileViewModels]
+    }
+    note left of ApiController
+        Controllers
+        security
+        workflows
+        swagger
+        logs ?
+    end note
+
+}
+
+package Infrastructure #Khaki {
+
+    package DbModule {
+        [ProfileRepositoryGroup]
+        [ProfileRepository]
+        [ManaUserRepository]
+        [ProfileRepositoryGroup] ..>[ManaUserRepository]
+        [ProfileRepositoryGroup] ..>[ProfileRepository]
+    }
+    note bottom of DbModule
+        Db connector
+        cosmos db repository
+        db repository group
+    end note
+
+    package ServiceModule {
+        [KycDopaService]
+        [ProfileImageService]
+    }
+    note bottom of ServiceModule
+        Other service connector
+        mana service
+        outer service
+        azure service
+    end note
+    
+}
+UserInterface ..> Infrastructure
+
+package Tests #MediumPurple {
+
+    package UnitTests {
+        [LogicModuleTests]
+    }
+
+    package IntegrationTests {
+        [BizModuleTests]
+        '[KycDopaTests]
+    }
+
+}
+Tests-->ApplicationCore
+
+package ApplicationCore #OrangeRed {
+
+    package TheSCoreLibs {
+        [TheS.DevXP.ProPractices]
+    }
+
+    package BizModule {
+        [IProfile]
+        [Profile]
+        [ProfileModels]
+    }
+    note right of BizModule
+        Biz logic
+        logs ?
+        metrics ?
+    end note
+
+    package LogicModule {
+        [ICartLogic] -[hidden]-> [CartLogic]
+    }
+    BizModule --> LogicModule
+
+    package IDbModule {
+        [IProfileRepositoryGroup] -[hidden]-> [ProfileDbModels]
+    }
+    BizModule --> IDbModule
+
+    package IServiceModule {
+        [IProfileImageService] -[hidden]-> [IKyc]
+    }
+    BizModule --> IServiceModule
+
+}
+UserInterface --> ApplicationCore
+Infrastructure --> ApplicationCore
+
+@enduml

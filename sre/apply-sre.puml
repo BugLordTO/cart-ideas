@@ -1,0 +1,47 @@
+@startuml apply sre
+
+actor Developer
+note right of Developer : 3.Postmortem and Root-Cause Analysis
+actor Operator
+package ApplicationInsights {
+    package 1.Monitoring #fbfb77 {
+        [Logs]
+        [Metrics]
+    }
+
+    package 2.IncedentResponse #fbfb77 {
+        [AlertRule]
+    }
+    1.Monitoring -[hidden]r-> 2.IncedentResponse
+}
+
+package kubernetes {
+    [ManaApi]
+    [PartnerApi]
+    [BackOffice]
+}
+note bottom of kubernetes
+    5.Capacity Planning
+    7.Product
+end note
+1.Monitoring <-- kubernetes : a. collect
+[AlertRule] --> kubernetes : b.1 scale
+[AlertRule] --> [BackOffice] : b.2 webhook
+[BackOffice] <- Operator : c.1 resolve
+package DevOps {
+    [Board]
+    [SourceCode]
+    note right of [SourceCode]
+    4.Testing
+    6.Development
+    end note
+    [Pipeline]
+    note bottom of [Pipeline] : 4.Testing
+}
+[AlertRule] --> [Board] : b.3 create issue
+[Board] <-- Developer : c. take action
+[SourceCode] <-- Developer : d. develop
+[SourceCode] -> [Pipeline] : e. automation
+kubernetes <-- [Pipeline] : f. publish
+
+@enduml

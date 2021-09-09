@@ -1,0 +1,103 @@
+@startuml Api Structure
+
+package manaapi {
+    [profile]
+    [communications]
+    [biz center]
+    [dev account]
+    [financial]
+    [cart]
+    [product]
+    [gps]
+    [contract]
+}
+[Partner proxy] --> manaapi
+
+package partnerapi {
+    [3 biz center]
+    [3 dev account] #LightBlue
+    [3 product]
+    [3 contract]
+}
+[apim] --> partnerapi
+
+package manaother {
+    [file api]
+    [qr api]
+    [mana backoffice api]
+    [sandbox apim]
+    [idp]
+}
+
+package libs {
+    [Lib user info]
+    [Lib kyc]
+    [Lib communications]
+    [Lib biz center]
+    [Lib biz info]
+    [Lib employee]
+    [Lib dev account]
+    [Lib dev info]
+    [Lib services]
+    [Lib hooks]
+    [Lib mcontent]
+    [Lib financial]
+    [Lib bank account]
+    [Lib wallet]
+    [Lib cart]
+    [Lib product]
+    [Lib gps]
+    [Lib contract]
+}
+manaapi --> libs
+partnerapi --> libs
+
+package libsPure {
+    [Lib subscription]
+    [Lib workflow unit]
+    [Lib budget & allowance]
+    [Lib escrow]
+    [Lib DOPA]
+}
+libs --> libsPure
+
+' [profile] --> [Lib user info]
+' [profile] --> [Lib kyc]
+' [communications] --> [Lib communications]
+' [biz center] --> [Lib biz info]
+' [3 biz center] --> [Lib biz info]
+' [biz center] --> [Lib biz center]
+' [biz center] --> [Lib employee]
+' [dev account] --> [Lib dev account]
+' [dev account] --> [Lib services]
+' [dev account] --> [Lib dev info]
+' [3 dev account] --> [Lib dev info]
+' [3 dev account] --> [Lib services]
+' [3 dev account] --> [Lib hooks]
+' [3 dev account] --> [Lib subscription]
+' [3 dev account] --> [Lib mcontent]
+' [financial] --> [Lib financial]
+' [financial] --> [Lib bank account]
+' [cart] --> [Lib cart]
+' [product] --> [Lib product]
+' [3 product] --> [Lib product]
+' [gps] --> [Lib gps]
+' [contract] --> [Lib contract]
+' [3 contract] --> [Lib contract]
+
+' [Lib cart] --> [Lib communications]
+' [Lib cart] --> [Lib product]
+' [Lib cart] --> [Lib escrow]
+' [Lib cart] --> [Lib contract]
+' [Lib cart] --> [Lib employee]
+' [Lib cart] --> [Lib budget & allowance]
+' [Lib cart] --> [Lib hooks]
+' [Lib contract] --> [Lib communications]
+' [Lib wallet] --> [Lib workflow unit]
+' [Lib budget & allowance] --> [Lib workflow unit]
+' [Lib escrow] --> [Lib workflow unit]
+' [Lib financial] --> [Lib wallet]
+' [Lib biz center] --> [Lib wallet]
+' [Lib dev account] --> [Lib wallet]
+
+@enduml
