@@ -1,0 +1,49 @@
+@startuml ManaRequestBody
+
+!define COMMENT(x) <color:darkgreen>x</color>
+
+package TheS.Mana.Shared.Models {
+    class GeoLocation {
+        Latitude: double
+        Longitude: double
+        COMMENT(// Remark)
+        COMMENT(// PhoneNumber)
+    }
+    class AccessInfo { }
+}
+
+package client {
+    class ManaRequestBody {
+        Attachments: Dictionary<string, AccessInfo> COMMENT(// guid)
+        Locations: Dictionary<string, GeoLocation> COMMENT(// first second)
+        ExData: Dictionary<string, string> COMMENT(// quantity employeeid consent dontshowmeagain?)
+        Form: JsonElement
+    }
+    GeoLocation -- ManaRequestBody
+    AccessInfo -- ManaRequestBody
+
+    class GetApiData_QueryString {
+        lat: double
+        lon: double
+    }
+    ManaRequestBody -[hidden]- GetApiData_QueryString
+
+    class MContentServerUrl_QueryString {
+        lat: double
+        lon: double
+    }
+    ManaRequestBody -[hidden]- MContentServerUrl_QueryString
+}
+
+package Server {
+    class "ManaRequestBody<T>" {
+        Attachments: Dictionary<string, AccessInfo>
+        Locations: Dictionary<string, GeoLocation>
+        ExData: Dictionary<string, string>
+        Form: T
+    }
+    GeoLocation -- "ManaRequestBody<T>"
+    AccessInfo -- "ManaRequestBody<T>"
+}
+
+@enduml

@@ -1,0 +1,36 @@
+@startuml sequence
+
+participant client
+participant api
+participant 3rd
+
+== GetApiData ==
+
+client -> api : https://mana.com/mct/data/some-page/nxxxttt-123?lat=27.132456&lon=107.123456
+api -> 3rd : https://3rd.com/data?lat=27.132456&lon=107.123456
+api <-- 3rd
+client <-- api
+
+== Submit ==
+
+client -> api : https://mana.com/mct/data/some-page/nxxxttt-123
+note right
+body: {
+    Attachments: []
+    Locations: []
+    ExData: []
+    Form: {}
+}
+endnote
+api -> 3rd : https://3rd.com/data?lat=27.132456&lon=107.123456
+note right
+headers: {
+    Attachments: []
+    ExData: []
+}
+body: { form }
+endnote
+api <-- 3rd
+client <-- api
+
+@enduml
