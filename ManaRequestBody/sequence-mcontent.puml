@@ -1,0 +1,63 @@
+@startuml sequence
+
+participant client
+participant api
+participant 3rd
+
+== MContent ==
+
+client -> api : https://mana.com/mct/some-page
+activate api
+note right
+headers: {
+    X-MANA-LOCATIONS: "[{Latitude:27.132456,Longitude:107.123456}]"
+}
+endnote
+api -> api : SaveRequestData(location) : token
+api -> 3rd : [GET] https://3rd.com/#/page?token=a1s2d3f4
+activate 3rd
+api <- 3rd : GetRequestData(token)
+activate api
+api --> 3rd
+note left
+{
+    Locations:[{Latitude:27.132456,Longitude:107.123456}],
+    XXX:{}
+    YYY:{}
+}
+endnote
+deactivate
+api <-- 3rd
+deactivate
+deactivate
+client <-- api
+
+== MContent (NEW) ==
+
+client -> api : https://mana.com/mct/some-page/nxxxttt-123
+activate api
+note right
+headers: {
+    X-MANA-LOCATIONS: "[{Latitude:27.132456,Longitude:107.123456}]"
+}
+endnote
+api -> api : SaveRequestData(location) : token
+api -> 3rd : https://3rd.com/#/page?nptid=nxxxyyy-123&token=a1s2d3f4
+activate 3rd
+api <- 3rd : GetRequestData(token)
+activate api
+api --> 3rd
+note left
+{
+    Locations:[{Latitude:27.132456,Longitude:107.123456}],
+    XXX:{}
+    YYY:{}
+}
+endnote
+deactivate
+api <-- 3rd
+deactivate
+deactivate
+client <-- api
+
+@enduml

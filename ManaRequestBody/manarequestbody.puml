@@ -14,31 +14,31 @@ package TheS.Mana.Shared.Models {
 
 package client {
     class ManaRequestBody {
-        Attachments: Dictionary<string, AccessInfo> COMMENT(// guid)
-        Locations: Dictionary<string, GeoLocation> COMMENT(// first second)
+        Attachments: AccessInfo
+        Locations: IEnumerable<GeoLocation>
         ExData: Dictionary<string, string> COMMENT(// quantity employeeid consent dontshowmeagain?)
         Form: JsonElement
     }
     GeoLocation -- ManaRequestBody
     AccessInfo -- ManaRequestBody
 
-    class GetApiData_QueryString {
-        lat: double
-        lon: double
-    }
-    ManaRequestBody -[hidden]- GetApiData_QueryString
+    ' class GetApiData_Header {
+    '     lat: double
+    '     lon: double
+    ' }
+    ' ManaRequestBody -[hidden]- GetApiData_Header
 
-    class MContentServerUrl_QueryString {
-        lat: double
-        lon: double
-    }
-    ManaRequestBody -[hidden]- MContentServerUrl_QueryString
+    ' class MContentServerUrl_Header {
+    '     lat: double
+    '     lon: double
+    ' }
+    ' ManaRequestBody -[hidden]- MContentServerUrl_Header
 }
 
 package Server {
     class "ManaRequestBody<T>" {
-        Attachments: Dictionary<string, AccessInfo>
-        Locations: Dictionary<string, GeoLocation>
+        Attachments: AccessInfo
+        Locations: IEnumerable<GeoLocation>
         ExData: Dictionary<string, string>
         Form: T
     }

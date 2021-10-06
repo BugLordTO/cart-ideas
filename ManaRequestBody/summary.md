@@ -1,28 +1,42 @@
 # Mana request body
+## Topic
+- ❓Mobile data collect
+- ✅Models
+- ✅Mobile and API communications
+- ❓3rd hook
+- ❓3rd MContent
 
-## Models
+---
+
+## ❓Mobile data collect
+- by design
+
+## ✅Models
 ![](out/manarequestbody/ManaRequestBody.png)
 
-## Data transforms
-
-### Main ideas
-- GetDataApi ส่ง gps ไปที่ api ผ่าน query string
-- Submit data ส่ง gps ไปที่ api ผ่าน ManaRequestBody
-
-- 3rd รับ gps ผ่าน query string เท่านั้น จะได้ไม่สับสน
-- 3rd รับ Attachments ผ่าน headers
-- 3rd รับ ExData ผ่าน headers
-- 3rd รับ Form ผ่าน body
+## ✅Mobile and API communications
+- GetDataApi
+    - ส่ง gps ไปที่ api ผ่าน headers
+    - response model แล้วแต่ข้อมูลที่ API ส่งกลับมา
+- Submit data
+    - ส่ง gps (รวมถึงข้อมูลอื่นๆ) ไปที่ api ผ่าน ManaRequestBody
+    - response model : ClientResponse
 
 ### Issues
+- GeoLocation รอดู design and usage
 - AccessInfo key conflict with FQDN
     - workaround >> เอา AccessInfo key (sas) ออกก่อน submit
-- [LOW] Hook data lost
+    - ❓encrypt by base64
 
 ![](out/sequence/sequence.png)
 
-### Extra ideas >> ได้ใช้รึเปล่า
+
+## ❓3rd hook
+
+![](out/sequence-api/sequence.png)
+
+## ❌3rd MContent
 - MContent ส่ง gps ไปด้วย
 - MContent ส่ง endpoint id ไปด้วย
 
-![](out/sequence-suggest/sequence.png)
+![](out/sequence-mcontent/sequence.png)

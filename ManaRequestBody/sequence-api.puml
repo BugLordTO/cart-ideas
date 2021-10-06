@@ -1,0 +1,93 @@
+@startuml sequence
+
+participant client
+participant api
+participant "3rd / other mana module" as 3rd
+
+== GetApiData ==
+
+client -> api : [GET] https://mana.com/mct/data/some-page/nxxxttt-123
+note right
+headers: {
+    X-MANA-LOCATIONS: "[{Latitude:27.132456,Longitude:107.123456}]"
+}
+endnote
+api -> api : Process(location)
+client <-- api
+
+== GetApiData 3rd ==
+
+client -> api : [GET] https://mana.com/mct/data/some-page/nxxxttt-123
+activate api
+note right
+headers: {
+    X-MANA-LOCATIONS: "[{Latitude:27.132456,Longitude:107.123456}]"
+}
+endnote
+api -> api : SaveRequestData(location) : token
+api -> 3rd : [GET] https://3rd.com/data?token=a1s2d3f4
+activate 3rd
+api <- 3rd : GetRequestData(token)
+activate api
+api --> 3rd
+note left
+{
+    Locations:[{Latitude:27.132456,Longitude:107.123456}],
+    XXX:{}
+    YYY:{}
+}
+endnote
+deactivate
+api <-- 3rd
+deactivate
+deactivate
+client <-- api
+
+== Submit ==
+
+client -> api : [POST] https://mana.com/mct/data/some-page/nxxxttt-123
+note right
+body: {
+    Attachments: {}
+    Locations: []
+    ExData: []
+    Form: {}
+}
+endnote
+api -> api : Process(body)
+client <-- api
+
+== Submit 3rd ==
+
+client -> api : [POST] https://mana.com/mct/data/some-page/nxxxttt-123
+activate api
+note right
+body: {
+    Attachments: {}
+    Locations: []
+    ExData: []
+    Form: {}
+}
+endnote
+api -> api : SaveSubmitedData(body) : token
+api -> 3rd : [POST] https://3rd.com/data?token=a1s2d3f4
+activate 3rd
+api <-- 3rd
+client <-- api
+deactivate api
+api <- 3rd : GetSubmitedData(token)
+activate api
+api --> 3rd
+note left
+{
+    Attachments: {}
+    Locations: []
+    ExData: []
+    Form: {}
+}
+endnote
+deactivate api
+3rd -> 3rd : process
+deactivate 3rd
+
+@enduml
