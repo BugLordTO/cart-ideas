@@ -6,33 +6,27 @@ package TheS.Mana.Shared.Models {
     class GeoLocation {
         Latitude: double
         Longitude: double
-        COMMENT(// Remark)
-        COMMENT(// PhoneNumber)
+    }
+    class DeliveryGeoLocation extends GeoLocation {
+        Remark: string
+        PhoneNumber: string
+    }
+    class LogisticGeoLocation extends DeliveryGeoLocation {
+        Address: AddressInfo
     }
     class AccessInfo { }
+    AccessInfo -l- LogisticGeoLocation
 }
 
-package client {
+package Client {
     class ManaRequestBody {
         Attachments: AccessInfo
         Locations: IEnumerable<GeoLocation>
         ExData: Dictionary<string, string> COMMENT(// quantity employeeid consent dontshowmeagain?)
         Form: JsonElement
     }
-    GeoLocation -- ManaRequestBody
-    AccessInfo -- ManaRequestBody
-
-    ' class GetApiData_Header {
-    '     lat: double
-    '     lon: double
-    ' }
-    ' ManaRequestBody -[hidden]- GetApiData_Header
-
-    ' class MContentServerUrl_Header {
-    '     lat: double
-    '     lon: double
-    ' }
-    ' ManaRequestBody -[hidden]- MContentServerUrl_Header
+    ' GeoLocation -- ManaRequestBody
+    ' AccessInfo -- ManaRequestBody
 }
 
 package Server {
@@ -42,8 +36,9 @@ package Server {
         ExData: Dictionary<string, string>
         Form: T
     }
-    GeoLocation -- "ManaRequestBody<T>"
-    AccessInfo -- "ManaRequestBody<T>"
+    ' GeoLocation -- "ManaRequestBody<T>"
+    ' AccessInfo -- "ManaRequestBody<T>"
 }
+Client -[hidden]- Server
 
 @enduml

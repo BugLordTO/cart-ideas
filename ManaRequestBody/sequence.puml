@@ -5,17 +5,17 @@ participant api
 
 == GetApiData ==
 
-client -> api : [GET] https://mana.com/mct/data/some-page/nxxxttt-123
+client -> api : [GET] https://mana.com/mct/data/some-page/nxxxyyy-123
 note right
 headers: {
-    X-MANA-LOCATIONS: "[{Latitude:27.132456,Longitude:107.123456}]"
+    X-MANA-LOCATIONS: [{Latitude:27.132456,Longitude:107.123456}]
 }
 endnote
 client <-- api : [data]
 
 == Submit ==
 
-client -> api : [POST] https://mana.com/mct/data/some-page/nxxxttt-123
+client -> api : [POST] https://mana.com/mct/data/some-page/nxxxyyy-123
 note right
 body: {
     Attachments: {}
