@@ -8,7 +8,8 @@ participant api
 client -> api : [GET] https://mana.com/mct/data/some-page/nxxxyyy-123
 note right
 headers: {
-    X-MANA-LOCATIONS: [{Latitude:27.132456,Longitude:107.123456}]
+    location1: Latitude=1.111&Longitude=1.111&Accuracy=11.123
+    location2: Latitude=2.222&Longitude=2.222&Accuracy=11.123
 }
 endnote
 client <-- api : [data]
@@ -17,6 +18,10 @@ client <-- api : [data]
 
 client -> api : [POST] https://mana.com/mct/data/some-page/nxxxyyy-123
 note right
+headers: {
+    location1: Latitude=1.111&Longitude=1.111&Accuracy=11.123
+    location2: Latitude=2.222&Longitude=2.222&Accuracy=11.123
+}
 body: {
     Attachments: {}
     Locations: []

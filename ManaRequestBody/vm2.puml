@@ -1,0 +1,61 @@
+@startuml vm heirachy
+
+!define COMMENT(x) <color:darkgreen>x</color>
+
+class AppViewModelBase { }
+
+class LocationViewVM extends AppViewModelBase {
+    COMMENT(// gps section)
+}
+note bottom of LocationViewVM
+    LocationSelectView > "map icon"
+    LocationView > "แก้ไข"
+end note
+
+class MapPageVM extends AppViewModelBase {
+    COMMENT(// map page)
+}
+note bottom of MapPageVM: ใช้ CommandHandler เปิด
+
+class MContentVmBase extends AppViewModelBase {
+    DataRequest(fnParam: string): object[]
+    Submit()
+}
+
+class MContentDialogVMBase extends MContentVmBase { }
+
+class MContent1ButtonDialogVM extends MContentDialogVMBase { }
+
+class MContent2ButtonDialogVM extends MContentDialogVMBase { }
+
+package ForMana {
+
+    class ForMana.MContentVmBase extends MContentVmBase { }
+
+    class ForMana.MContent0ButtonPageVM extends ForMana.MContentVmBase { }
+    note bottom of "ForMana.MContent0ButtonPageVM": MContent0ButtonPage
+
+    class ForMana.MContent1ButtonPageVM extends ForMana.MContentVmBase {
+        GpsRequest(fnParam: string): object[]
+    }
+    note top of "ForMana.MContent1ButtonPageVM": MContent1ButtonPage
+
+    class ForMana.MContent1ButtonFormVM extends ForMana.MContent1ButtonPageVM { }
+
+}
+
+class MContentSetLocationPageVM extends ForMana.MContent1ButtonFormVM { }
+
+class DataRequestVM extends ForMana.MContent1ButtonFormVM {
+    FormData: JsonElement
+    {method} COMMENT(// return form data instead of Submit data to serverr)
+    override Submit()
+    override GetApiData() Comment(// return FormData)
+}
+
+class AddressRequestVM extends DataRequestVM {
+    {method} COMMENT(// return GpsAddress instead of Submit data to serverr)
+    override Submit()
+}
+
+@enduml

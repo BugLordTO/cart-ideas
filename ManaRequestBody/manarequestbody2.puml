@@ -20,17 +20,23 @@ package TheS.Mana.Shared.Models {
         Remark: string
     }
 
-    class GpsAddress {
-        COMMENT(// GpsMode = GeoLocation.Realm)
-        COMMENT(// DeliveryMode = GeoLocation.Realm + Remark + PhoneNumber)
-        COMMENT(// AddressMode = Address.Title + Remark + PhoneNumber)
+    class GpsSection {
+        COMMENT(// Title = Realm)
         Title: string
         GeoLocation: GeoLocation
-        Address: Address
-        PhoneNumber: string
-        Remark: string
     }
-    GeoLocation <-- GpsAddress
+    GeoLocation <-- GpsSection
+    class GpsLocation {
+        COMMENT(// Title = Realm + Remark + PhoneNumber)
+        Remark: string
+        PhoneNumber: string
+    }
+    GpsSection <|-l GpsLocation
+    class GpsAddress {
+        COMMENT(// Title = Address: Title+Remark+PhoneNumber)
+        Address: Address
+    }
+    GpsSection <|- GpsAddress
     Address <-- GpsAddress
 }
 

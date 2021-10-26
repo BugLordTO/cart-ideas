@@ -1,0 +1,108 @@
+@startuml vm heirachy
+
+!define COMMENT(x) <color:darkgreen>x</color>
+
+package Pages {
+    class MContent0ButtonPage {}
+    class MContent0ButtonLocationPage #DodgerBlue {
+        COMMENT(// LocationSelectView > "map icon")
+    }
+    class MContent0ButtonAddressPage #YellowGreen {
+        COMMENT(// LocationSelectView > "แก้ไข")
+    }
+    MContent0ButtonPage-[hidden]-MContent0ButtonLocationPage
+    MContent0ButtonLocationPage-[hidden]-MContent0ButtonAddressPage
+
+    class MContent1ButtonPage {}
+    class MContent1ButtonLocationPage #SkyBlue {
+        COMMENT(// LocationSelectView > "map icon")
+    }
+    class MContent1ButtonAddressPage #PaleGreen {
+        COMMENT(// LocationSelectView > "แก้ไข")
+    }
+    MContent0ButtonPage-[hidden]MContent1ButtonPage
+    MContent1ButtonPage-[hidden]-MContent1ButtonLocationPage
+    MContent1ButtonLocationPage-[hidden]-MContent1ButtonAddressPage
+}
+Pages -[hidden]- AppViewModelBase
+
+class AppViewModelBase {}
+
+class MapPageVM extends AppViewModelBase {
+    COMMENT(// map page)
+}
+note top of MapPageVM: ใช้ CommandHandler เปิด
+
+class LocationViewVM extends AppViewModelBase {
+    COMMENT(// gps section)
+}
+note top of LocationViewVM
+    LocationSelectView > "map icon"
+    LocationView > "แก้ไข"
+end note
+
+class MContentVmBase extends AppViewModelBase {
+    DataRequest(fnParam: string): object[]
+    Submit()
+}
+
+class MContentDialogVMBase extends MContentVmBase {}
+
+class MContent1ButtonDialogVM extends MContentDialogVMBase {}
+
+class MContent2ButtonDialogVM extends MContentDialogVMBase {}
+
+package ForMana {
+
+    class ForMana.MContentVmBase extends MContentVmBase {
+        GpsRequest(fnParam: string): object[]
+    }
+
+    class ForMana.MContent0ButtonPageVM extends ForMana.MContentVmBase {}
+    class ForMana.MContent0ButtonLocationPageVM #DodgerBlue extends ForMana.MContent0ButtonPageVM {}
+    class ForMana.MContent0ButtonAddressPageVM #YellowGreen extends ForMana.MContent0ButtonLocationPageVM {}
+
+    class ForMana.MContent1ButtonPageVM extends ForMana.MContentVmBase {}
+    class ForMana.MContent1ButtonLocationPageVM #DodgerBlue extends ForMana.MContent1ButtonPageVM {}
+    class ForMana.MContent1ButtonAddressPageVM #YellowGreen extends ForMana.MContent1ButtonLocationPageVM {}
+
+    class ForMana.MContent1ButtonFormVM extends ForMana.MContent1ButtonPageVM {}
+    class ForMana.MContent1ButtonFormLocationPageVM #SkyBlue extends ForMana.MContent1ButtonFormVM {}
+    class ForMana.MContent1ButtonFormAddressPageVM #PaleGreen extends ForMana.MContent1ButtonFormLocationPageVM {}
+
+    class ForMana.ChangeShippingAddressVM #SkyBlue extends ForMana.MContent1ButtonFormVM {}
+
+    class ForMana.DataRequestVM extends ForMana.MContent1ButtonFormVM {
+        {method} COMMENT(// return form data instead of Submit data to serverr)
+        override Submit()
+    }
+
+    class ForMana.AddressRequestVM #PaleGreen extends ForMana.DataRequestVM {
+        {method} COMMENT(// return GpsAddress instead of Submit data to serverr)
+        override Submit()
+    }
+
+}
+
+package For3rd {
+    class For3rd.MContentVmBase extends MContentVmBase {}
+
+    class For3rd.MContent0ButtonPageVM extends For3rd.MContentVmBase {}
+    class For3rd.MContent0ButtonLocationPageVM #DodgerBlue extends For3rd.MContent0ButtonPageVM {}
+    class For3rd.MContent0ButtonAddressPageVM #YellowGreen extends For3rd.MContent0ButtonLocationPageVM {}
+
+    class For3rd.MContent1ButtonPageVM extends For3rd.MContentVmBase {}
+    class For3rd.MContent1ButtonLocationPageVM #DodgerBlue extends For3rd.MContent1ButtonPageVM {}
+    class For3rd.MContent1ButtonAddressPageVM #YellowGreen extends For3rd.MContent1ButtonLocationPageVM {}
+
+    class For3rd.MContent1ButtonFormVM extends For3rd.MContent1ButtonPageVM {}
+    class For3rd.MContent1ButtonFormLocationPageVM #SkyBlue extends For3rd.MContent1ButtonFormVM {}
+    class For3rd.MContent1ButtonFormAddressPageVM #PaleGreen extends For3rd.MContent1ButtonFormLocationPageVM {}
+
+    class For3rd.DataRequestVM extends For3rd.MContent1ButtonFormVM {
+        {method} COMMENT(// return form data instead of Submit data to serverr)
+        override Submit()
+    }
+}
+
+@enduml

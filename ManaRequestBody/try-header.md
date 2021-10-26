@@ -115,6 +115,7 @@ public class GeoLocation
 {
     public double Latitude { get; set; }
     public double Longitude { get; set; }
+    public double? Accuracy { get; set; }
 }
 ```
 
@@ -123,12 +124,69 @@ public class GeoLocation
 - อาจจะไม่ตรงกับวิธีการใช้ header จริงๆ?
 - ถ้าใช้ class ตามตัวอย่าง จะสามารถรับ header อื่นได้ด้วย
 
+## 5. Query string
+
+### Request
+```
+GET https://localhost:44332/api/values/qry
+location1: Latitude=1.111&Longitude=1.111
+location2: Latitude=2.222&Longitude=2.222&Accuracy=11.123
+```
+
+### API & Model
+```c#
+
+[HttpGet("qry")]
+public IActionResult Query([FromHeader] GeoLocationQry location)
+{
+    return Ok();
+}
+public class GeoLocationQry
+{
+    public GeoLocation Location1 { get => GetGeoLocation(location1); }
+    public GeoLocation Location2 { get => GetGeoLocation(location2); }
+    [FromHeader]
+    public string location1 { get; set; }
+    [FromHeader]
+    public string location2 { get; set; }
+
+    private GeoLocation GetGeoLocation(string raw)
+    {
+        var qry = HttpUtility.ParseQueryString(raw ?? string.Empty);
+        var canParse = true;
+        canParse = canParse &= double.TryParse(qry.Get("Latitude"), out double Latitude);
+        canParse = canParse &= double.TryParse(qry.Get("Longitude"), out double Longitude);
+        if (canParse)
+        {
+            var geoLocation = new GeoLocation
+            {
+                Latitude = Latitude,
+                Longitude = Longitude,
+            };
+            if (double.TryParse(qry.Get("Accuracy"), out double Accuracy))
+            {
+                geoLocation.Accuracy = Accuracy;
+            }
+            return geoLocation;
+        }
+        else
+        {
+            return null;
+        }
+    }
+}
+```
+
+### pros and cons
+- header สื่อความหมายดี
+
 # Post method
 
 ### Request
 ```
 POST https://localhost:44332/api/values
-X-MANA-LOCATIONS: [{"Latitude": 1.123,"Longitude": 1.123},{"Latitude": 1.222,"Longitude": 1.222}]
+location1: Latitude=1.111&Longitude=1.111
+location2: Latitude=2.222&Longitude=2.222&Accuracy=11.123
 content-type: application/json
 
 {
@@ -147,7 +205,8 @@ content-type: application/json
 ### API & Model
 ```c#
 [HttpPost]
-public IActionResult Index([FromBody] ManaRequestBody<SomeForm, DeliveryLocation> body)
+// public IActionResult Index([FromHeader] GeoLocationQry location, [FromBody] ManaRequestBody<JsonElement, DeliveryLocation> body)
+public IActionResult Index([FromHeader] GeoLocationQry location, [FromBody] ManaRequestBody<SomeForm, DeliveryLocation> body)
 {
     return Ok();
 }
