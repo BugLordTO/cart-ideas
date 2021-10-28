@@ -1,0 +1,66 @@
+@startuml Application Insights
+
+[📱 mana]
+[📱 sandbox]
+
+[📱 mana] -[hidden] [📱 sandbox]
+
+package AppInsights-DevMaster {
+
+    [mcproxy]
+    [apimana]
+    [xapimana]
+    [📱 mana] -- [mcproxy]
+    [mcproxy] -- [apimana]
+    [mcproxy] -- [xapimana]
+
+    [fileapi]
+    [xqrapi]
+    [xmunilink]
+    [apimana] -- [fileapi]
+    [apimana] -- [xqrapi]
+    [apimana] -- [xmunilink]
+
+    [⚡ mananoti]
+    [apimana] -- [⚡ mananoti]
+
+    [apim] #PaleGreen
+    [sandboxapim]
+    [api4partners]
+    [apim] -- [sandboxapim]
+    [apim] -- [api4partners]
+    [manaidp] -- [sandboxapim]
+
+    [manacemb]
+    [managate]
+    [manaidp] #PaleGreen
+    [📱 mana] -- [manacemb]
+    [📱 mana] -- [managate]
+    [manaidp] -- [manacemb]
+    [manaidp] -- [managate]
+
+}
+
+package AppInsights-DevA {
+    [someapi0] -- [someapi1]
+    [someapi1] -- [someapi2]
+    [manaidp] -- [someapi1]
+    [apim] -- [someapi1]
+}
+
+[storage]
+[fileapi] -- [storage]
+[⚡ mananoti] -- [storage]
+
+[redis]
+[apimana] --- [redis]
+
+package AppInsights-backoffice {
+    [backofficeapi] -- [apim]
+}
+
+package AppInsights-3rdParty {
+    [3rdPartyapi] -- [apim]
+}
+
+@enduml
