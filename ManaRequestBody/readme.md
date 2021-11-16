@@ -1,4 +1,7 @@
 # Mana request body
+
+[DISCUSSION](https://docs.google.com/document/d/1jAtszvDjF5ydBXc6O8SeQkgfbcfaqpamH79FzsYTGx4/edit)
+
 ## Topic
 - ✅ Mobile data collect
 - ✅ Models
