@@ -1,0 +1,49 @@
+@startuml kyc
+
+participant client
+participant api
+participant backoffice
+participant idp
+participant dopa
+database temp
+database kyc
+
+client -> api : submit
+activate client
+alt #IndianRed
+    api -> dopa : validate
+end
+api -> temp : upload
+client <-- api : confirmation
+deactivate client
+
+client -> api : confirm
+activate client
+api -> backoffice : send
+activate backoffice
+client <- api : msg wait
+deactivate client
+
+alt #IndianRed
+    backoffice -> dopa : validate
+end
+
+alt #IndianRed
+    backoffice -> api : validate
+    api -> dopa : validate
+end
+
+alt #IndianRed
+    backoffice -> backoffice : manual
+end
+
+api <- backoffice : approve
+api -> temp : read
+api -> idp : record
+idp -> temp : read
+idp -> kyc : upload
+client <-- api : noti
+api --> backoffice : approved
+deactivate backoffice
+
+@enduml
