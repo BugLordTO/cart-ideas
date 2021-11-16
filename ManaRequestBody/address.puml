@@ -1,0 +1,67 @@
+@startuml
+
+!define COMMENT(x) <color:darkgreen>x</color>
+!define ROUTE(x) <color:brown>x</color>
+
+class CommonAddress {
+    Title: string
+    SubDistrict: string COMMENT(// ต.)
+    District: string COMMENT(// อ.)
+    Province: string COMMENT(// จ.)
+    PostalCode: string
+}
+class "GpsLocation<T>" {
+    COMMENT(// gps module in mobile)
+    Realm: string COMMENT(// Title + อ ต จ)
+    Accuracy: double?
+    Geolocation: T
+    COMMENT(// T is GeoLocation)
+    COMMENT(// T is GeoJsonCoordinates)
+}
+CommonAddress <|-- "GpsLocation<T>": ??
+
+class GpsAddress {
+    COMMENT(// delivery current gps location address)
+    PhoneNumber: string
+    Remark: string
+    Location: GpsLocation<GeoLocation>
+}
+GpsAddress o-l- "GpsLocation<T>"
+
+class GeoLocation {
+    Latitude: double
+    Longitude: double
+}
+GpsAddress --o GeoLocation
+
+class yAddress {
+    COMMENT(// profile address)
+    COMMENT(// bizaccount address)
+    StreetAddress: string COMMENT(// บ้านเลขที่)
+    VerifiedPhoneNumber: bool
+}
+GpsAddress <|-r- yAddress
+CommonAddress <|-d- yAddress
+
+class KycAddress {
+    StreetAddress: string COMMENT(// บ้านเลขที่)
+    PhoneNumber: string
+    Remark: string
+}
+CommonAddress <|-r- KycAddress
+
+class DbAddress {
+    StreetAddress: string COMMENT(// บ้านเลขที่)
+    PhoneNumber: string
+    Remark: string
+    VerifiedPhoneNumber: bool
+    Location: GpsLocation<GeoJsonCoordinates>
+}
+CommonAddress <|-- DbAddress
+DbAddress o-r- "GpsLocation<T>"
+
+class GeoJsonCoordinates {
+    COMMENT(// mongo geo model)
+}
+DbAddress --o GeoJsonCoordinates
+@enduml

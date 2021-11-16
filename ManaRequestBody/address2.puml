@@ -1,0 +1,92 @@
+@startuml
+
+!define COMMENT(x) <color:darkgreen>x</color>
+
+package Essentials {
+    class AddressRequest {
+        Title: string
+        StreetAddress: string COMMENT(// บ้านเลขที่)
+        SubDistrict: string COMMENT(// ต.)
+        District: string COMMENT(// อ.)
+        Province: string COMMENT(// จ.)
+        PostalCode: string
+        PhoneNumber: string
+        Remark: string
+    }
+    note right of AddressRequest
+    Submit model
+    - user address
+    - biz address
+    - kyc address
+    - delivery address
+    end note
+
+    class AddressHook extends AddressRequest {
+        VerifiedPhoneNumber: bool
+    }
+
+    class "GpsLocation<T>" {
+        Realm: string COMMENT(// poi ต อ จ ปณ)
+        Accuracy: double?
+        GeoCoordinates: T
+    }
+    note bottom of "GpsLocation<T>"
+    gps module
+    end note
+
+    class AddressResponse extends AddressHook {
+        Location: GpsLocation<GeoLocation>
+    }
+    note bottom of AddressResponse
+    GetApiData model
+    - user address
+    - biz address
+    end note
+    AddressResponse o-r- "GpsLocation<T>"
+
+    class GeoCoordinates {
+        Latitude: double
+        Longitude: double
+    }
+    AddressResponse -l- GeoCoordinates
+}
+
+package Facing_Common {
+    class Address extends AddressHook {
+        Location: GpsLocation<GeoJsonCoordinates>
+    }
+    note top of Address
+    Db model
+    - biz address
+    - cart shipping addres
+    end note
+
+    class AddressDocument extends Address {
+        _id: string
+        OwnerId: string COMMENT(// PaId)
+        CreatedAt: DateTime
+        LastUpdate: DateTime
+        DeletedAt: DateTime
+    }
+    note bottom of AddressDocument
+    Db model
+    - user address
+    end note
+    Address o-r- "GpsLocation<T>"
+
+    class GeoJsonCoordinates {}
+    note top of GeoJsonCoordinates
+    various mongo geo model
+    end note
+    Address -r- GeoJsonCoordinates
+}
+
+class Models.GpsXXXX {
+    Title: string
+    Realm: string COMMENT(// poi ต อ จ ปณ)
+    SubDistrict: string COMMENT(// ต.)
+    District: string COMMENT(// อ.)
+    Province: string COMMENT(// จ.)
+    PostalCode: string
+}
+@enduml
