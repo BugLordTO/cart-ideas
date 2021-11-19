@@ -23,6 +23,8 @@ deactivate client
 
 alt #LawnGreen
     backoffice -> dopa : validate
+    backoffice <-- dopa : validate result
+    backoffice -> backoffice : update status to db
 end
 
 api <- backoffice : approve
