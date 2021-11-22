@@ -4,6 +4,7 @@ participant client
 participant api
 participant backoffice
 participant idp
+participant dopaService
 participant dopa
 database temp
 database kyc
@@ -22,8 +23,10 @@ client <- api : msg wait
 deactivate client
 
 alt #LawnGreen
-    backoffice -> dopa : validate
-    backoffice <-- dopa : validate result
+    backoffice -> dopaService : validate
+    dopaService -> dopa
+    dopaService <-- dopa
+    backoffice <-- dopaService : validate result
     backoffice -> backoffice : update status to db
 end
 

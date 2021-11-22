@@ -5,8 +5,8 @@ participant api
 participant backoffice
 participant idp
 queue "validate\nqueue"
-participant "dopaService\nwiremock"
-participant dopa
+participant dopaService
+participant "dopa\nwiremock"
 database temp
 database kyc
 
@@ -26,14 +26,14 @@ deactivate client
 alt #LawnGreen
     backoffice -> "validate\nqueue" : queue
     deactivate backoffice
-    "validate\nqueue" --> "dopaService\nwiremock" : dequeue
-    activate "dopaService\nwiremock"
+    "validate\nqueue" --> dopaService : dequeue
+    activate dopaService
     loop #LawnGreen
-        "dopaService\nwiremock" -> dopa : validate
-        backoffice <- "dopaService\nwiremock" : update result
+        dopaService -> "dopa\nwiremock" : validate
+        backoffice <- dopaService : update result
         activate backoffice
     end
-    deactivate "dopaService\nwiremock"
+    deactivate "dopaService"
 end
 
 api <- backoffice : approve
