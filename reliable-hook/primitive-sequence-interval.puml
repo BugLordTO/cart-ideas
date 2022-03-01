@@ -1,0 +1,25 @@
+@startuml Sequence
+
+!include primitive-sequence-main.puml
+
+== interval get feed ==
+
+consumer -> consumerIndexerDb : get feed index
+loop intervalTime
+    producer <- consumer : get feeds (id, scope, pageNo = 1)
+    alt has new feeds
+        loop hasMorePage
+            producer <- consumer : get feeds (id, scope, nextPageNo)
+            consumer -> consumerIndexerDb : set feed index
+            consumer -> consumerAdapter : trigger new feed
+            alt call api
+                consumerAdapter -> partnerApi
+                partnerApi -> consumerDb
+            else direct to db
+                consumerAdapter -> consumerDb
+            end
+        end
+    end
+end
+
+@enduml

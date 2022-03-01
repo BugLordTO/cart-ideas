@@ -1,0 +1,23 @@
+@startuml file upload
+
+participant deliveryclient
+participant deliveryapi
+participant fileapi
+participant productstorage
+
+deliveryclient -> deliveryapi : get sas
+deliveryapi -> fileapi : StartFolderUpload
+note right
+get sas thru apim ?
+end note
+fileapi -> productstorage : get sas
+fileapi <-- productstorage : AccessInfo
+note right
+    TheS.Mana.Essentials.FileService.AccessInfo
+end note
+deliveryapi <-- fileapi
+deliveryclient <-- deliveryapi
+deliveryclient -> productstorage : upload file (content, sas)
+deliveryclient -> deliveryapi : save data
+
+@enduml

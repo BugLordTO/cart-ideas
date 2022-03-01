@@ -1,0 +1,33 @@
+PUT https://consumapi.management.azure-api.net/subscriptions/5fb1076d-8ce2-4bf8-90af-d53f1b8f8289/resourceGroups/demodevapi/providers/Microsoft.ApiManagement/service/consumapi/products/test1?api-version=2019-12-01
+content-type: application/json
+Authorization: SharedAccessSignature integration&202010300846&cOZ4SfFkdo0Xx77U1Qwrmr9cwIOIUir6WBd/krL3F2QWH585YFhfdTUe36lhuRttqdHokWittH6inzBk6j2Vdw==
+
+{
+  "properties": {
+    "displayName": "Test Template ProductName 4"
+  }
+}
+
+###
+PUT https://demodevapi555.management.azure-api.net/subscriptions/5fb1076d-8ce2-4bf8-90af-d53f1b8f8289/resourceGroups/demodevapi/providers/Microsoft.ApiManagement/service/demodevapi555/products/test1?api-version=2019-12-01
+content-type: application/json
+Authorization: SharedAccessSignature integration&202010300846&cOZ4SfFkdo0Xx77U1Qwrmr9cwIOIUir6WBd/krL3F2QWH585YFhfdTUe36lhuRttqdHokWittH6inzBk6j2Vdw==
+
+{
+  "properties": {
+    "displayName": "Test Template ProductName 4"
+  }
+}
+
+###
+
+POST https://demodevapi555.management.azure-api.net/subscriptions/5fb1076d-8ce2-4bf8-90af-d53f1b8f8289/resourceGroups/rgdemodevapi1/providers/Microsoft.ApiManagement/service/demodevapi555/users/somsor-perfenterprise-com/token?api-version=2019-12-01
+content-type: application/json
+Authorization: SharedAccessSignature integration&202010300846&cOZ4SfFkdo0Xx77U1Qwrmr9cwIOIUir6WBd/krL3F2QWH585YFhfdTUe36lhuRttqdHokWittH6inzBk6j2Vdw==
+
+{
+  "properties": {
+    "keyType": "primary",
+    "expiry": "2020-10-15T00:44:24.2845269Z"
+  }
+}

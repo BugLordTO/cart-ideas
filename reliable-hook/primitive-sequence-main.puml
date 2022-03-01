@@ -1,0 +1,15 @@
+@startuml Sequence
+
+participant client
+participant manaapi
+participant producer
+participant producerAdapter
+database producerDb
+
+participant consumer
+participant consumerAdapter
+participant partnerApi
+database consumerDb
+database consumerIndexerDb
+
+@enduml

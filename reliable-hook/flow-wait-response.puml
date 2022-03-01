@@ -1,0 +1,48 @@
+@startuml
+package Issuers {
+    node manaclient
+    cloud manaapi
+}
+
+package DB {
+    database Cart
+    database Order
+    database Form
+
+    Cart -[hidden]- Order
+    Order -[hidden]- Form
+}
+
+package FeedProducer {
+    [FeedProducer<Cart>]
+    [FeedProducer<Order>]
+    [FeedProducer<Form>]
+    
+    [FeedProducer<Cart>] -[hidden]- [FeedProducer<Order>]
+    [FeedProducer<Order>] -[hidden]- [FeedProducer<Form>]
+}
+
+package FeedConsumer {
+    [FeedConsumer<Cart>]
+    [FeedConsumer<Order>]
+    [FeedConsumer<Form>]
+
+    [FeedConsumer<Cart>] -[hidden]- [FeedConsumer<Order>]
+    [FeedConsumer<Order>] -[hidden]- [FeedConsumer<Form>]
+}
+
+package client {
+    cloud 3rdapi
+}
+
+manaclient -> manaapi : 0. some action
+
+manaapi -> Cart : 1. create data
+manaapi -> [FeedProducer<Cart>] : 2. hook response
+Cart <- [FeedProducer<Cart>] : 3. get data
+[FeedProducer<Cart>] -> [FeedConsumer<Cart>] : 4. hook response
+[FeedProducer<Cart>] <- [FeedConsumer<Cart>] : 5. get feed data
+[FeedConsumer<Cart>] -> 3rdapi : 6. cart data
+3rdapi -> 3rdapi : 7. process cart data
+
+@enduml

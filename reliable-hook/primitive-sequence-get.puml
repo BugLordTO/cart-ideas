@@ -1,0 +1,34 @@
+@startuml Sequence
+
+!include primitive-sequence-main.puml
+
+== get feed ==
+
+producer <- consumer : get feeds
+note right
+    preparingFeeds[0]
+    feeds[0]
+end note
+client -> manaapi : some action
+manaapi -> producer : create feed
+producer <- consumer : get feeds
+note right
+    preparingFeeds[1]
+    feeds[0]
+end note
+
+manaapi -> producer : update feed
+producer <- consumer : get feeds
+note right
+    preparingFeeds[1]
+    feeds[0]
+end note
+
+manaapi -> producer : queue up feed
+producer <- consumer : get feeds
+note right
+    preparingFeeds[0]
+    feeds[1]
+end note
+
+@enduml

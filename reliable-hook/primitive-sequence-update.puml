@@ -1,0 +1,17 @@
+@startuml Sequence
+
+!include primitive-sequence-main.puml
+
+== update feed ==
+
+client -> manaapi : some action
+manaapi -> manaapi : update feed detail
+manaapi -> producer : update feed (feed, scope)
+alt preparing feed
+    producer -> producerAdapter : update feed
+    producerAdapter -> producerDb
+else finalize feed
+    manaapi <-- producer : can update only preparing feed
+end
+
+@enduml

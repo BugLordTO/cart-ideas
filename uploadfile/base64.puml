@@ -1,0 +1,26 @@
+@startuml file upload
+
+participant mobile
+participant manaapi
+participant fileapi
+participant tempstorage
+participant profilestorage
+
+mobile -> manaapi : get sas
+manaapi -> fileapi : StartFolderUpload
+fileapi -> tempstorage : get sas
+fileapi <-- tempstorage : AccessInfo
+manaapi <-- fileapi
+mobile <-- manaapi
+
+mobile -> tempstorage : upload file (content, sas)
+mobile -> mobile : <font color=green><b>encodeBase64(sas)</b></font>
+mobile -> manaapi : submit(... , AccessInfo)
+manaapi -> fileapi : CopyFolderData(AccessInfo)
+fileapi -> fileapi : <font color=green><b>decodeBase64(sas)</b></font>
+fileapi -> fileapi : get temp file content (sas)
+fileapi -> profilestorage : upload file (content)
+manaapi <-- fileapi
+mobile <-- manaapi
+
+@enduml

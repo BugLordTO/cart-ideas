@@ -1,0 +1,40 @@
+@startuml Producer-Consuner
+
+package mana {
+    node manaclient
+
+    cloud ManaApi {
+        [FeedProducer<Cart>]
+        [FeedProducerAdaptor<Cart>]
+    }
+    database ManaDB
+}
+
+
+package Partner {
+    cloud PartnerFeedConsumer <<FunctionApp>> {
+        [FeedConsumer<Cart>]
+        [FeedConsumerAdaptor<Cart>]
+    }
+    cloud PartnerApi
+    database PartnerDB
+    database FeedIndexerDB
+}
+mana -[hidden] Partner
+
+manaclient -r-> ManaApi : 1. some action
+[FeedProducer<Cart>] -d-> [FeedProducerAdaptor<Cart>] : 2. create feed
+[FeedProducer<Cart>] -d-> [FeedProducerAdaptor<Cart>] : 3. update feed
+[FeedProducer<Cart>] -d-> [FeedProducerAdaptor<Cart>] : 4. finalize feed
+[FeedProducerAdaptor<Cart>] -d- ManaDB
+
+
+[FeedProducer<Cart>] <- [FeedConsumer<Cart>] : 5. interval get feed
+[FeedProducer<Cart>] -d-> [FeedProducerAdaptor<Cart>] : 6. get feed
+[FeedConsumer<Cart>] -d-> FeedIndexerDB : 7. get/set feed index
+[FeedConsumer<Cart>] -d-> [FeedConsumerAdaptor<Cart>] : 8. trigger new feed
+[FeedConsumerAdaptor<Cart>] --> PartnerDB
+PartnerApi -> PartnerDB
+[FeedConsumerAdaptor<Cart>] -d-> PartnerApi
+
+@enduml

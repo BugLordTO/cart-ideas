@@ -1,0 +1,67 @@
+@startuml Class
+
+class "FeedProducer<T>" {
+    - Dac : IFeedProducerAdaptor<T>
+
+    + CeateFeed(feed : T)
+    + UpdateFeed(feed : T)
+    + GetFeeds(scope, id, pageNo) : IEnumerable<FeedData<T>>
+}
+note left of "FeedProducer<T>": where T is IFeedModel
+
+class "IFeedProducerAdaptor<T>" {
+}
+"FeedProducer<T>" o-- "IFeedProducerAdaptor<T>"
+
+class "FeedConsumer<T>" {
+    - Dac : IFeedConsumerAdaptor<T>
+
+    - TriggerNewFeed(feed : T)
+    - UpdateFeedIndex(feed : T)
+    + GetFeedIndex() : FeedIndex
+    + GetFeeds(scope, id, pageNo) : IEnumerable<FeedData<T>>
+}
+
+class "IFeedConsumerAdaptor<T>" {
+}
+"FeedConsumer<T>" o-- "IFeedConsumerAdaptor<T>"
+
+class "FeedData<T>"  {
+    LastFeedId : long
+    ErrorMessage : string 
+    Current : CurrentFeed<T>
+    Seemore : SeemoreFeed<T>
+}
+"FeedProducer<T>" o-- "FeedData<T>"
+"FeedConsumer<T>" o-- "FeedData<T>"
+
+class "CurrentFeed<T>" {
+    Feeds : IEnumerable<T>
+    HasMorePages : bool
+    ObsoleteFeedIds : IEnumerable<long>
+}
+"FeedData<T>" o-- "CurrentFeed<T>"
+
+class "SeemoreFeed<T>" {
+    Feeds : IEnumerable<T>
+    HasMorePages : bool
+    CurrentPage : int
+    NextPageNo : int
+    TotalPages : int
+}
+"FeedData<T>" o-- "SeemoreFeed<T>"
+
+interface IFeedModel {
+    Id
+    PreviousId
+}
+
+class HomeFeed extends IFeedModel { }
+
+class NotiFeed extends IFeedModel { }
+
+class CartFeed extends IFeedModel { }
+
+class FeedIndex { }
+
+@enduml

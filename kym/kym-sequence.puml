@@ -1,0 +1,40 @@
+@startuml
+
+participant client
+participant manaapi
+participant backofficeapi
+
+client -> manaapi : submit create BA
+activate manaapi
+manaapi -> manaapi : create pending BA
+manaapi -> backofficeapi : request kym
+note right : SendKymRequest
+client <-- manaapi :
+deactivate manaapi
+
+backofficeapi -> backofficeapi : take job
+activate backofficeapi
+alt high risk
+    backofficeapi -> manaapi : request approval
+    note right : KymSessionRequest
+    activate manaapi
+    manaapi --> client : [noti:manager] request consent
+    deactivate manaapi
+    activate client
+    client -> manaapi : consent
+    deactivate client
+    activate manaapi
+    manaapi -> backofficeapi : kym manager approval result
+    deactivate manaapi
+end
+
+backofficeapi -> manaapi : biz account approval
+note right : SendKymResultRequest
+activate manaapi
+manaapi --> client : [noti:owner] result
+manaapi --> backofficeapi
+deactivate manaapi
+deactivate backofficeapi
+
+
+@enduml

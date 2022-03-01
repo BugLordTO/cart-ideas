@@ -1,0 +1,15 @@
+@startuml Sequence
+
+!include primitive-sequence-main.puml
+
+== create feed ==
+
+client -> manaapi : some action
+manaapi -> manaapi : prepare feed detail
+manaapi -> producer : create feed (feed, scope)
+producer -> producer : run id
+producer -> producer : ref previous id
+producer -> producerAdapter : create feed
+producerAdapter -> producerDb
+
+@enduml

@@ -1,0 +1,12 @@
+@startuml Sequence
+
+!include primitive-sequence-main.puml
+
+== finalize feed ==
+
+client -> manaapi : some action
+manaapi -> producer : finalize feed (feed, scope)
+producer -> producerAdapter : finalize feed
+producerAdapter -> producerDb
+
+@enduml

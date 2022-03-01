@@ -1,0 +1,61 @@
+@startuml
+package Issuers {
+    node manaclient
+    cloud manaapi
+}
+
+package DB {
+    database Home
+    database Cart
+    database Order
+    database Form
+
+    Home -[hidden]- Cart
+    Cart -[hidden]- Order
+    Order -[hidden]- Form
+}
+
+package FeedProducer {
+    [FeedProducer<Home>]
+    [FeedProducer<Cart>]
+    [FeedProducer<Order>]
+    [FeedProducer<Form>]
+    
+    [FeedProducer<Home>] -[hidden]- [FeedProducer<Cart>]
+    [FeedProducer<Cart>] -[hidden]- [FeedProducer<Order>]
+    [FeedProducer<Order>] -[hidden]- [FeedProducer<Form>]
+}
+
+package FeedConsumer {
+    [FeedConsumer<Home>]
+    [FeedConsumer<Cart>]
+    [FeedConsumer<Order>]
+    [FeedConsumer<Form>]
+
+    [FeedConsumer<Home>] -[hidden]- [FeedConsumer<Cart>]
+    [FeedConsumer<Cart>] -[hidden]- [FeedConsumer<Order>]
+    [FeedConsumer<Order>] -[hidden]- [FeedConsumer<Form>]
+}
+
+package client {
+    cloud notiFuncApp
+    cloud 3rdapi
+
+    notiFuncApp -[hidden]- 3rdapi
+}
+
+manaclient -> manaapi : 0. some action
+
+manaapi -r-> Home : 1. create data
+manaapi -r-> Cart
+manaapi -r-> Order
+' manaapi -> Form
+
+manaapi -> [FeedProducer<Home>] : 2. send hook
+Home <- [FeedProducer<Home>] : 3. get data
+[FeedProducer<Home>] -> [FeedConsumer<Home>] : 4. notify hook
+[FeedProducer<Home>] <- [FeedConsumer<Home>] : 5. get feed data
+[FeedConsumer<Home>] -> notiFuncApp : 6. notification / signalR
+notiFuncApp -> manaclient : 7. notification / signalR
+
+@enduml
