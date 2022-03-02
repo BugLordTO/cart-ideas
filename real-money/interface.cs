@@ -27,6 +27,9 @@ interface ICommonWalletService
     // MonetaryValue GetDefaultWalletItemBalance(string walletId);
     // void Transfer(WalletTx tx);
     // void Escrow(WalletTx tx); // input contract ? just ins out ?
+
+    // NOTE:
+    // - work with countryCode
 }
 
 
