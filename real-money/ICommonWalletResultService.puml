@@ -1,0 +1,21 @@
+@startuml ICommonWalletResultService
+
+interface ICommonWalletResultService { }
+
+interface IWalletResultService extends ICommonWalletResultService {
+
+    DepositSuccess(DepositeRequest request): string
+    AdhocResult(DepositeRequest request): string
+}
+
+interface IEscrowResultService extends ICommonWalletResultService {
+
+    EscrowResult(TxResultBase request): string
+}
+
+interface IBizAccountResultService extends ICommonWalletResultService {
+
+    BizWithdrawResult(TxResultBase request): string
+}
+
+@enduml

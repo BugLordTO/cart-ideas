@@ -1,0 +1,80 @@
+@startuml money-interface-idea
+
+box =mana #PaleVioletRed
+participant client
+participant "manaapi-facing" as mana
+participant workflowunitcomponent as wfcom
+participant "mana-shared-db" as db
+end box
+
+box =assets #LightBlue
+participant workflowunitapi as wfapi
+participant "real-assets" as assets
+end box
+
+box =insight
+participant "alert-rule" as alert
+end box
+
+== =request / response ==
+
+client -> mana : some cash action
+activate mana
+mana -> wfcom : some cash action
+activate wfcom
+alt development
+    mana <- wfcom : update cash '{host}/api/cash'
+    activate mana
+    mana -> db : update cash to db
+    deactivate mana
+else production
+    wfcom -> wfapi : update cash '{host}/api/cash'
+    wfapi -> assets : update assets
+    wfapi <-- assets
+    wfcom <-- wfapi
+end
+mana <-- wfcom
+deactivate wfcom
+mana -> alert : custom metric
+client <-- mana : result
+deactivate mana
+
+== =request / subscribe ==
+
+client -> mana : some cash action
+alt development
+    mana -> wfcom : some cash action
+    activate mana
+    activate wfcom
+    mana <- wfcom : update cash '{host}/api/cash'
+    activate mana #GreenYellow
+    mana -> db : update cash to db
+    deactivate mana
+    mana <-- wfcom
+    deactivate wfcom
+    client <-- mana : wait result
+    deactivate mana
+    mana --> wfcom : result message
+    activate mana #GreenYellow
+    deactivate mana
+else production
+    mana -> wfcom : some cash action
+    activate mana
+    activate wfcom
+    wfcom -> wfapi : request update cash '{host}/api/cash'
+    activate wfapi
+    wfcom <-- wfapi
+    mana <-- wfcom
+    deactivate wfcom
+    client <-- mana : wait result
+    deactivate mana
+    wfapi -> assets : update assets
+    wfapi <-- assets :
+    wfcom <-- wfapi : result message
+    deactivate wfapi
+end
+mana <-- wfcom
+mana -> alert : custom metric
+client <-- mana : result
+
+@enduml

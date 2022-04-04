@@ -1,0 +1,18 @@
+branch  devc_monetaryAndAmlo
+
+FileName ICommonWalletService.cs
+ส่งรีเควสถึงพี่อ้น
+https://dev.azure.com/thesteam/ManaLaunch/_git/ManaMain?path=/srcx/face/ManaWalletFacing/WebManaApiFacing/Services/ICommonWalletService.cs&version=GBdevc_monetaryAndAmlo&line=14&lineEnd=65&lineStartColumn=1&lineEndColumn=54&lineStyle=plain&_a=contents
+
+FileName ICommonWalletResultService.cs
+พี่อ้นส่งกลับเมื่อทำงานเสร็จ
+https://dev.azure.com/thesteam/ManaLaunch/_git/ManaMain?path=/srcx/face/ManaWalletFacing/WebManaApiFacing/Services/ICommonWalletResultService.cs&version=GBdevc_monetaryAndAmlo&line=8&lineEnd=20&lineStartColumn=1&lineEndColumn=1&lineStyle=plain&_a=contents
+
+Note
+    - ปรับ extension map เฉพาะ model
+    - ปรับ interface ตอนส่งกลับใน controller
+
+    method ที่ยังไม่เรียบร้อย
+    - Task<CreateBizWalletResult> CreateBizWallet(string baId);
+    - Task GetBizQrInfo(string baId);
+    - เอาโค้ดหักลบเงินตอนจ่ายสำเร็จออก เปลี่ยนไปใช้ GetBalance แทน

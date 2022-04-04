@@ -1,0 +1,73 @@
+# YARP
+- middleware
+- รับ ManaRequestBody ทั้งหมด
+- mana รับ ManaRequestBody + 3rd register url to yarp
+    - load config ของ mana ตอน startup
+    - load from db ตอน startup
+        - set MContentUrl ไป 3rd ตรงๆ
+            [get] /mcontent/{mcid} > https://delivery.com/menupage/biz001
+        - set DataHook ไป 3rd ตรงๆ
+            [get] /mcontent/data/{mcid}/nbizhme-{id} > https://delivery.com/menu/biz001
+        - set FormSubmit ไป mana ก่อนเพื่อ process, แล้วค่อย hook ไป yarp อีกครั้ง
+            [post] /mcontent/data/{mcid}/nbizhme-{id} > https://apimana.com/mcontent/data/{mcid}/nbizhme-{id}
+        - set FormPostHook ไป 3rd
+            [post] /mcontent/hook/{mcid}/nbizhme-{id} > https://delivery.com/menu/biz001
+        - ถ้าต้องแนบ query อื่นๆไปด้วย ? memberid, endpointid, userid? ฯ
+
+
+
+
+
+- html content asset
+    - Url on device
+        https://xapimana-deva.onmana.space/mcontent/654845213474/
+        https://xapimana-deva.onmana.space/mcontent/654845213474/main.js
+        https://xapimana-deva.onmana.space/mcontent/654845213474/images/logo.jpg
+        https://xapimana-deva.onmana.space/mcontent/654845213474/js/jquery.js
+        https://xapimana-deva.onmana.space/mcontent/654845213474/css/site.css
+    - MContentCollection
+        {
+            "BaseUrl" : "https://deliv3rd-content-devtesting.azurewebsites.net",
+            "ContentUrl" : "/#/shop-select",
+        }
+        {
+            "BaseUrl" : "https://deliv3rd-content-devtesting.azurewebsites.net",
+            "ContentUrl" : "/index.html#/shop-select",
+        }
+        {
+            "BaseUrl" : "https://manadeva.z23.web.core.windows.net",
+            "ContentUrl" : "/subscription/tier-lite.html",
+        }
+        {
+            "BaseUrl" : "https://manadeva.z23.web.core.windows.net/subscription",
+            "ContentUrl" : "/tier-lite.html",
+        }
+    - เปลี่ยนชื่อ field ให้ตามความหมาย ???
+        - BaseUrl >> BaseUrl
+        - ContentUrl >> ContentFileName
+        
+        {
+            "HtmlRouteUrl" : "https://manadeva.z23.web.core.windows.net/subscription",
+            "HtmlFilePath" : "/tier-lite.html",
+        }
+
+
+
+
+https://yarp.com/mcontent/60123456
+    https://delivery.com/#/select-menu
+
+
+[route] https://yarp.com/mcontent/60123456
+    [destination] https://yarp.com/mcontentfq/60123456
+[api] https://yarp.com/mcontentfq/60123456
+    [redirect] https://yarp.com/mcontent/fq/60123456/?xxx=123#/select-menu
+[route] https://yarp.com/mcontent/fq/60123456
+    https://delivery.com
+
+
+https://yarp.com/mcontent/60123456/#/select-menu
+    https://delivery.com
+
+
+https://s.manal.ink/mi/ionicapp4/merchant-home-pending
