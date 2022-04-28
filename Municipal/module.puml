@@ -1,0 +1,50 @@
+@startuml module
+
+package mana {
+    [BizAccount]
+    [Membership]
+    [BillSubscription]
+    [Cart]
+    [Bill]
+    [GroupFeed]
+    [Consent]
+    [Form]
+    [Prerequisite]
+}
+
+package manaFor3rd {
+    [BizAccount3rd]
+    [Membership3rd]
+    [Cart3rd]
+    [Bill3rd]
+    [BillSubscription3rd]
+    [Form3rd]
+}
+[BizAccount3rd] -[hidden]->[Membership3rd]
+[Membership3rd] -[hidden]->[Cart3rd]
+[Cart3rd] -[hidden]->[Bill3rd]
+[Bill3rd] -[hidden]->[BillSubscription3rd]
+[BillSubscription3rd] -[hidden]->[Form3rd]
+
+package 3rdParty {
+    [Municipal]
+}
+
+[BizAccount] <--- [Membership]
+[Bill] <-- [BillSubscription]
+[GroupFeed] <-- [BillSubscription]
+[Cart] <-- [Bill]
+[GroupFeed] <-- [Membership]
+[Consent] <-- [Membership]
+[Membership] <-[hidden]- [Form]
+[BillSubscription] <-[hidden]- [Prerequisite]
+
+note bottom of [Prerequisite]
+    Membership
+    Cart
+    Bill
+end note
+
+[Municipal] -> manaFor3rd
+
+@enduml
