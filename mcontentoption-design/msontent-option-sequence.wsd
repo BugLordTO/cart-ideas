@@ -1,0 +1,129 @@
+@startuml
+
+participant developer
+participant 3rdapi
+
+== Register at Api3rd ==
+group register mcontent
+developer -> 3rdapi : register mcontent
+end
+
+group register product
+developer -> 3rdapi : register product
+end
+
+group Register MContent Option
+activate developer
+activate 3rdapi
+developer -> 3rdapi : MContentOption
+note right
+{
+    "Title": "Select color",
+    "ContentUrl": "",
+    "DataHookUrl": "https://DataHookUrl.com/product/option/o001",
+    ...
+}
+---
+{
+    "Title": "Select color",
+    "ContentUrl": "",
+    ...
+}
+end note
+developer <-- 3rdapi : ManaLinkRegistry
+deactivate developer
+deactivate 3rdapi
+end
+
+group MContent Option Binding
+activate developer
+activate 3rdapi
+developer -> 3rdapi : MContentOptionBinding
+note right
+{
+    "MContentId": "mc001",
+    "MContentOptionBindings": ["mco001","mco002"],
+    ...
+}
+---
+{
+    "MContentId": "mc001",
+    "MContentOptionBindings": [
+        {
+            "MContentOptionId":"mco001",
+            "DataHookUrl": "https://DataHookUrl.com/product/option/o001",
+        },
+        {
+            "MContentOptionId":"mco002",
+            "DataHookUrl": "https://DataHookUrl.com/product/option/o002",
+        }
+    ],
+    ...
+}
+end note
+developer <-- 3rdapi : ManaLinkRegistry
+note right
+. --{ "EndpointId": "nmctopt-63123456789" }--
+end note
+deactivate developer
+deactivate 3rdapi
+end
+
+participant mobile
+participant manaapi.EndpointController
+participant manaapi.FormController
+participant serviceapi
+
+== View and submit ==
+mobile -> manaapi.EndpointController : visit(EndpointId) // visit page
+activate mobile
+activate manaapi.EndpointController
+mobile <-- manaapi.EndpointController : ClientResponse
+deactivate manaapi.EndpointController
+note right
+{
+    "N2P" : {
+        "ServerUrl":"https://svc.onmana.com/api/mcontent/form/content/",
+        "ApiUrl":"https://svc.onmana.com/api/mcontent/form/data/",
+        "EndpointId":"npdtdtl-12345689",
+        "MContentnfos": [
+            { "MContentId":"mc001", ... },
+            { "MContentId":"option001", ... },
+            { "MContentId":"option002", ... }
+        ]
+    }
+}
+end note
+
+group open page
+mobile -> manaapi.FormController : getContent(ServerUrl: https://svc.onmana.com/api/mcontent/content/mc001)
+activate manaapi.FormController
+mobile <-- manaapi.FormController : html page
+deactivate manaapi.FormController
+mobile -> manaapi.FormController : getData(ApiUrl: https://svc.onmana.com/api/mcontent/data/mc001/npdtdtl-12345689)
+activate manaapi.FormController
+manaapi.FormController -> serviceapi : get(https://DataHookUrl.com/product/p001)
+manaapi.FormController <-- serviceapi : product detail
+mobile <-- manaapi.FormController : product detail
+deactivate manaapi.FormController
+end
+
+group open option
+mobile -> mobile : openDialog(option001, npdtdtl-12345689)
+mobile -> manaapi.FormController : getContent(ServerUrl: https://svc.onmana.com/api/mcontent/content/option001)
+activate manaapi.FormController
+mobile <-- manaapi.FormController : html page
+deactivate manaapi.FormController
+mobile -> manaapi.FormController : getData(ApiUrl: https://svc.onmana.com/api/mcontent/data/option001/npdtdtl-12345689)
+activate manaapi.FormController
+manaapi.FormController -> serviceapi : get(https://DataHookUrl.com/product/option/o001?endpointid=npdtdtl-12345689)
+manaapi.FormController <-- serviceapi : option detail
+mobile <-- manaapi.FormController : option detail
+deactivate manaapi.FormController
+end
+
+mobile -> mobile : submit() // submit option
+mobile -> manaapi.FormController : submit() // add product
+deactivate mobile
+
+@enduml

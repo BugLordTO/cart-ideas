@@ -4,6 +4,7 @@ package mana {
     [BizAccount]
     [Membership]
     [BillSubscription]
+    [Product]
     [Cart]
     [Bill]
     [GroupFeed]
@@ -33,6 +34,7 @@ package 3rdParty {
 [BizAccount] <--- [Membership]
 [Bill] <-- [BillSubscription]
 [GroupFeed] <-- [BillSubscription]
+[Product] <-- [Cart]
 [Cart] <-- [Bill]
 [GroupFeed] <-- [Membership]
 [Consent] <-- [Membership]
@@ -41,6 +43,7 @@ package 3rdParty {
 
 note bottom of [Prerequisite]
     Membership
+    Product
     Cart
     Bill
 end note
