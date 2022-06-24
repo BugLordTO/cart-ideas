@@ -37,7 +37,7 @@ public class ManaUserView
 [Route("[controller]")]
 public class ProfileController : ApiControllerBase
 {
-    // [HttpGet("visit/{endpointid}")]
+    // [HttpGet("endpoints/{endpointid}")]
     // public async Task<ActionResult<ClientResponse>> ProfileVisit(string endpointid);
     [HttpGet]
     public async Task<ActionResult<ManaUserView>> ProfileData();
@@ -98,14 +98,14 @@ public class BillingAddress : ContactableAddress {}
 [Route("[controller]")]
 public class ProfileController : ApiControllerBase
 {
-    // [HttpGet("visit/{endpointid}/shipping")]
+    // [HttpGet("endpoints/{endpointid}/shipping")]
     // public async Task<ActionResult<ClientResponse>> ShippingVisit(string endpointid);
-    [HttpGet("shipping")]
+    [HttpGet("shipping/{endpointid}")]
     public async Task<ActionResult<AddressesResponse<ShippingAddress>>> ShippingData();
     
-    // [HttpGet("visit/{endpointid}/billing")]
+    // [HttpGet("endpoints/{endpointid}/billing")]
     // public async Task<ActionResult<ClientResponse>> BillingVisit(string endpointid);
-    [HttpGet("billing")]
+    [HttpGet("billing/{endpointid}")]
     public async Task<ActionResult<AddressesResponse<BillingAddress>>> BillingData();
 }
 ```
@@ -149,43 +149,39 @@ public class AddressWithToggle<T> where T : StreetAddress
 [Route("[controller]")]
 public class ProfileController : ApiControllerBase
 {
-    // [HttpGet("visit/{endpointid}/shipping/create")]
+    // [HttpGet("endpoints/{endpointid}/shipping/create")]
     // public async Task<ActionResult<ClientResponse>> ShippingCreateVisit(string endpointid);
-    [HttpGet("shipping/create")]
+    [HttpGet("shipping/{endpointid}/create")]
     public async Task<IActionResult> ShippingCreateData(); // return no content to avoid 404
-    [HttpPost("shipping/create")]
-    public async Task<ActionResult<ClientResponse>> ShippingCreateSubmit([FromBody] ShippingAddress request, [FromQuery] GpsFromQuery1 gpsFromQuery);
-    // [HttpGet("visit/{endpointid}/shipping/edit")]
+    [HttpPost("shipping/{endpointid}/create")]
+    public async Task<ActionResult<ClientResponse>> ShippingCreateSubmit(string endpointid, [FromBody] ShippingAddress request, [FromQuery] GpsFromQuery1 gpsFromQuery);
+    // [HttpGet("endpoints/{endpointid}/shipping/edit")]
     // public async Task<ActionResult<ClientResponse>> ShippingEditVisit(string endpointid);
-    [HttpGet("shipping/{endpointid}")]
+    [HttpGet("shipping/{endpointid}/edit")]
     public async Task<ActionResult<AddressWithToggle<ShippingAddress>>> ShippingEditData(string endpointid);
-    [HttpPost("shipping/{endpointid}")]
+    [HttpPost("shipping/{endpointid}/edit")]
     public async Task<ActionResult<ClientResponse>> ShippingEditSubmit(string endpointid, [FromBody] ShippingAddress request, [FromQuery] GpsFromQuery1 gpsFromQuery);
-    // [HttpGet("visit/{endpointid}/shipping/delete")]
-    // public async Task<ActionResult<ClientResponse>> ShippingVisit(string endpointid);
-    [HttpPost("shipping/{endpointid}/delete")]
+    // [HttpGet("endpoints/{endpointid}/shipping/delete")]
+    // public async Task<ActionResult<ClientResponse>> ShippingDeleteVisit(string endpointid);
+    [HttpPost("endpoints/{endpointid}/shipping/delete")]
     public async Task<ActionResult<ClientResponse>> ShippingDeleteSubmit(string endpointid);
-    // [HttpGet("visit/{endpointid}/shipping/change")]
-    // public async Task<ActionResult<ClientResponse>> ShippingChangeVisit(string endpointid);
     
-    // [HttpGet("visit/{endpointid}/billing/create")]
+    // [HttpGet("endpoints/{endpointid}/billing/create")]
     // public async Task<ActionResult<ClientResponse>> BillingCreateVisit(string endpointid);
-    [HttpGet("billing/create")]
+    [HttpGet("billing/{endpointid}/create")]
     public async Task<IActionResult> BillingCreateData(); // return no content to avoid 404
-    [HttpPost("billing/create")]
-    public async Task<ActionResult<ClientResponse>> BillingCreateSubmit([FromBody] BillingAddress request);
-    // [HttpGet("visit/{endpointid}/billing/edit")]
+    [HttpPost("billing/{endpointid}/create")]
+    public async Task<ActionResult<ClientResponse>> BillingCreateSubmit(string endpointid, [FromBody] BillingAddress request);
+    // [HttpGet("endpoints/{endpointid}/billing/edit")]
     // public async Task<ActionResult<ClientResponse>> BillingEditVisit(string endpointid);
-    [HttpGet("billing/{endpointid}")]
+    [HttpGet("billing/{endpointid}/edit")]
     public async Task<ActionResult<AddressWithToggle<BillingAddress>>> BillingEditData(string endpointid);
-    [HttpPost("billing/{endpointid}")]
+    [HttpPost("billing/{endpointid}/edit")]
     public async Task<ActionResult<ClientResponse>> BillingEditSubmit(string endpointid, [FromBody] BillingAddress request);
-    // [HttpGet("visit/{endpointid}/billing/delete")]
+    // [HttpGet("endpoints/{endpointid}/billing/delete")]
     // public async Task<ActionResult<ClientResponse>> BillingVisit(string endpointid);
-    [HttpPost("billing/{endpointid}/delete")]
+    [HttpPost("endpoints/{endpointid}/billing/delete")]
     public async Task<ActionResult<ClientResponse>> BillingDeleteSubmit(string endpointid);
-    // [HttpGet("visit/{endpointid}/billing/change")]
-    // public async Task<ActionResult<ClientResponse>> BillingChangeVisit(string endpointid);
 }
 ```
 
@@ -221,14 +217,14 @@ public class ItemsSelect<T>
 [Route("[controller]")]
 public class ProfileController : ApiControllerBase
 {
-    // [HttpGet("visit/{endpointid}/shipping/select")]
-    // public async Task<ActionResult<ClientResponse>> ShippingSelectVisit(string endpointid);
+    // [HttpGet("endpoints/{endpointid}/shipping/change")]
+    // public async Task<ActionResult<ClientResponse>> ShippingChangeVisit(string endpointid);
     [HttpGet("shipping/select")]
-    public async Task<ActionResult<ItemsSelect<ShippingAddress>>> ShippingData();
+    public async Task<ActionResult<ItemsSelect<ShippingAddress>>> ShippingChangeData();
     
-    // [HttpGet("visit/{endpointid}/billing/select")]
-    // public async Task<ActionResult<ClientResponse>> BillingSelectVisit(string endpointid);
+    // [HttpGet("endpoints/{endpointid}/billing/change")]
+    // public async Task<ActionResult<ClientResponse>> BillingChangeVisit(string endpointid);
     [HttpGet("billing/select")]
-    public async Task<ActionResult<ItemsSelect<BillingAddress>>> BillingData();
+    public async Task<ActionResult<ItemsSelect<BillingAddress>>> BillingChangeData();
 }
 ```
