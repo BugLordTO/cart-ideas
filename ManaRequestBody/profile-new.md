@@ -219,12 +219,18 @@ public class ProfileController : ApiControllerBase
 {
     // [HttpGet("endpoints/{endpointid}/shipping/change")]
     // public async Task<ActionResult<ClientResponse>> ShippingChangeVisit(string endpointid);
-    [HttpGet("shipping/select")]
+    [HttpGet("shipping/change")]
     public async Task<ActionResult<ItemsSelect<ShippingAddress>>> ShippingChangeData();
     
     // [HttpGet("endpoints/{endpointid}/billing/change")]
     // public async Task<ActionResult<ClientResponse>> BillingChangeVisit(string endpointid);
-    [HttpGet("billing/select")]
+    [HttpGet("billing/change")]
     public async Task<ActionResult<ItemsSelect<BillingAddress>>> BillingChangeData();
 }
 ```
+
+# ==================== KYC ====================
+
+- /kyc/validate/mobile/{mobile} > /kyc/mobile/{mobile}/validate
+- nkycdtl.address-home > nkycbsc.address-home
+- nkycdtl.caddress-home > nkycbsc.caddress-home
