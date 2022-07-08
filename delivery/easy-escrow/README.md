@@ -33,10 +33,9 @@
 จะมี command สั่งไปที่ กระเป๋าเงินจริง 4 commands ดังนี้
 
 - StartEscrow(walletId, baId, amountIn, outs[]): StartTxResultBase
-    - outs > { walletId, amount, refId }
+    - outs > { walletId, amount, refId, contractId }
     - StartTxResultBase > { IsSucceeded, Message, TxId }
-- UpdateEscrow(txId, outUpdates[]): MonetaryBase
-    - outUpdates > { RefId, WalletId }
+- UpdateEscrow(txId, RefId, WalletId): MonetaryBase
     - MonetaryBase > { IsSucceeded, Message }
 - ReleaseEscrow(txId): MonetaryBase
 - CancelEscrow(txId): MonetaryBase
