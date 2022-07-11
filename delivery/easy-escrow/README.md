@@ -40,6 +40,8 @@
 - ReleaseEscrow(txId): MonetaryBase
 - CancelEscrow(txId): MonetaryBase
 
+- จุดที่ต้องปรับ ICommonWalletService https://docs.google.com/spreadsheets/d/1zdXogQrCmyDzalphl6nTuulqvo2Dsvd0GAz37pItrkE/edit#gid=473229457
+
 ### รายละเอียดของ command & params
 
 1. user กดจ่ายตะกร้า จะ StartEscrow มี params ดังนี้
@@ -79,7 +81,8 @@
 
 
 # STEP 2 โฟลวที่มีอยู่แล้ว ใช้เงินจริง ให้ครบ
-1. QR format
+- Check parameter standard and prototype
+1. QR format (https://bit.ly/3avnDik)
     1. ppay external
     2. topup qr
     3. topup bank account > ใช้โฟลวเหมือน topup qr
