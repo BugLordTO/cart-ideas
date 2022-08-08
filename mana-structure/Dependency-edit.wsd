@@ -1,0 +1,117 @@
+@startuml
+package "COLOR MEANING" {
+	[FROM NUGET] #LightYellow
+	[PROECT] #LightGreen
+	[TEMPOLARY USE DLL FILE] #OrangeRed
+	[TEMPOLARY USE NUGET] #Orange
+}
+' package "Essentials" {
+' 	[TheS.Essentials.AspNetCore] ..> [TheS.Essentials]
+' 	[TheS.Essentials.AspNetCore.Azure] ..> [TheS.Essentials.AspNetCore]
+' 	[TheS.Essentials.Cryptography] ..> [TheS.Essentials]
+' }
+[TheS.WowDi.Essentials] #Orange
+
+package "TheSDevXPLibraries" #LightYellow {
+	[TheS.DevXP.Essentials]
+	[TheS.DevXP.Essentials.Abstractions]
+	[TheS.DevXP.Essentials.Data.MongoDb]
+	[TheS.DevXP.Essentials.Hosts]
+	[TheS.DevXP.Essentials.Hosts.AspNetCore]
+	[TheS.DevXP.Essentials.Hosts.CommandLine]
+	[TheS.DevXP.Essentials.Logging]
+}
+[TheS.DevXP.Essentials] ..> [TheS.DevXP.Essentials.Abstractions]
+[TheS.DevXP.Essentials.Data.MongoDb] ..> [TheS.DevXP.Essentials]
+' [TheS.DevXP.Essentials.Data.MongoDb] ..> [TheS.DevXP.Essentials.Abstractions]
+[TheS.DevXP.Essentials.Hosts] ..> [TheS.DevXP.Essentials]
+[TheS.DevXP.Essentials.Hosts.AspNetCore] ..> [TheS.DevXP.Essentials.Hosts]
+[TheS.DevXP.Essentials.Hosts.CommandLine] ..> [TheS.DevXP.Essentials.Hosts]
+
+package "ManaDevLib" #LightYellow {
+	[TheS.DevXP.Azure.AppFundamentals]
+	[TheS.DevXP.ProPractices]
+	[TheS.DevXP.Azure.AppSecrets]
+	[TheS.DevXP.ProPractices.Contracts]
+	[TheS.DevXP.ProPractices.Caching]
+	[TheS.DevXP.ProPractices.Data]
+}
+[TheS.DevXP.Azure.AppFundamentals] ..> [TheS.DevXP.ProPractices]
+' [TheS.DevXP.Azure.AppFundamentals] ..> [TheS.DevXP.ProPractices.Contracts]
+[TheS.DevXP.Azure.AppSecrets] ..> [TheS.DevXP.ProPractices]
+[TheS.DevXP.ProPractices] ..> [TheS.DevXP.ProPractices.Contracts]
+[TheS.DevXP.ProPractices.Caching] ..> [TheS.DevXP.Azure.AppFundamentals]
+[TheS.DevXP.ProPractices.Data] ..> [TheS.DevXP.ProPractices.Contracts]
+
+package "Mobile" #LightGreen {
+	[TheS.Mana.Shared.Common]
+	[TheS.Mana.Shared.Models]
+	[TheS.Mana.Client.Android]
+	[TheS.Mana.Client.Common]
+	[TheS.Mana.Client.iOS]
+	[TheS.Mana.Client]
+	[TheS.Mana.Client.Essentials]
+}
+[TheS.DevXP.XamForms.iOS] #LightYellow
+[TheS.DevXP.XamForms.Android] #LightYellow
+[TheS.DevXP.MxPractices] #LightYellow
+[TheS.DevXP.MxPractices.Common] #LightYellow
+[TheS.Mana.Shared.Common] ..> [TheS.Mana.Shared.Models]
+[TheS.Mana.Client.Android] ..> [TheS.Mana.Client.Common]
+[TheS.Mana.Client.iOS] ..> [TheS.Mana.Client.Common]
+[TheS.Mana.Client.Android] --> [TheS.Mana.Client]
+[TheS.Mana.Client.iOS] --> [TheS.Mana.Client]
+[TheS.Mana.Client.Common] ..> [TheS.Mana.Client.Essentials]
+[TheS.Mana.Client.Common] ..> [TheS.Mana.Shared.Common]
+[TheS.Mana.Shared.Common] ..> [TheS.DevXP.Essentials]
+[TheS.Mana.Shared.Models] ..> [TheS.DevXP.MxPractices]
+[TheS.Mana.Shared.Models] ..> [TheS.DevXP.MxPractices.Common]
+[TheS.Mana.Shared.Models] ..> [TheS.Mana.Essentials]
+[TheS.Mana.Client.Android] ..> [TheS.DevXP.ProPractices]
+[TheS.Mana.Client.Android] .up.> [TheS.DevXP.XamForms.Android]
+[TheS.Mana.Client.iOS] ..> [TheS.DevXP.ProPractices]
+[TheS.Mana.Client.iOS] .up.> [TheS.DevXP.XamForms.iOS]
+
+package "Playground" #LightGreen {
+	[ManaPlayground.TheS]
+}
+[ManaPlayground.TheS] ..> [TheS.Mana.Shared.Common]
+' [ManaPlayground.TheS] ..> [TheS.Mana.Shared.Models]
+[ManaPlayground.TheS] ..> [TheS.DevXP.Essentials.Hosts.AspNetCore]
+[ManaPlayground.TheS] ..> [TheS.DevXP.Essentials.Logging]
+
+package "IDP" #LightGreen {
+	[ManaIdp]
+	[TheS.Mana.IdpFacing.Common]
+	[TheS.WowDi.AuthServices] #Orange
+}
+[ManaIdp] ..> [TheS.Mana.IdpFacing.Common]
+[ManaIdp] .left.> [TheS.DevXP.ProPractices.Data]
+[TheS.Mana.IdpFacing.Common] ..> [TheS.WowDi.AuthServices]
+[TheS.Mana.IdpFacing.Common] ..> [TheS.DevXP.Azure.AppSecrets]
+[TheS.WowDi.AuthServices] ..> [TheS.DevXP.ProPractices.Caching]
+[TheS.WowDi.AuthServices] ..> [TheS.WowDi.Essentials]
+
+package "ManaServer" #LightGreen {
+	[TheGatel]
+	[TheCEmb]
+	[TheS.Mana.WebFacing.Common]
+}
+[TheS.Mana.Essentials] #LightGreen
+[TheS.Mana.WebFacing.Models] #LightGreen
+[TheS.Essentials] #OrangeRed
+[TheS.Essentials.AspNetCore] #OrangeRed
+[TheS.Essentials.AspNetCore.Azure] #OrangeRed
+[TheS.Essentials] <.. [TheGatel]
+[TheS.Essentials.AspNetCore] <.. [TheGatel]
+[TheS.Essentials.AspNetCore.Azure] <.. [TheGatel]
+[TheCEmb] ..> [TheS.Mana.WebFacing.Common]
+[TheGatel] ..> [TheS.Mana.WebFacing.Common]
+[TheCEmb] ..> [TheS.DevXP.Azure.AppSecrets]
+[TheS.Mana.WebFacing.Common] ..> [TheS.DevXP.Azure.AppFundamentals]
+' [TheS.Mana.WebFacing.Common] ..> [TheS.DevXP.ProPractices.Contracts]
+[TheS.Mana.WebFacing.Common] ..> [TheS.DevXP.ProPractices.Data]
+[TheS.Mana.WebFacing.Common] ..> [TheS.Mana.Essentials]
+[TheS.Mana.WebFacing.Common] ..> [TheS.Mana.Shared.Models]
+[TheS.Mana.WebFacing.Common] ..> [TheS.Mana.WebFacing.Models]
+@enduml

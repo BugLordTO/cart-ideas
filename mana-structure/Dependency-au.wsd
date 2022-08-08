@@ -1,0 +1,75 @@
+@startuml
+
+' package "Essentials" {
+' 	[TheS.Essentials.AspNetCore] ..> [TheS.Essentials]
+' 	[TheS.Essentials.AspNetCore.Azure] ..> [TheS.Essentials.AspNetCore]
+' 	[TheS.Essentials.Cryptography] ..> [TheS.Essentials]
+' }
+
+package "TheSDevXPLibraries" {
+	[TheS.DevXP.Essentials] ..> [TheS.DevXP.Essentials.Abstractions]
+	[TheS.DevXP.Essentials.Data.MongoDb] ..> [TheS.DevXP.Essentials]
+	' [TheS.DevXP.Essentials.Data.MongoDb] ..> [TheS.DevXP.Essentials.Abstractions]
+	[TheS.DevXP.Essentials.Hosts] ..> [TheS.DevXP.Essentials]
+	[TheS.DevXP.Essentials.Hosts.AspNetCore] ..> [TheS.DevXP.Essentials.Hosts]
+	[TheS.DevXP.Essentials.Hosts.CommandLine] ..> [TheS.DevXP.Essentials.Hosts]
+	[TheS.DevXP.Essentials.Logging]
+}
+
+package "ManaDevLib" {
+	[TheS.DevXP.Azure.AppFundamentals] ..> [TheS.DevXP.ProPractices]
+	' [TheS.DevXP.Azure.AppFundamentals] ..> [TheS.DevXP.ProPractices.Contracts]
+	[TheS.DevXP.Azure.AppSecrets] ..> [TheS.DevXP.ProPractices]
+	[TheS.DevXP.ProPractices] ..> [TheS.DevXP.ProPractices.Contracts]
+	[TheS.DevXP.ProPractices.Caching] ..> [TheS.DevXP.Azure.AppFundamentals]
+	[TheS.DevXP.ProPractices.Data] ..> [TheS.DevXP.ProPractices.Contracts]
+}
+
+package "Mobile" {
+	[TheS.Mana.Shared.Common] ..> [TheS.Mana.Shared.Models]
+	[TheS.Mana.Client.Android] ..> [TheS.Mana.Client.Common]
+	[TheS.Mana.Client.iOS] ..> [TheS.Mana.Client.Common]
+	[TheS.Mana.Client.Android] --> [TheS.Mana.Client]
+	[TheS.Mana.Client.iOS] --> [TheS.Mana.Client]
+	[TheS.Mana.Client.Common] ..> [TheS.Mana.Client.Essentials]
+	[TheS.Mana.Client.Common] ..> [TheS.Mana.Shared.Common]
+}
+
+package "Playground" {
+	[ManaPlayground.TheS] ..> [TheS.Mana.Shared.Common]
+	' [ManaPlayground.TheS] ..> [TheS.Mana.Shared.Models]
+}
+
+package "IDP" {
+	[ManaIdp] ..> [TheS.Mana.IdpFacing.Common]
+	[TheS.Mana.IdpFacing.Common] ..> [TheS.WowDi.AuthServices]
+}
+
+package "ManaGate" {
+	[TheCEmb] ..> [TheS.Mana.WebFacing.Common]
+	[TheGatel] ..> [TheS.Mana.WebFacing.Common]
+}
+
+[TheS.Mana.Shared.Common] ..> [TheS.DevXP.Essentials]
+[TheS.Mana.Shared.Models] ..> [TheS.DevXP.MxPractices]
+[TheS.Mana.Shared.Models] ..> [TheS.DevXP.MxPractices.Common]
+[TheS.Mana.Shared.Models] ..> [TheS.Mana.Essentials]
+[TheS.Mana.Client.Android] ..> [TheS.DevXP.ProPractices]
+[TheS.Mana.Client.Android] .up.> [TheS.DevXP.XamForms.Android]
+[TheS.Mana.Client.iOS] ..> [TheS.DevXP.ProPractices]
+[TheS.Mana.Client.iOS] .up.> [TheS.DevXP.XamForms.iOS]
+[ManaPlayground.TheS] ..> [TheS.DevXP.Essentials.Hosts.AspNetCore]
+[ManaPlayground.TheS] ..> [TheS.DevXP.Essentials.Logging]
+[ManaIdp] .left.> [TheS.DevXP.ProPractices.Data]
+[TheS.Mana.IdpFacing.Common] ..> [TheS.DevXP.Azure.AppSecrets]
+[TheS.WowDi.AuthServices] ..> [TheS.DevXP.ProPractices.Caching]
+[TheS.WowDi.AuthServices] ..> [TheS.WowDi.Essentials]
+[TheCEmb] ..> [TheS.DevXP.Azure.AppSecrets]
+[TheS.Mana.WebFacing.Common] ..> [TheS.DevXP.Azure.AppFundamentals]
+' [TheS.Mana.WebFacing.Common] ..> [TheS.DevXP.ProPractices.Contracts]
+[TheS.Mana.WebFacing.Common] ..> [TheS.DevXP.ProPractices.Data]
+[TheS.Mana.WebFacing.Common] ..> [TheS.Mana.Essentials]
+[TheS.Mana.WebFacing.Common] ..> [TheS.Mana.Shared.Models]
+[TheS.Mana.WebFacing.Common] ..> [TheS.Mana.WebFacing.Models]
+
+@enduml

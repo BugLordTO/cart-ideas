@@ -1,0 +1,34 @@
+@startuml
+
+package nuget {
+    [ServerSetup]
+    [ClientSetup]
+    [ClientShared]
+    [SharedLib]
+    [ServerShared]
+    [3rdShared]
+}
+package Servers {
+    [Server]
+    [ServerLib]
+}
+package Clients {
+    [Client]
+    [ClientLib]
+}
+
+[Server] ..> [ClientShared]
+[Server] ..> [ServerSetup]
+[Server] ..> [ServerLib]
+[ClientShared] ..> [SharedLib]
+[ServerSetup] ..> [SharedLib]
+
+[Client] ..> [ClientSetup]
+[Client] ..> [ClientLib]
+[Client] ..> [ServerShared]
+[ServerShared] ..> [SharedLib]
+[ClientSetup] ..> [SharedLib]
+
+[SharedLib] ..> [3rdShared]
+
+@enduml
