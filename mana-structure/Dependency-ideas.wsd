@@ -16,6 +16,10 @@ package Clients {
     [Client]
     [ClientLib]
 }
+package 3rdParties {
+    [3rdParty]
+    [ClientLib]
+}
 
 [Server] ..> [ClientShared]
 [Server] ..> [ServerSetup]
@@ -30,5 +34,6 @@ package Clients {
 [ClientSetup] ..> [SharedLib]
 
 [SharedLib] ..> [3rdShared]
+[3rdShared] <.. [3rdParty]
 
 @enduml
