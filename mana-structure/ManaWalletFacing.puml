@@ -32,6 +32,9 @@ package TheS.DevXP {
 [TheS.Wallets.Core.Models] #LightYellow
 [TheS.WowDi.Essentials] #LightYellow
 
+[TheS.Mana.WebFacing.Common] #LightGreen
+[TheS.Mana.Helpers] #LightGreen
+[TheS.Mana.Models] #LightGreen
 
 
 
