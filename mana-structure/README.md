@@ -1,5 +1,5 @@
 <details>
-<summary>First</summary>
+<summary>First (Click to view)</summary>
 
 # Starter from AU
 ![](out/Dependency-au/Dependency-au.png)

@@ -30,7 +30,11 @@
 1. TheS.DevXP.XamForms.Mvvm.**ContentPageBase** [class]
 
 # ref ที่เกี่ยวข้อง
+
+![](out/mana-shared-models/ClientResponse.png)
+
 ```plantuml
+
 @startuml ClientResponse
 
 package Xamarin.Forms {
