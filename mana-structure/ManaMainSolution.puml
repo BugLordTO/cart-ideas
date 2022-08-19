@@ -3,12 +3,12 @@
 package "COLOR MEANING" {
 	[PROECT] #LightGreen
 	[FROM NUGET] #LightYellow
-	[TEMPOLARY USE DLL FILE] #OrangeRed
 	[TEMPOLARY USE NUGET] #Orange
+	[TEMPOLARY USE DLL FILE] #OrangeRed
 
 	[PROECT] -[hidden]- [FROM NUGET]
-	[FROM NUGET] -[hidden]- [TEMPOLARY USE DLL FILE]
-	[TEMPOLARY USE DLL FILE] -[hidden]- [TEMPOLARY USE NUGET]
+	[FROM NUGET] -[hidden]- [TEMPOLARY USE NUGET]
+	[TEMPOLARY USE NUGET] -[hidden]- [TEMPOLARY USE DLL FILE]
 }
 
 [ManaApi] #LightGreen
@@ -23,7 +23,7 @@ package "COLOR MEANING" {
 [TheS.Mana.Essentials] #LightGreen
 [TheS.Mana.WebFacing.Models] #LightGreen
 [TheS.Mana.Shared.Models] #LightYellow
-[TheS.WowDi.Essentials] #LightYellow
+[TheS.WowDi.Essentials] #Orange
 package TheS.DevXP {
 	[TheS.DevXP.Azure.AppFundamentals] #LightYellow
 	[TheS.DevXP.ProPractices] #LightYellow

@@ -3,12 +3,12 @@
 package "COLOR MEANING" {
 	[PROECT] #LightGreen
 	[FROM NUGET] #LightYellow
-	[TEMPOLARY USE DLL FILE] #OrangeRed
 	[TEMPOLARY USE NUGET] #Orange
+	[TEMPOLARY USE DLL FILE] #OrangeRed
 
 	[PROECT] -[hidden]- [FROM NUGET]
-	[FROM NUGET] -[hidden]- [TEMPOLARY USE DLL FILE]
-	[TEMPOLARY USE DLL FILE] -[hidden]- [TEMPOLARY USE NUGET]
+	[FROM NUGET] -[hidden]- [TEMPOLARY USE NUGET]
+	[TEMPOLARY USE NUGET] -[hidden]- [TEMPOLARY USE DLL FILE]
 }
 
 [TheCEmb] #LightGreen
@@ -28,7 +28,7 @@ package TheS.DevXP {
 [TheS.Mana.Shared.Models] #LightYellow
 [TheS.Mana.WebFacing.Models] #LightYellow
 [TheS.Mana.Models] #LightYellow
-[TheS.WowDi.Essentials] #LightYellow
+[TheS.WowDi.Essentials] #Orange
 
 
 
