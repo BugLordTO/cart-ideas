@@ -1,0 +1,76 @@
+@startuml ManaWalletFacing
+
+package "COLOR MEANING" {
+	[PROECT] #LightGreen
+	[FROM NUGET] #LightYellow
+	[TEMPOLARY USE DLL FILE] #OrangeRed
+	[TEMPOLARY USE NUGET] #Orange
+
+	[PROECT] -[hidden]- [FROM NUGET]
+	[FROM NUGET] -[hidden]- [TEMPOLARY USE DLL FILE]
+	[TEMPOLARY USE DLL FILE] -[hidden]- [TEMPOLARY USE NUGET]
+}
+
+[WebManaApiFacing] #LightGreen
+[ManaQR] #LightGreen
+
+[TheS.Essentials] #OrangeRed
+[TheS.Essentials.AspNetCore] #OrangeRed
+[TheS.Essentials.AspNetCore.Azure] #OrangeRed
+
+package TheS.DevXP {
+	[TheS.DevXP.Azure.AppFundamentals] #LightYellow
+	[TheS.DevXP.ProPractices] #LightYellow
+	[TheS.DevXP.ProPractices.Caching] #LightYellow
+	[TheS.DevXP.ProPractices.Contracts] #LightYellow
+	[TheS.DevXP.MxPractices] #LightYellow
+	[TheS.DevXP.MxPractices.Common] #LightYellow
+	[TheS.DevXP.ProPractices.Data] #LightYellow
+}
+[TheS.Mana.Essentials] #LightYellow
+[TheS.Mana.Shared.Models] #LightYellow
+[TheS.Wallets.Core.Models] #LightYellow
+[TheS.WowDi.Essentials] #LightYellow
+
+
+
+
+[WebManaApiFacing] .u.> [TheS.Essentials]
+[WebManaApiFacing] .u.> [TheS.Essentials.AspNetCore]
+[WebManaApiFacing] .u.> [TheS.Essentials.AspNetCore.Azure]
+
+[WebManaApiFacing] ..> [TheS.DevXP.ProPractices.Caching]
+[TheS.DevXP.ProPractices.Caching] ..> [TheS.DevXP.Azure.AppFundamentals]
+[TheS.DevXP.Azure.AppFundamentals] ..> [TheS.DevXP.ProPractices]
+[TheS.DevXP.Azure.AppFundamentals] ..> [TheS.DevXP.ProPractices.Contracts]
+[TheS.DevXP.ProPractices] ..> [TheS.DevXP.ProPractices.Contracts]
+[WebManaApiFacing] ..> [TheS.Mana.Essentials]
+[WebManaApiFacing] ..> [TheS.Mana.Shared.Models]
+[TheS.Mana.Shared.Models] ..> [TheS.DevXP.MxPractices]
+[TheS.DevXP.MxPractices] ..> [TheS.DevXP.MxPractices.Common]
+[TheS.DevXP.MxPractices] ..> [TheS.DevXP.ProPractices]
+[TheS.DevXP.MxPractices] ..> [TheS.DevXP.ProPractices.Contracts]
+[TheS.Mana.Shared.Models] ..> [TheS.DevXP.MxPractices.Common]
+[TheS.Mana.Shared.Models] ..> [TheS.DevXP.ProPractices.Contracts]
+[TheS.Mana.Shared.Models] ..> [TheS.Mana.Essentials]
+[WebManaApiFacing] ..> [TheS.Wallets.Core.Models]
+[WebManaApiFacing] ..> [TheS.WowDi.Essentials]
+
+[WebManaApiFacing] ..> [TheS.Mana.Models]
+[WebManaApiFacing] ..> [TheS.Mana.WebFacing.Common]
+[TheS.Mana.WebFacing.Common] ..> [TheS.Mana.Shared.Models]
+[TheS.Mana.WebFacing.Common] ..> [TheS.Mana.Helpers]
+[WebManaApiFacing] ..> [TheS.Mana.Helpers]
+[TheS.Mana.Helpers] ..> [TheS.DevXP.Azure.AppFundamentals]
+[TheS.Mana.Helpers] ..> [TheS.DevXP.ProPractices]
+[TheS.Mana.Helpers] ..> [TheS.DevXP.ProPractices.Data]
+[TheS.Mana.Helpers] ..> [TheS.DevXP.ProPractices.Contracts]
+[TheS.Mana.Helpers] ..> [TheS.Mana.Models]
+
+
+
+[ManaQR] ..> [TheS.DevXP.ProPractices.Caching]
+[ManaQR] ..> [TheS.Mana.Shared.Models]
+[ManaQR] ...> [TheS.Mana.Helpers]
+
+@enduml

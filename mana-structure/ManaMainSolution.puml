@@ -1,0 +1,66 @@
+@startuml ManaMainSolution
+
+package "COLOR MEANING" {
+	[PROECT] #LightGreen
+	[FROM NUGET] #LightYellow
+	[TEMPOLARY USE DLL FILE] #OrangeRed
+	[TEMPOLARY USE NUGET] #Orange
+
+	[PROECT] -[hidden]- [FROM NUGET]
+	[FROM NUGET] -[hidden]- [TEMPOLARY USE DLL FILE]
+	[TEMPOLARY USE DLL FILE] -[hidden]- [TEMPOLARY USE NUGET]
+}
+
+[ManaApi] #LightGreen
+[FileApi] #LightGreen
+[ForPartnersApi] #LightGreen
+[ManaBackOfficeOperations] #LightGreen
+[ManaBackOfficeProxy] #LightGreen
+[PartnerProxy] #LightGreen
+[SandboxApim] #LightGreen
+[TheS.Mana.WebFacing.Common] #LightGreen
+[TheS.Mana.Models] #LightGreen
+[TheS.Mana.Essentials] #LightGreen
+[TheS.Mana.WebFacing.Models] #LightGreen
+[TheS.Mana.Shared.Models] #LightYellow
+[TheS.WowDi.Essentials] #LightYellow
+package TheS.DevXP {
+	[TheS.DevXP.Azure.AppFundamentals] #LightYellow
+	[TheS.DevXP.ProPractices] #LightYellow
+	[TheS.DevXP.ProPractices.Caching] #LightYellow
+	[TheS.DevXP.ProPractices.Contracts] #LightYellow
+	[TheS.DevXP.MxPractices] #LightYellow
+	[TheS.DevXP.MxPractices.Common] #LightYellow
+	[TheS.DevXP.ProPractices.Data] #LightYellow
+}
+
+
+
+[ManaApi] ..> [TheS.Mana.WebFacing.Common]
+[FileApi] ..> [TheS.Mana.WebFacing.Common]
+[ForPartnersApi] ..> [TheS.Mana.WebFacing.Common]
+[ManaBackOfficeOperations] ..> [TheS.Mana.WebFacing.Common]
+[ManaBackOfficeProxy] ..> [TheS.Mana.WebFacing.Common]
+[PartnerProxy] ..> [TheS.Mana.WebFacing.Common]
+[SandboxApim] ..> [TheS.Mana.WebFacing.Common]
+[TheS.Mana.WebFacing.Common] ..> [TheS.Mana.Models]
+[TheS.Mana.Models] ..> [TheS.Mana.Essentials]
+[TheS.Mana.WebFacing.Common] ..> [TheS.Mana.WebFacing.Models]
+[TheS.Mana.WebFacing.Models] ..> [TheS.DevXP.Azure.AppFundamentals]
+[TheS.DevXP.Azure.AppFundamentals] ..> [TheS.DevXP.ProPractices]
+[TheS.DevXP.ProPractices] ..> [TheS.DevXP.ProPractices.Contracts]
+[TheS.DevXP.Azure.AppFundamentals] ..> [TheS.DevXP.ProPractices.Contracts]
+[TheS.Mana.WebFacing.Models] ..> [TheS.DevXP.ProPractices.Caching]
+[TheS.DevXP.ProPractices.Caching] ..> [TheS.DevXP.Azure.AppFundamentals]
+[TheS.Mana.WebFacing.Models] ..> [TheS.DevXP.ProPractices.Data]
+[TheS.DevXP.ProPractices.Data] ..> [TheS.DevXP.ProPractices.Contracts]
+[TheS.Mana.WebFacing.Models] ..> [TheS.Mana.Shared.Models]
+[TheS.Mana.Shared.Models] ...> [TheS.DevXP.MxPractices]
+[TheS.DevXP.MxPractices] ..> [TheS.DevXP.MxPractices.Common]
+[TheS.DevXP.MxPractices] ..> [TheS.DevXP.ProPractices]
+[TheS.DevXP.MxPractices] ..> [TheS.DevXP.ProPractices.Contracts]
+[TheS.Mana.Shared.Models] ..> [TheS.DevXP.MxPractices.Common]
+[TheS.Mana.Shared.Models] ..> [TheS.DevXP.ProPractices.Contracts]
+[TheS.Mana.WebFacing.Models] ..> [TheS.WowDi.Essentials]
+
+@enduml

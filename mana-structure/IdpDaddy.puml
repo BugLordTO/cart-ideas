@@ -1,0 +1,43 @@
+@startuml IdpDaddy
+
+package "COLOR MEANING" {
+	[PROECT] #LightGreen
+	[FROM NUGET] #LightYellow
+	[TEMPOLARY USE DLL FILE] #OrangeRed
+	[TEMPOLARY USE NUGET] #Orange
+
+	[PROECT] -[hidden]- [FROM NUGET]
+	[FROM NUGET] -[hidden]- [TEMPOLARY USE DLL FILE]
+	[TEMPOLARY USE DLL FILE] -[hidden]- [TEMPOLARY USE NUGET]
+}
+
+[ManaIdp] #LightGreen
+[TheS.Mana.IdpFacing.Common] #LightGreen
+[TheS.WowDi.AuthServices] #LightGreen
+package TheS.DevXP {
+	[TheS.DevXP.Azure.AppFundamentals] #LightYellow
+	[TheS.DevXP.Azure.AppSecrets] #LightYellow
+	[TheS.DevXP.ProPractices] #LightYellow
+	[TheS.DevXP.ProPractices.Caching] #LightYellow
+	[TheS.DevXP.ProPractices.Contracts] #LightYellow
+	[TheS.DevXP.ProPractices.Data] #LightYellow
+}
+[TheS.WowDi.Essentials] #LightYellow
+
+
+
+[ManaIdp] ..> [TheS.Mana.IdpFacing.Common]
+[ManaIdp] ..> [TheS.DevXP.ProPractices.Data]
+[TheS.DevXP.ProPractices.Data] ..> [TheS.DevXP.ProPractices.Contracts]
+[TheS.Mana.IdpFacing.Common] ..> [TheS.DevXP.Azure.AppSecrets]
+[TheS.DevXP.Azure.AppSecrets] ..> [TheS.DevXP.ProPractices]
+[TheS.DevXP.ProPractices] ..> [TheS.DevXP.ProPractices.Contracts]
+[TheS.Mana.IdpFacing.Common] ..> [TheS.WowDi.AuthServices]
+[TheS.WowDi.AuthServices] ...> [TheS.DevXP.ProPractices.Caching]
+[TheS.DevXP.ProPractices.Caching] ..> [TheS.DevXP.Azure.AppFundamentals]
+[TheS.DevXP.Azure.AppFundamentals] ..> [TheS.DevXP.ProPractices]
+[TheS.DevXP.Azure.AppFundamentals] ..> [TheS.DevXP.ProPractices.Contracts]
+[TheS.Mana.IdpFacing.Common] ..> [TheS.DevXP.ProPractices.Contracts]
+[TheS.WowDi.AuthServices] ..> [TheS.WowDi.Essentials]
+
+@enduml
