@@ -64,10 +64,10 @@ package TheS.DevXP {
 [TheS.Mana.WebFacing.Common] ..> [TheS.Mana.Shared.Models]
 [TheS.Mana.WebFacing.Common] ..> [TheS.Mana.Helpers]
 [WebManaApiFacing] ..> [TheS.Mana.Helpers]
-[TheS.Mana.Helpers] ..> [TheS.DevXP.Azure.AppFundamentals]
+[TheS.Mana.Helpers] ...> [TheS.DevXP.Azure.AppFundamentals]
 [TheS.Mana.Helpers] ..> [TheS.DevXP.ProPractices]
 [TheS.Mana.Helpers] ..> [TheS.DevXP.ProPractices.Data]
-[TheS.Mana.Helpers] ..> [TheS.DevXP.ProPractices.Contracts]
+[TheS.DevXP.ProPractices.Data] ..> [TheS.DevXP.ProPractices.Contracts]
 [TheS.Mana.Helpers] ..> [TheS.Mana.Models]
 
 
