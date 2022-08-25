@@ -1,0 +1,28 @@
+@startuml ManaGate
+
+!include ColorMeaning.puml
+
+package ManaService {
+    [ManaGate] #LightGreen
+    [ManaCEmb] #LightGreen
+
+    [ManaGate-p] #LightYellow
+    note right
+        devN
+        devmaster
+        testflight
+        release
+        production
+    end note
+
+    [ManaGate] --> [ManaGate-p]
+    [ManaCEmb] --> [ManaGate-p]
+
+    [managate] #Orange
+    [manacemb] #Orange
+
+    [ManaGate-p] --> [managate]
+    [ManaGate-p] --> [manacemb]
+}
+
+@enduml

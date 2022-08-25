@@ -1,0 +1,46 @@
+@startuml ManaService
+
+!include ColorMeaning.puml
+
+package ManaService {
+    [PartnerProxy] #LightGreen
+    [SandboxApim] #LightGreen
+    [FileApi] #LightGreen
+    [QrServiceApi] #LightGreen
+    [NotiServiceApi] #LightGreen
+
+    [ManaService-p] #LightYellow
+    note right
+        devmaster
+        + devN
+        testflight
+        + release
+        production
+    end note
+
+    [PartnerProxy] --> [ManaService-p]
+    [SandboxApim] --> [ManaService-p]
+    [FileApi] --> [ManaService-p]
+    [QrServiceApi] --> [ManaService-p]
+
+    [mcproxy] #Orange
+    note right
+        devN
+        devmaster
+        testflight
+        release
+        production
+    end note
+    [sandboxapim] #Orange
+    [fileapi] #Orange
+    [xqrapi] #Orange
+    [mananoti] #YellowGreen
+
+    [ManaService-p] --> [mcproxy]
+    [ManaService-p] --> [sandboxapim]
+    [ManaService-p] --> [fileapi]
+    [ManaService-p] --> [xqrapi]
+    [NotiServiceApi] ---> [mananoti]
+}
+
+@enduml

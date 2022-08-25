@@ -1,0 +1,22 @@
+@startuml ManaGate
+
+package "COLOR MEANING" {
+    [PROECT] #LightGreen
+    [PIPELINE] #LightYellow
+    [KUBERNETES] #Orange
+    [NUGET] #OrangeRed
+    [FUNCTIONAPP] #YellowGreen
+    [APPSERVICE] #SkyBlue
+    [STORAGE ACCOUNT] #SeaGreen
+    [STORE] #IndianRed
+
+    [PROECT] -[hidden]- [PIPELINE]
+    [PIPELINE] -[hidden]- [KUBERNETES]
+    [KUBERNETES] -[hidden]- [NUGET]
+    [NUGET] -[hidden]- [FUNCTIONAPP]
+    [FUNCTIONAPP] -[hidden]- [APPSERVICE]
+    [APPSERVICE] -[hidden]- [STORAGE ACCOUNT]
+    [STORAGE ACCOUNT] -[hidden]- [STORE]
+}
+
+@enduml

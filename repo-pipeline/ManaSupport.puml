@@ -1,0 +1,28 @@
+@startuml ManaSupport
+
+!include ColorMeaning.puml
+
+package ManaSupport {
+    [ManaBackOfficeOperations] #LightGreen
+    [BackOfficeClient] #LightGreen
+    [ManaBackOfficeProxy] #LightGreen
+
+    [ManaSupportClient-p] #LightYellow
+    [ManaSupport-p] #LightYellow
+    note right
+        dev
+        test
+        th
+    end note
+
+    [ManaBackOfficeOperations] --> [ManaSupport-p]
+    [BackOfficeClient] --> [ManaSupportClient-p]
+
+    [manabackoffice] #Orange
+    [manabackofficeclient] #Orange
+
+    [ManaSupport-p] --> [manabackoffice]
+    [ManaSupportClient-p] --> [manabackofficeclient]
+}
+
+@enduml

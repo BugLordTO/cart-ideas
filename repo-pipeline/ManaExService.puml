@@ -1,0 +1,28 @@
+@startuml ManaExService
+
+!include ColorMeaning.puml
+
+package ManaExService {
+    [Dopa] #LightGreen
+    [Amlo] #LightGreen
+
+    [ManaExService-p] #LightYellow
+    note right
+        devmaster
+        + devN
+        testflight
+        + release
+        production
+    end note
+
+    [Dopa] --> [ManaExService-p]
+    [Amlo] --> [ManaExService-p]
+
+    [dopasvc] #Orange
+    [amlosvc] #Orange
+
+    [ManaExService-p] --> [dopasvc]
+    [ManaExService-p] --> [amlosvc]
+}
+
+@enduml

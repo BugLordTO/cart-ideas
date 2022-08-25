@@ -1,0 +1,24 @@
+@startuml ManaLink
+
+!include ColorMeaning.puml
+
+package ManaLink {
+    [ManaLanding] #LightGreen
+
+    [ManaLink-p] #LightYellow
+    note right
+        devN
+        devmaster
+        testflight
+        release
+        production
+    end note
+
+    [ManaLanding] --> [ManaLink-p]
+
+    [xmunilink] #Orange
+
+    [ManaLink-p] --> [xmunilink]
+}
+
+@enduml

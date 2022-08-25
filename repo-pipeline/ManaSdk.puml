@@ -1,0 +1,22 @@
+@startuml ManaSdk
+
+!include ColorMeaning.puml
+
+[ManaPlayground.TheS] #LightGreen
+
+[ManaSdk-p] #LightYellow
+note right
+    devN
+    devmaster
+    testflight
+    release
+    production
+end note
+
+[ManaPlayground.TheS] --> [ManaSdk-p]
+
+[TheS.Mana.Playground] #OrangeRed
+
+[ManaSdk-p] --> [TheS.Mana.Playground]
+
+@enduml

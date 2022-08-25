@@ -1,0 +1,24 @@
+@startuml RiderApp
+
+!include ColorMeaning.puml
+
+package RiderApp {
+    [Client] #LightGreen
+    [Zip] #LightGreen
+
+    [RiderApp-p] #LightYellow
+
+    [Client] --> [RiderApp-p]
+    [Zip] --> [RiderApp-p]
+    note right
+        dev
+        test
+        th
+    end note
+
+    [RiderApp-m] #IndianRed
+
+    [RiderApp-p] --> [RiderApp-m]
+}
+
+@enduml

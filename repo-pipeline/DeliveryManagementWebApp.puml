@@ -1,0 +1,41 @@
+@startuml DeliveryManagementWebApp
+
+!include ColorMeaning.puml
+
+package DeliveryManagementWebApp {
+    [DeliveryManagement] #LightGreen
+    [DeliveryFunc] #LightGreen
+    [WebAdmin] #LightGreen
+    [WebDevster] #LightGreen
+    [InManaAppContents] #LightGreen
+
+    [DeliveryApi-p] #LightYellow
+    [WebAdmin-p] #LightYellow
+    [WebDevster-p] #LightYellow
+    [InManaAppContents-p] #LightYellow
+
+    [DeliveryManagement] --> [DeliveryApi-p]
+    [DeliveryFunc] --> [DeliveryApi-p]
+    note right
+        dev
+        test
+        th
+    end note
+    [WebAdmin] --> [WebAdmin-p]
+    [WebDevster] --> [WebDevster-p]
+    [InManaAppContents] --> [InManaAppContents-p]
+
+    [deliveryapi] #SkyBlue
+    [delivery-3rd-func] #YellowGreen
+    [xxxblob] #SeaGreen
+    [yyyblob] #SeaGreen
+    [delivery3rdblob] #SeaGreen
+
+    [DeliveryApi-p] --> [deliveryapi]
+    [DeliveryApi-p] --> [delivery-3rd-func]
+    [WebAdmin-p] --> [xxxblob]
+    [WebDevster-p] --> [yyyblob]
+    [InManaAppContents-p] --> [delivery3rdblob]
+}
+
+@enduml

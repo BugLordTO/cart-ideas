@@ -1,0 +1,24 @@
+@startuml ManaIdp
+
+!include ColorMeaning.puml
+
+package ManaService {
+    [ManaIdp] #LightGreen
+
+    [ManaIdp-p] #LightYellow
+    note right
+        devmaster
+        + devN
+        testflight
+        + release
+        production
+    end note
+
+    [ManaIdp] --> [ManaIdp-p]
+
+    [manaidp] #Orange
+
+    [ManaIdp-p] --> [manaidp]
+}
+
+@enduml

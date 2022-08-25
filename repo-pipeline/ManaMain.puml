@@ -1,0 +1,51 @@
+@startuml ManaMain
+
+!include ColorMeaning.puml
+
+package ManaMain {
+    [WebManaApiFacing] #LightGreen
+    [ManaApi] #LightGreen
+    [ForPartnersApi] #LightGreen
+    [TheS.Mana.Models] #LightGreen
+    [TheS.Mana.Essentials] #LightGreen
+    [TheS.Mana.WebFacing.Models] #LightGreen
+
+    [ManaMainSrcx] #LightYellow
+    note right
+        devN
+        devmaster
+        testflight
+        release
+        production
+    end note
+    [ManaMainSrc] #LightYellow
+    note right
+        devN
+        devmaster
+        testflight
+        release
+        production
+    end note
+
+    [WebManaApiFacing] --> [ManaMainSrcx]
+    [ManaApi] --> [ManaMainSrc]
+    [ForPartnersApi] --> [ManaMainSrc]
+    [TheS.Mana.Models] --> [ManaMainSrc]
+    [TheS.Mana.Essentials] --> [ManaMainSrc]
+
+    [xapimana] #Orange
+    [apimana] #Orange
+    [api4partners] #Orange
+
+    [ManaMainSrcx] --> [xapimana]
+    [ManaMainSrc] --> [apimana]
+    [ManaMainSrc] --> [api4partners]
+
+    [n-TheS.Mana.Models] #OrangeRed
+    [n-TheS.Mana.Essentials] #OrangeRed
+
+    [ManaMainSrc] --> [n-TheS.Mana.Models]
+    [ManaMainSrc] --> [n-TheS.Mana.Essentials]
+}
+
+@enduml

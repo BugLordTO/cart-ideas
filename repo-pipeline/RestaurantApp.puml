@@ -1,0 +1,24 @@
+@startuml RestaurantApp
+
+!include ColorMeaning.puml
+
+package RestaurantApp {
+    [Client] #LightGreen
+    [Zip] #LightGreen
+
+    [RestaurantApp-p] #LightYellow
+
+    [Client] --> [RestaurantApp-p]
+    [Zip] --> [RestaurantApp-p]
+    note right
+        dev
+        test
+        th
+    end note
+
+    [RestaurantApp-m] #IndianRed
+
+    [RestaurantApp-p] --> [RestaurantApp-m]
+}
+
+@enduml
