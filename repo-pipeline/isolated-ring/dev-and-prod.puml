@@ -1,5 +1,17 @@
 @startuml dev-and-prod
 
+[AmloSand] <<SANDBOX>>
+note bottom of [AmloSand]
+@@@ ideas ในอุดมคติ @@@
+AmloDev ทดลอง sync กับ AmloSand
+
+@@@ ที่จะทำ @@@
+AmloSand AmloReal
+request/response บางอย่างไม่เหมือนกัน
+ใน dev เลยจะไม่ทำ sync กับ AmloSand
+จะทำเป็น request/response ธรรมดา
+end note
+
 package DevCluster {
     cloud {
         [DevA]
@@ -12,22 +24,20 @@ package DevCluster {
 
     [AmloDev] <<MOCK>>
     [DopaDev] <<MOCK>>
-    [P2SDev] <<MOCK>>
-    [BlobDev]
+    [P2DDev] <<MOCK>>
     [FraudDev]
     [InsightDev]
 
     [DevMaster] .r. [AmloDev]
-    [AmloDev] .r. [BlobDev]
+    [AmloDev] .r. [AmloSand]
     [DevMaster] .r. [DopaDev]
-    [DopaDev] .u. [BlobDev]
-    [DevMaster] .r. [P2SDev]
+    [DevMaster] .r. [P2DDev]
     [DevMaster] .r. [FraudDev]
     [FraudDev] <-l- [InsightDev]
 
     [AmloDev] .[hidden]. [DopaDev]
-    [DopaDev] .[hidden]. [P2SDev]
-    [P2SDev] .[hidden]. [FraudDev]
+    [DopaDev] .[hidden]. [P2DDev]
+    [P2DDev] .[hidden]. [FraudDev]
 
     [DevMaster] .[hidden].. [DevA]
     [DevA] .[hidden]. [DevB]
@@ -43,14 +53,14 @@ package PreCluster {
     [AmloPre] <<MOCK>>
     [DopaPre] <<MOCK>>
     [P2SPre] <<MOCK>>
-    [BlobDPre]
+    [BlobPre]
     [FraudPre]
     [InsightPre]
 
     [Testflight] .r. [AmloPre]
-    [AmloPre] .r. [BlobDPre]
+    [AmloPre] .r. [BlobPre]
     [Testflight] .r. [DopaPre]
-    [DopaPre] .u. [BlobDPre]
+    [DopaPre] .u. [BlobPre]
     [Testflight] .r. [P2SPre]
     [Testflight] .... [FraudPre]
     [FraudPre] <-l- [InsightPre]
