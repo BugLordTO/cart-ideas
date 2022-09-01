@@ -44,7 +44,7 @@
 
 ### รายละเอียดของ command & params
 
-1. user กดจ่ายตะกร้า จะ StartEscrow มี params ดังนี้
+1. user กดจ่ายตะกร้า StartEscrow มี params ดังนี้
     - walletId: กระเป๋าคนจ่าย
     - baId: ร้านที่ซื้อของ
     - amountIn: เงินที่จ่ายทั้งหมด

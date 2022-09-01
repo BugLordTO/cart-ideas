@@ -1,39 +1,65 @@
-# ManaMain
+# Repo/Pipeline Objective
+- scope ที่ทำ
+- ปัจจุบันเป็นแบบไหน
+- ไอเดียเริ่มต้น
+
+# Scope
+
+- ✅ ManaMain
+- ManaService
+- ManaExService
+- ✅ ManaGate
+- ManaIdp
+- ManaSupport
+- ✅ ManaApp
+- ✅ ManaLink
+- ManaSdk
+- ManaTest
+- Proposal
+- DeliveryApi
+- ✅ DeliveryApp
+
+# Current
+![](out/Current/Current.png)
+
+# Ideas
+
+## ManaMain
 ![](out/ManaMain/ManaMain.png)
 
-# ManaService
+## ManaService
 ![](out/ManaService/ManaService.png)
 
-# ManaExService
+## ManaExService
 ![](out/ManaExService/ManaExService.png)
 
-# ManaGate
+## ManaGate
 ![](out/ManaGate/ManaGate.png)
 
-# ManaIdp
+## ManaIdp
 ![](out/ManaIdp/ManaIdp.png)
 
-# ManaSupport
+## ManaSupport
 ![](out/ManaSupport/ManaSupport.png)
 
-# ManaApp
+## ManaApp
 
-# ManaLink
+## ManaLink
 ![](out/ManaLink/ManaLink.png)
 
-# ManaSdk
+## ManaSdk
 
-# ManaTest
+## ManaTest
 
-# Proposal
+## Proposal
 
-# DeliveryManagementWebApp
+## DeliveryManagementWebApp
 ![](out/DeliveryManagementWebApp/DeliveryManagementWebApp.png)
 
-# RestaurantApp
+## RestaurantApp
 ![](out/RestaurantApp/RestaurantApp.png)
 
-# RiderApp
+## RiderApp
 ![](out/RiderApp/RiderApp.png)
 
-# JsDevLib
+## JsDevLib

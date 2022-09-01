@@ -1,0 +1,87 @@
+@startuml dev-and-prod
+
+package DevCluster {
+    cloud {
+        [DevA]
+        [DevB]
+        [DevC]
+        [DevD]
+        [DevX]
+    }
+    [DevMaster]
+
+    [AmloDev] <<MOCK>>
+    [DopaDev] <<MOCK>>
+    [P2SDev] <<MOCK>>
+    [BlobDev]
+    [FraudDev]
+    [InsightDev]
+
+    [DevMaster] .r. [AmloDev]
+    [AmloDev] .r. [BlobDev]
+    [DevMaster] .r. [DopaDev]
+    [DopaDev] .u. [BlobDev]
+    [DevMaster] .r. [P2SDev]
+    [DevMaster] .r. [FraudDev]
+    [FraudDev] <-l- [InsightDev]
+
+    [AmloDev] .[hidden]. [DopaDev]
+    [DopaDev] .[hidden]. [P2SDev]
+    [P2SDev] .[hidden]. [FraudDev]
+
+    [DevMaster] .[hidden].. [DevA]
+    [DevA] .[hidden]. [DevB]
+    [DevB] .[hidden]. [DevC]
+    [DevC] .[hidden]. [DevD]
+    [DevD] .[hidden]. [DevX]
+    [DevD] .[hidden]. [DevX]
+}
+
+package PreCluster {
+    [Testflight]
+
+    [AmloPre] <<MOCK>>
+    [DopaPre] <<MOCK>>
+    [P2SPre] <<MOCK>>
+    [BlobDPre]
+    [FraudPre]
+    [InsightPre]
+
+    [Testflight] .r. [AmloPre]
+    [AmloPre] .r. [BlobDPre]
+    [Testflight] .r. [DopaPre]
+    [DopaPre] .u. [BlobDPre]
+    [Testflight] .r. [P2SPre]
+    [Testflight] .... [FraudPre]
+    [FraudPre] <-l- [InsightPre]
+
+    [AmloPre] .[hidden]. [DopaPre]
+    [DopaPre] .[hidden]. [P2SPre]
+}
+
+[AmloProd] <<VM>>
+[Amlo] <<REAL>>
+[DopaProd] <<VM>>
+[Dopa] <<REAL>>
+[P2D] <<REAL>>
+
+package ProdCluster {
+    cloud {
+        [Staging]
+    }
+    [Production]
+    [FraudProd]
+    [InsightProd]
+
+    [Production] .[hidden].. [Staging]
+    [Production] .. [FraudProd]
+    [FraudProd] <-l- [InsightProd]
+}
+
+[Production] . [AmloProd]
+[AmloProd] . [Amlo]
+[Production] .. [DopaProd]
+[DopaProd] . [Dopa]
+[Production] ... [P2D]
+
+@enduml

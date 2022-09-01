@@ -1,0 +1,121 @@
+@startuml Current
+
+!include ColorMeaning.puml
+
+package ManaMain {
+    [WebManaApiFacing] #LightGreen
+    [ManaApi] #LightGreen
+    [ForPartnersApi] #LightGreen
+    [TheS.Mana.Models] #LightGreen
+    [TheS.Mana.Essentials] #LightGreen
+    [TheS.Mana.WebFacing.Models] #LightGreen
+
+    [ManaBackOfficeOperations] #LightGreen
+    [ManaBackOfficeProxy] #LightGreen
+
+    [PartnerProxy] #LightGreen
+    [SandboxApim] #LightGreen
+    [FileApi] #LightGreen
+    [QrServiceApi] #LightGreen
+
+    [ManaMainSrcx] #LightYellow
+    note right
+        devN
+        devmaster
+        testflight
+        release
+        production
+    end note
+    [ManaMainSrc] #LightYellow
+    note right
+        devN
+        devmaster
+        testflight
+        release
+        production
+    end note
+
+    [WebManaApiFacing] --> [ManaMainSrcx]
+    [ManaApi] --> [ManaMainSrc]
+    [ForPartnersApi] --> [ManaMainSrc]
+    [TheS.Mana.Models] --> [ManaMainSrc]
+    [TheS.Mana.Essentials] --> [ManaMainSrc]
+
+    [PartnerProxy] --> [ManaMainSrc]
+    [SandboxApim] --> [ManaMainSrc]
+    [FileApi] --> [ManaMainSrc]
+    [QrServiceApi] --> [ManaMainSrcx]
+
+    [xapimana] #Orange
+    [apimana] #Orange
+    [api4partners] #Orange
+    [mana-backoffice] #SkyBlue
+    
+    [mcproxy] #Orange
+    [sandboxapim] #Orange
+    [fileapi] #Orange
+    [xqrapi] #Orange
+
+    [ManaMainSrcx] --> [xapimana]
+    [ManaMainSrc] --> [apimana]
+    [ManaMainSrc] --> [api4partners]
+
+    [n-TheS.Mana.Models] #OrangeRed
+    [n-TheS.Mana.Essentials] #OrangeRed
+
+    [ManaMainSrc] --> [n-TheS.Mana.Models]
+    [ManaMainSrc] --> [n-TheS.Mana.Essentials]
+    [ManaBackOfficeOperations] ---> [mana-backoffice]
+
+    [ManaMainSrc] --> [mcproxy]
+    [ManaMainSrc] --> [sandboxapim]
+    [ManaMainSrc] --> [fileapi]
+    [ManaMainSrcx] --> [xqrapi]
+}
+
+package ManaGate {
+    [TheGatel] #LightGreen
+    [TheaCEmb] #LightGreen
+
+    [ManaGate-p] #LightYellow
+    note right
+        devN
+        devmaster
+        testflight
+        release
+        production
+    end note
+
+    [TheGatel] --> [ManaGate-p]
+    [TheaCEmb] --> [ManaGate-p]
+
+    [managate] #Orange
+    [manacemb] #Orange
+
+    [ManaGate-p] --> [managate]
+    [ManaGate-p] --> [manacemb]
+}
+
+package ManaLink {
+    [ManaLanding] #LightGreen
+
+    [ManaLink-p] #LightYellow
+    note right
+        devN
+        devmaster
+        testflight
+        release
+        production
+    end note
+
+    [ManaLanding] --> [ManaLink-p]
+
+    [xmunilink] #Orange
+
+    [ManaLink-p] --> [xmunilink]
+}
+
+ManaMain -[hidden]--- ManaGate
+ManaMain -[hidden]--- ManaLink
+
+@enduml

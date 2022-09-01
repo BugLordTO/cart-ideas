@@ -3,7 +3,7 @@
 !include ColorMeaning.puml
 
 package ManaService {
-    [ManaIdp] #LightGreen
+    [IdpDaddy] #LightGreen
 
     [ManaIdp-p] #LightYellow
     note right
@@ -14,7 +14,7 @@ package ManaService {
         production
     end note
 
-    [ManaIdp] --> [ManaIdp-p]
+    [IdpDaddy] --> [ManaIdp-p]
 
     [manaidp] #Orange
 

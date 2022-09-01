@@ -2,9 +2,9 @@
 
 !include ColorMeaning.puml
 
-package ManaService {
-    [ManaGate] #LightGreen
-    [ManaCEmb] #LightGreen
+package ManaGate {
+    [TheGatel] #LightGreen
+    [TheaCEmb] #LightGreen
 
     [ManaGate-p] #LightYellow
     note right
@@ -15,8 +15,8 @@ package ManaService {
         production
     end note
 
-    [ManaGate] --> [ManaGate-p]
-    [ManaCEmb] --> [ManaGate-p]
+    [TheGatel] --> [ManaGate-p]
+    [TheaCEmb] --> [ManaGate-p]
 
     [managate] #Orange
     [manacemb] #Orange

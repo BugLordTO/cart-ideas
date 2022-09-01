@@ -1,0 +1,83 @@
+@startuml IsolateRing
+
+package devmaster {
+    [devmaster.mobile] #IndianRed
+    [devmaster.mcproxy] #LimeGreen
+    [devmaster.proxy.yaml] #LimeGreen
+    [devmaster.manaapi] #SkyBlue
+    [devmaster.amlo]
+
+    [devmaster.mobile] -> [devmaster.mcproxy]
+    [devmaster.proxy.yaml] ..> [devmaster.mcproxy]
+    [devmaster.mcproxy] -> [devmaster.manaapi]
+    [devmaster.manaapi] -> [devmaster.amlo]
+}
+
+package deva {
+    [deva.mobile] #IndianRed
+    [deva.mcproxy] #LimeGreen
+    [deva.proxy.yaml] #LimeGreen
+    [deva.manaapi] #SkyBlue
+
+    [deva.mobile] -> [deva.mcproxy]
+    [deva.proxy.yaml] ..> [deva.mcproxy]
+    [deva.mcproxy] -> [deva.manaapi]
+    [deva.manaapi] -> [deva.amlo]
+}
+[devmaster.mcproxy] -[hidden]-> [deva.proxy.yaml]
+
+package ideas {
+    [devmaster1.mobile] #IndianRed
+    [devb1.mobile] #IndianRed
+    [devmaster1.mcproxy] #LimeGreen
+    [devmaster1.proxy.yaml] #LimeGreen
+    [deva1.proxy.yaml] #LimeGreen
+    [devb1.proxy.yaml] #LimeGreen
+    [devmaster1.manaapi] #SkyBlue
+    [devb1.manaapi] #SkyBlue
+    [devmaster1.amlo]
+
+    [devmaster1.mobile] -> [devmaster1.mcproxy]
+    [devb1.mobile] -u-> [devmaster1.mcproxy]
+    [devmaster1.mobile] -[hidden]-> [devb1.mobile]
+    [devmaster1.proxy.yaml] ..> [devmaster1.mcproxy]
+    [deva1.proxy.yaml] ..> [devmaster1.mcproxy]
+    [devb1.proxy.yaml] ..> [devmaster1.mcproxy]
+    [devmaster1.mcproxy] -> [devmaster1.manaapi]
+    [devmaster1.mcproxy] --> [devb1.manaapi]
+    ' [a.manaapi] -[hidden]-> [b.manaapi]
+    [devmaster1.manaapi] -> [devmaster1.amlo]
+    [devb1.manaapi] -u-> [devmaster1.amlo]
+}
+
+package ideas2 {
+    [devmaster2.mobile] #IndianRed
+    [devmaster2.mcproxy] #LimeGreen
+    [devmaster2.proxy.yaml] #LimeGreen
+    [devmaster2.manaapi] #SkyBlue
+    [devmaster2.amlo]
+    [deva2.mobile] #IndianRed
+    [deva2.mcproxy] #LimeGreen
+    [deva2.proxy.yaml] #LimeGreen
+    [deva2.manaapi] #SkyBlue
+    [deva2.someapi1] #SkyBlue
+
+    [devmaster2.mobile] -r-> [devmaster2.mcproxy]
+    [devmaster2.proxy.yaml] ..> [devmaster2.mcproxy]
+    [devmaster2.mcproxy] -r-> [devmaster2.manaapi]
+    [devmaster2.manaapi] -r-> [devmaster2.amlo]
+
+    [deva2.mobile] -r-> [deva2.mcproxy]
+    [deva2.proxy.yaml] .u.> [deva2.mcproxy]
+    [deva2.mcproxy] -r-> [deva2.manaapi]
+    [deva2.manaapi] -u-> [devmaster2.amlo]
+
+    [devmaster2.mobile] -[hidden]-> [deva2.mobile]
+    [devmaster2.mcproxy] -[hidden]-> [deva2.mcproxy]
+
+    [deva2.manaapi] -> [deva2.someapi1]
+    [deva2.someapi1] -u-> [devmaster2.someapi2]
+    [devmaster2.someapi2] -l-> [devmaster2.manaapi] #red
+}
+
+@enduml

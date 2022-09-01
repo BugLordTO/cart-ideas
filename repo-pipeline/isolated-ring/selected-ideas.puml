@@ -1,0 +1,31 @@
+@startuml SelectedIsolateRing
+
+[devmaster2.mobile] #IndianRed
+[devmaster2.mcproxy] #LimeGreen
+[devmaster2.proxy.yaml] #LimeGreen
+[devmaster2.manaapi] #SkyBlue
+[devmaster2.amlo]
+[deva2.mobile] #IndianRed
+[deva2.mcproxy] #LimeGreen
+[deva2.proxy.yaml] #LimeGreen
+[deva2.manaapi] #SkyBlue
+[deva2.someapi1] #SkyBlue
+
+[devmaster2.mobile] -r-> [devmaster2.mcproxy]
+[devmaster2.proxy.yaml] ..> [devmaster2.mcproxy]
+[devmaster2.mcproxy] -r-> [devmaster2.manaapi]
+[devmaster2.manaapi] -r-> [devmaster2.amlo]
+
+[deva2.mobile] -r-> [deva2.mcproxy]
+[deva2.proxy.yaml] .u.> [deva2.mcproxy]
+[deva2.mcproxy] -r-> [deva2.manaapi]
+[deva2.manaapi] -u-> [devmaster2.amlo]
+
+[devmaster2.mobile] -[hidden]-> [deva2.mobile]
+[devmaster2.mcproxy] -[hidden]-> [deva2.mcproxy]
+
+[deva2.manaapi] -> [deva2.someapi1]
+[deva2.someapi1] -u-> [devmaster2.someapi2]
+[devmaster2.someapi2] -l-> [devmaster2.manaapi] #red
+
+@enduml
