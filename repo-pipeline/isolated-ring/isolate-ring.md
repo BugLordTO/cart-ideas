@@ -27,7 +27,7 @@
         - apptext testcase
     - JsLib > ตอนนี้ manual > auto ได้ก็ดี
 ```
-![](../out/isolated-ring/selected-ideas/SelectedIsolateRing.png)
+![](out/selected-ideas/SelectedIsolateRing.png)
 
 ## ✅ จุดประสงค์
 - ปรับให้ dev ring มี kube deployment กลุ่มหลัก 1 กลุ่ม
