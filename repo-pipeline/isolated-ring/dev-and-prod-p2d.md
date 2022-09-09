@@ -16,4 +16,5 @@
 - สร้าง channel MT แต่ละ ring ไว้
 - ถ้ามีการ dev ของที่เกี่ยวกับ MT จะต้อง deploy P2DDev ของแต่ละ ring
 - สร้าง config MT channel แต่ละ ring ไว้
-- P2DDev ใช้ MT channel แยก ring ตามที่ config ไว้แล้ว
+- DevAPI รับ message จาก MT channel แยก ring ตามที่ config ไว้แล้ว
+- P2DDev ส่ง message ไปที่ MT channel แยก ring ตามที่ config ไว้แล้ว
