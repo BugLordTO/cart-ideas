@@ -28,23 +28,17 @@ package DevCluster {
     [FraudDev]
     [InsightDev]
 
-    [DevMaster] .r. [AmloDev]
-    [AmloDev] .r. [AmloSand]
-    [DevMaster] .r. [DopaDev]
-    [DevMaster] .r. [P2DDev]
-    [DevMaster] .r. [FraudDev]
+    [DevMaster] . [AmloDev]
+    [AmloDev] . [AmloSand]
+    [DevMaster] .. [DopaDev]
+    [DevMaster] .. [P2DDev]
+    [DevMaster] ... [FraudDev]
     [FraudDev] <-l- [InsightDev]
 
     [AmloDev] .[hidden]. [DopaDev]
     [DopaDev] .[hidden]. [P2DDev]
-    [P2DDev] .[hidden]. [FraudDev]
 
-    [DevMaster] .[hidden].. [DevA]
-    [DevA] .[hidden]. [DevB]
-    [DevB] .[hidden]. [DevC]
-    [DevC] .[hidden]. [DevD]
-    [DevD] .[hidden]. [DevX]
-    [DevD] .[hidden]. [DevX]
+    [DevMaster] .[hidden]... [DevA]
 }
 
 package PreCluster {
@@ -52,26 +46,22 @@ package PreCluster {
 
     [AmloPre] <<MOCK>>
     [DopaPre] <<MOCK>>
-    [P2SPre] <<MOCK>>
-    [BlobPre]
+    [P2DPre] <<MOCK>>
     [FraudPre]
     [InsightPre]
 
-    [Testflight] .r. [AmloPre]
-    [AmloPre] .r. [BlobPre]
-    [Testflight] .r. [DopaPre]
-    [DopaPre] .u. [BlobPre]
-    [Testflight] .r. [P2SPre]
-    [Testflight] .... [FraudPre]
+    [Testflight] . [AmloPre]
+    [AmloPre] . [AmloSand]
+    [Testflight] . [DopaPre]
+    [Testflight] . [P2DPre]
+    [Testflight] ... [FraudPre]
     [FraudPre] <-l- [InsightPre]
 
     [AmloPre] .[hidden]. [DopaPre]
-    [DopaPre] .[hidden]. [P2SPre]
+    [DopaPre] .[hidden]. [P2DPre]
 }
 
-[AmloProd] <<VM>>
 [Amlo] <<REAL>>
-[DopaProd] <<VM>>
 [Dopa] <<REAL>>
 [P2D] <<REAL>>
 
@@ -80,6 +70,8 @@ package ProdCluster {
         [Staging]
     }
     [Production]
+    [AmloProd]
+    [DopaProd]
     [FraudProd]
     [InsightProd]
 

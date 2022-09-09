@@ -1,0 +1,45 @@
+@startuml dev-and-prod-p2d
+
+package DevCluster {
+
+    package MTChannel {
+        [DepositDevMaster]
+        [WithdrawDevMaster]
+        [DepositDevA]
+        [WithdrawDevA]
+        [DepositDevB]
+        [WithdrawDevB]
+    }
+
+    [DevMaster-API]
+    [P2DDevMaster] <<MOCK>>
+
+    [DevMaster-API] ..> [P2DDevMaster]
+    [P2DDevMaster] ..> [DepositDevMaster]
+    [P2DDevMaster] ..> [WithdrawDevMaster]
+    [DepositDevMaster] .u.> [DevMaster-API]
+    [WithdrawDevMaster] .u.> [DevMaster-API]
+
+
+
+    [DevA-API]
+    [P2DDevA] <<MOCK>>
+
+    [DevA-API] ..> [P2DDevA]
+    [P2DDevA] ..> [DepositDevA]
+    [P2DDevA] ..> [WithdrawDevA]
+    [DepositDevA] .u.> [DevA-API]
+    [WithdrawDevA] .u.> [DevA-API]
+
+
+
+    [DevB-API]
+    [P2DDevB] <<MOCK>>
+
+    [DevB-API] ..> [P2DDevB]
+    [P2DDevB] ..> [DepositDevB]
+    [P2DDevB] ..> [WithdrawDevB]
+    [DepositDevB] .u.> [DevB-API]
+    [WithdrawDevB] .u.> [DevB-API]
+
+}
