@@ -1,0 +1,54 @@
+@startuml dev-and-prod-p2d-1mt
+
+package DevCluster {
+
+    component MTDev {
+        port MTDevChannel
+        component [DepositDev]
+        component [WithdrawDev]
+    }
+
+    [DevMaster-API]
+    [DevA-API]
+    [DevB-API]
+
+    [P2DDev] <<MOCK>>
+    [P2DReceiverDev] #Salmon
+}
+[DevMaster-API] --> [P2DDev]
+[DevA-API] --> [P2DDev]
+[DevB-API] --> [P2DDev]
+
+[P2DDev] --> [MTDevChannel]
+[MTDevChannel] .u.> [P2DReceiverDev]
+
+[P2DReceiverDev] .u.> [DevMaster-API]
+[P2DReceiverDev] .u.> [DevA-API]
+[P2DReceiverDev] .u.> [DevB-API]
+
+package PreCluster {
+    [Testflight-API]
+}
+[Testflight-API] --> [P2DDev]
+[P2DReceiverDev] .u.> [Testflight-API]
+
+package ProdCluster {
+
+    component MT {
+        port MTChannel
+        component [Deposit]
+        component [Withdraw]
+    }
+
+    [Production-API]
+    [P2DReceiver] #Salmon
+}
+
+[P2D] <<REAL>>
+
+[Production-API] -> [P2D]
+[P2D] --> [MTChannel]
+[MTChannel] .u.> [P2DReceiver]
+[P2DReceiver] .u.> [Production-API]
+
+@enduml

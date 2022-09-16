@@ -6,6 +6,9 @@ migrate action plan
    - ถอน
  [1]- ปรับการดึง balance จากเดิมดึงจากมานะ ไปดึงจากฝั่งพี่อ้น
  [1]- ปรับโค้ดตอนสร้าง user/ba ไปสร้าง wallet ที่ฝั่งพี่อ้น
+ 
+ [1.5]- p2d dev envi
+ 
  [2]- เพิ่ม ICommonWalletService flow ที่เกี่ยวข้อง
     - ปรับโค้ดตอนหักเงิน wallet (cart)
     - ปรับโค้ดตอนแจกจ่ายเงินให้คนอื่น (delivery)
