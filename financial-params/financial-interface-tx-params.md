@@ -198,9 +198,10 @@ MonetaryBase .[hidden]r.> LookupResult
 
 # ปรับเพิ่มล่าสุด
 
-ตอนจ่ายเงินใน mana คิดเรื่อง Fee P2D ต่อ
+- เพิ่ม country code
+- ตอนจ่ายเงินใน mana ค่อยไปคุยเรื่อง Fee P2D ต่อ
 
-![](out/financial-interface-tx-params-2/financial-interface-tx-params-2.png)
+<!-- ![](out/financial-interface-tx-params-2/financial-interface-tx-params-2.png) -->
 
 ```plantuml
 @startuml financial-interface-tx-params-2
@@ -305,6 +306,7 @@ package P2D {
     LookupPpayRequest .[hidden].> LookupResponse
 
     class TopupRequest {
+        EnvironmentTag: string
         requestType: string // static, dynamic
         usage: string // onetime, multi-use
         channel: string // qr, rtp
