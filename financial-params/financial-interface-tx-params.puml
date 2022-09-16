@@ -1,4 +1,4 @@
-@startuml financial-interface
+@startuml financial-interface-tx-params
 
 interface ICommonWalletService <PHASE CHANGE TX PARAMS> {
     // ***** OPERATION ที่ body มีการเปลี่ยนแปลง ***** ()
