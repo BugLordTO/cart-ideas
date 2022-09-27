@@ -22,15 +22,15 @@ package DevCluster {
 [P2DDev] --> [MTDevChannel]
 [MTDevChannel] .u.> [P2DReceiverDev]
 
-[P2DReceiverDev] .u.> [DevMaster-API]
-[P2DReceiverDev] .u.> [DevA-API]
-[P2DReceiverDev] .u.> [DevB-API]
+[P2DReceiverDev] .u.> [DevMaster-API] : grpc
+[P2DReceiverDev] .u.> [DevA-API] : grpc
+[P2DReceiverDev] .u.> [DevB-API] : grpc
 
 package PreCluster {
     [Testflight-API]
 }
 [Testflight-API] --> [P2DDev]
-[P2DReceiverDev] .u.> [Testflight-API]
+[P2DReceiverDev] .u.> [Testflight-API] : grpc
 
 package ProdCluster {
 

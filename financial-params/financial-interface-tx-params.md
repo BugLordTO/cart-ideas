@@ -209,19 +209,48 @@ MonetaryBase .[hidden]r.> LookupResult
 package ManaApi {
 
     interface ICommonWalletService <PHASE CHANGE TX PARAMS> {
-        GetBalance(walletId: string): MonetaryValue
-        CreateWallet(ownerId: string, ownerType: string, initialBalance: MonetaryValue): CreateWalletResponse
-        LookupPpay(ppayType: string, ppayId: string, bankCode: string): LookupResponse
+        GetBalance(countryCode: string, manaLink: string): MonetaryValue
+        CreateWallet(countryCode: string, request: CreateWalletRequest): CreateWalletResponse
+        LookupPpay(countryCode: string, request: LookupPpayRequest): LookupPpayResponse
 
-        ExecuteTopupByQR(walletId: string, amount: MonetaryValue): TopupQRInfo
-        ExecuteTopupBankAccountByQR(walletId: string, accountNumber: string, bankCode: string, amount: MonetaryValue): TopupQRInfo
-        ExecuteTopupPPayByRTP(walletId: string, accountNumber: string, ppayType: string, amount: MonetaryValue): TopupInfo
+        ExecuteTopupByQR(countryCode: string, request: TopupByQr): TopupQRInfo
+        ExecuteTopupBankAccountByQR(countryCode: string, request: TopupByBankAccountRequest): TopupQRInfo
+        ExecuteTopupPPayByRTP(countryCode: string, request: TopupByPpayRequest): TopupInfo
 
-        StartWithdrawBankAccount(walletId: string, ppyType: string, ppyId: string, bankCode: string, amount: MonetaryValue): TxResponseBase
-        ExecuteWithdrawBankAccount(walletId: string, txId): TxResponseBase
+        StartWithdrawBankAccount(countryCode: string, request: WithdrawByBankAccountRequest): TxResponseBase
+        ExecuteWithdrawBankAccount(countryCode: string, txId): TxResponseBase
 
-        StartWithdrawPPY(walletId: string, ppyType: string, ppyId, ppyId: string, amount: MonetaryValue): TxResponseBase
-        ExecuteWithdrawPPY(walletId: string, txId: string): TxResponseBase
+        StartWithdrawPPY(countryCode: string, request: WithdrawByPpayRequest): TxResponseBase
+        ExecuteWithdrawPPY(countryCode: string, txId: string): TxResponseBase
+    }
+
+    class TxRequestBase {
+        ManaLink: string
+        Amount: MonetaryValue
+    }
+    ICommonWalletService .[hidden].> TxRequestBase
+
+    class TopupByQr extends TxRequestBase {
+    }
+
+    class TopupByBankAccountRequest extends TxRequestBase {
+        AccountNumber: string
+        BankCode: string
+    }
+
+    class TopupByPpayRequest extends TxRequestBase {
+        PpayType: string > mobile, pid
+        PpayId: string // เลข ppay
+    }
+
+    class WithdrawByBankAccountRequest extends TxRequestBase {
+        AccountNumber: string
+        BankCode: string
+    }
+
+    class WithdrawByPpayRequest extends TxRequestBase {
+        PpayType: string > mobile, pid
+        PpayId: string // เลข ppay
     }
 
     class TxResponseBase {
@@ -232,12 +261,12 @@ package ManaApi {
     ICommonWalletService .[hidden].> TxResponseBase
 
     class TopupInfo extends TxResponseBase {
-        WalletId: string
+        ManaLink: string
         Amount: MonetaryValue
     }
 
     class TopupQrInfo extends TxResponseBase {
-        WalletId: string
+        ManaLink: string
         Ref1: string
         Ref2: string
         Amount: MonetaryValue
@@ -247,20 +276,30 @@ package ManaApi {
         GenQR(value: TopupInfo, pa: string, walletName: string): QRInfoResponse
         GenQR(value: TopupQRInfo, pa: string, walletName: string): QRInfoResponse
     }
-    ICommonWalletService .[hidden].> QRInfoExtensions
 }
 
 package P2D {
 
     interface IP2DApi <PHASE CHANGE TX PARAMS> {
-        GetBalance(countryCode: string, walletId: string): WalletInfoReponse
-        CreateWallet(countryCode: string, request: CreateWalletRequest): CreateWalletResponse
-        LookupPpay(countryCode: string, request: LookupPpayRequest): LookupResponse
-        ExecuteTopup(countryCode: string, request: TopupRequest): TopupResponse
-        StartWithdraw(countryCode: string, request: StartWithdrawRequest): WithdrawResponse
-        ExecuteWithdraw(countryCode: string, request: ExecuteWithdrawRequest): WithdrawResponse
+        GetBalance(countryCode: string, envTag: string, manaLink: string): WalletInfoReponse
+        CreateWallet(countryCode: string, envTag: string, request: CreateWalletRequest): CreateWalletResponse
+        LookupPpay(countryCode: string, envTag: string, request: LookupPpayRequest): LookupPpayResponse
+        
+        ExecuteTopupByQR(countryCode: string, envTag: string, request: TopupQrRequest): TopupResponse
+        ExecuteTopupBankAccountByQR(countryCode: string, envTag: string, request: TopupBankAccountRequest): TopupResponse
+        ExecuteTopupPPayByRTP(countryCode: string, envTag: string, request: TopupRtpRequest): TopupResponse
+
+        StartWithdraw(countryCode: string, envTag: string, request: StartWithdrawRequest): WithdrawResponse
+        ExecuteWithdraw(countryCode: string, envTag: string, request: ExecuteWithdrawRequest): WithdrawResponse
     }
-    ICommonWalletService -r-> IP2DApi
+    TopupByQr -[hidden]d-> IP2DApi
+    ICommonWalletService -d---> IP2DApi
+    
+    class TxResponse {
+        IsSucceeded: bool
+        Message: string
+        TxId: string
+    }
 
     class MonetaryValue {
         AmountUnit: long
@@ -270,22 +309,21 @@ package P2D {
 
     class WalletInfoReponse<From P2D> {
         CountryCode: string
-        WalletId: string
+        ManaLink: string
         Balance: MonetaryValue
     }
     MonetaryValue .[hidden].> WalletInfoReponse
 
     class CreateWalletRequest {
-        CountryCode: string
-        WalletId: string
-        Balance: MonetaryValue
+        OwnerId: string
+        OwnerType: string
+        ManaLink: string
+        initialBalance: MonetaryValue
     }
     MonetaryValue .[hidden]r.> CreateWalletRequest
 
     class CreateWalletResponse<From P2D> {
-        IsSucceeded: bool
-        Message: string
-        WalletId: string
+        ManaLink: string
     }
     CreateWalletRequest .[hidden].> CreateWalletResponse
 
@@ -296,45 +334,68 @@ package P2D {
     }
     CreateWalletRequest .[hidden]r.> LookupPpayRequest
 
-    class LookupResponse<From P2D> {
+    class LookupPpayResponse<From P2D> {
         AccountNumber
         AccountType
         AccountCode
         AccountNameTH
         AccountNameEN
     }
-    LookupPpayRequest .[hidden].> LookupResponse
+    LookupPpayRequest .[hidden].> LookupPpayResponse
 
-    class TopupRequest {
-        EnvironmentTag: string
+    class TopupQrRequest {
         requestType: string // static, dynamic
         usage: string // onetime, multi-use
-        channel: string // qr, rtp
-        operationCode: string
+        OperationCode: string
         Amount: MonetaryValue
-        walletId: string
+        ManaLink: string
+    }
+    LookupPpayRequest .[hidden]r.> TopupQrRequest
 
+    class TopupBankAccountRequest {
+        requestType: string // static, dynamic
+        usage: string // onetime, multi-use
+        OperationCode: string
+        Amount: MonetaryValue
+        ManaLink: string
+        AccountNumber: string
+        BankCode: string
+    }
+    TopupQrRequest .[hidden]r.> TopupBankAccountRequest
+
+    class TopupRtpRequest {
+        requestType: string // static, dynamic
+        usage: string // onetime, multi-use
+        OperationCode: string
+        Amount: MonetaryValue
+        ManaLink: string
         PpayType: string > mobile, pid
         PpayId: string // เลข ppay
     }
-    LookupPpayRequest .[hidden]r.> TopupRequest
+    TopupBankAccountRequest .[hidden]r.> TopupRtpRequest
 
     class TopupResponse<From P2D> {
-        ref1: string
-        ref2: string
-        txId: string
+        Ref1: string
+        Ref2: string
         Amount: MonetaryValue
     }
-    TopupRequest .[hidden].> TopupResponse
+    TopupQrRequest .[hidden].> TopupResponse
 
-    class StartWithdrawRequest #Salmon {
-        PpayType: string
-        PpayId: string
+    class StartWithdrawBankAccountRequest {
+        AccountNumber: string
         BankCode: string
         Amount: MonetaryValue
         TEx: string
     }
-    TopupRequest .[hidden]r.> StartWithdrawRequest
+    TopupRtpRequest .[hidden]r.> StartWithdrawBankAccountRequest
+
+    class StartWithdrawPpayRequest {
+        PpayType: string
+        PpayId: string
+        Amount: MonetaryValue
+        TEx: string
+    }
+    StartWithdrawBankAccountRequest .[hidden]r.> StartWithdrawPpayRequest
 
     class WithdrawResponse<From P2D> #Salmon {
         HasFound
@@ -343,25 +404,25 @@ package P2D {
         AccNo
         NameEN
         NameTH
-        TEx // walletId
+        TEx
     }
-    StartWithdrawRequest .[hidden].> WithdrawResponse
+    StartWithdrawBankAccountRequest .[hidden].> WithdrawResponse
 
-    class ExecuteWithdrawRequest #Salmon {
-        ResponseHost: string // EnvironmentTag
-        ManaLink: string // walletId
-        Signature: string // 03x2df02672sdf6000217
+    class ExecuteWithdrawRequest {
+        ManaLink: string
+        Signature: string
     }
-    StartWithdrawRequest .[hidden]r.> ExecuteWithdrawRequest
+    StartWithdrawPpayRequest .[hidden]r.> ExecuteWithdrawRequest
 
 }
-
-package P2DReciever {
-    class TopupResult { }
-    class WithdrawResult { }
-}
-ICommonWalletService -[hidden]d--- P2DReciever
 
 @enduml
 
 ```
+
+#mom #202209 23 financial
+- เพิ่ม contryCode ใน ICommonWalletService
+- เช็ค method parameters ใน ICommonWalletService
+- แยก topup qr/rtp ใน IP2DApi
+- คิด P2DReciever result model ใน IP2DApi ต่อ
+- note อันที่อธิบายเพิ่ม TEx, ManaLink
