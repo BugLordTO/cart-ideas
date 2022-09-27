@@ -201,7 +201,7 @@ MonetaryBase .[hidden]r.> LookupResult
 - เพิ่ม country code
 - ตอนจ่ายเงินใน mana ค่อยไปคุยเรื่อง Fee P2D ต่อ
 
-![](out/financial-interface-tx-params-2/financial-interface-tx-params-2.png)
+![](out/financial-interface-tx-params/financial-interface-tx-params-2.png)
 
 ```plantuml
 @startuml financial-interface-tx-params-2
