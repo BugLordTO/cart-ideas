@@ -1,0 +1,40 @@
+CountryCode   : TH
+Channel  : BankAccount              // BankAccount , PPAY , e-wallet , alipay
+OperationCode: string               // TopUp , withdraw
+RequestType: string                 // static, dynamic
+Usage: string                       // onetime, multi-use
+Id      : 15423654123754            // AcoountNumber , PPayId
+Type    : scb                       // Bank , mobile , pid
+TEx : 
+AmountUnit: MonetaryValue
+
+---
+CountryCode   : TH
+Channel  : PPAY 
+OperationCode : TopUp
+RequestType : dynamic
+Usage: onetime   
+id : 0877777777
+Type    : mobile
+TEx : 
+AmountUnit : {5000,THB}
+---
+CountryCode   : TH
+Channel  : AlIPPAY 
+OperationCode : TopUp
+RequestType : dynamic
+Usage: onetime  
+id : AlIPPAY0099337
+Type    : e-wallet
+TEx : AL15423
+AmountUnit : 5000
+---
+CountryCode   : Bur
+Channel  : BurBankAccount  
+OperationCode : TopUp
+RequestType : dynamic
+Usage: onetime   
+id : 223333234234
+Type    : ShweBank
+TEx : 
+AmountUnit : 5000
