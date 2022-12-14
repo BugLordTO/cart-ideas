@@ -1,0 +1,24 @@
+## setup ring process step ค่าวๆ
+- mobile > precess เดิม
+- zip > precess เดิม
+- route/proxy/host > check/update azure config
+    - PartnerProxy:Clusters
+    - xxxApi:HostUrl
+- kube deployment
+    - ใช้ ManGen แก้ไขไฟล์ตั้งต้น เลือกเฉพาะ deployment ที่ต้องการ
+    - อย่างน้อยต้องมี mcproxy
+    - ManGen สามารถ apply manifest ได้ในตัว > nice to have
+- db/collection
+    - สร้าง db/collection
+    - ปรับ code ส่วน db/collection ให้ไปใช้งานตัวที่สร้างขึ้นมาใหม่
+    - ทำ script สร้าง db + index + config(เช่น gps) ตามแต่ละ collection ที่ควรเป็น
+
+## ตอนปิดจบงาน
+- source code
+    - reverse code ส่วน db/collection กลับเป็นค่าเริ่มต้น
+    - pull request (precess เดิม)
+- route/proxy/host
+    - azure config ปรับกลับเป็นค่าเริ่มต้น
+    - pull request route ใหม่
+- kube deployment > delete pods ใน ring namespace
+- db/collection > delete db/collection ใน ring

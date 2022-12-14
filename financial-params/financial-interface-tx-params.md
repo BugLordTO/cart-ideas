@@ -213,7 +213,7 @@ package ManaApi {
         CreateWallet(countryCode: string, request: CreateWalletRequest): CreateWalletResponse
         LookupPpay(countryCode: string, request: LookupPpayRequest): LookupPpayResponse
 
-        ExecuteTopupByQR(countryCode: string, request: TopupByQr): TopupQRInfo
+        ExecuteTopupByQR(countryCode: string, request: TopupByQrRequest): TopupQRInfo
         ExecuteTopupBankAccountByQR(countryCode: string, request: TopupByBankAccountRequest): TopupQRInfo
         ExecuteTopupPPayByRTP(countryCode: string, request: TopupByPpayRequest): TopupInfo
 
@@ -230,7 +230,7 @@ package ManaApi {
     }
     ICommonWalletService .[hidden].> TxRequestBase
 
-    class TopupByQr extends TxRequestBase {
+    class TopupByQrRequest extends TxRequestBase {
     }
 
     class TopupByBankAccountRequest extends TxRequestBase {
@@ -292,7 +292,7 @@ package P2D {
         StartWithdraw(countryCode: string, envTag: string, request: StartWithdrawRequest): WithdrawResponse
         ExecuteWithdraw(countryCode: string, envTag: string, request: ExecuteWithdrawRequest): WithdrawResponse
     }
-    TopupByQr -[hidden]d-> IP2DApi
+    TopupByQrRequest -[hidden]d-> IP2DApi
     ICommonWalletService -d---> IP2DApi
     
     class TxResponse {
@@ -426,3 +426,10 @@ package P2D {
 - แยก topup qr/rtp ใน IP2DApi
 - คิด P2DReciever result model ใน IP2DApi ต่อ
 - note อันที่อธิบายเพิ่ม TEx, ManaLink
+
+#mom #202209 27 financial
+- P2DReciever result model > ส่ง countryCode กลับมั้ย ?
+- contryCode ใน ICommonWalletService
+    - mobile + server เป็นยังไง
+    - userId ดู contryCode ได้ (ปัจจุบันยังเป็น DateTicks อยู่)
+- design ให้ generalize หลายประเทศ
