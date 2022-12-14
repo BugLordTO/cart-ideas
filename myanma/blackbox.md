@@ -102,7 +102,7 @@ api sign mean
         * noti update feed
         * refund
     - slip url
-    - remark
+    - reason
 
 # mtm api
 + mana hook withdraw
