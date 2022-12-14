@@ -37,11 +37,13 @@ public class WithdrawMtmSession {
 
     public string SrcPaId { get; set; }
     public string SrcDisplayName { get; set; }
-    public string SrcLogo { get; set; }
+    public string SrcLogoHostFqdn { get; set; }
+    public string SrcLogoPath { get; set; }
 
     public string BankCode { get; set; }
     public string BankName { get; set; }
-    public string BankLogo { get; set; }
+    public string BankLogoHostFqdn { get; set; }
+    public string BankLogoPath { get; set; }
     public string AccountNo { get; set; }
     public string AccountName { get; set; }
 
@@ -55,7 +57,8 @@ public class WithdrawMtmSession {
     public string Status { get; set; } // Creating, Pending, Accepted, Rejected
     public DateTime RequestedDate { get; set; }
     public DateTime? ResponseDate { get; set; }
-    public string? SlipImageUrl { get; set; }
+    public string? SlipImageHostFqdn { get; set; }
+    public string? SlipImagePath { get; set; }
     public string? Reason { get; set; }
 
     // DB
@@ -66,18 +69,19 @@ public class WithdrawMtmSession {
 public class WithdrawRequest {
     public string SessionId { get; set; }
 
-    public string SrcPaId { get; set; }
-    public string SrcDisplayName { get; set; }
-    public string SrcLogo { get; set; }
+    public string PaId { get; set; }
+    public string DisplayName { get; set; }
+    public string LogoHostFqdn { get; set; }
+    public string LogoPath { get; set; }
+    public string WalletName { get; set; }
 
     public string BankCode { get; set; }
     public string BankName { get; set; }
-    public string BankLogo { get; set; }
+    public string BankLogoHostFqdn { get; set; }
+    public string BankLogoPath { get; set; }
     public string AccountNo { get; set; }
     public string AccountName { get; set; }
 
-    public string SrcWalletName { get; set; }
-    public string SrcWalletId { get; set; }
     public MonetaryValue Amount { get; set; }
     public MonetaryValue Fee { get; set; }
     public string PhoneNo { get; set; }
@@ -89,7 +93,8 @@ public class WithdrawRequest {
 public class SendWithdrawResult {
     public string SessionId { get; set; }
     public bool IsAccept { get; set; }
-    public string SlipImageUrl { get; set; }
+    public string SlipImageHostFqdn { get; set; }
+    public string SlipImagePath { get; set; }
     public string Reason { get; set; }
 }
 
