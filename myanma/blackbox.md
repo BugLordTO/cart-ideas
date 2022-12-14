@@ -60,7 +60,7 @@ api sign mean
 - ndepmmk.mtm-home > mX
 - ndepmmk.qr-home > m3
 - ndepmmk.confirm-{dest-walletid}${amount-long}${currency} > m4
-- ndepmmk.qr-{dest-walletid}${amount-long}${currency} > m5
+- ndepmmk.detail-{dest-walletid}${amount-long}${currency} > m5
 - nahcmex-{dest-walletid}${amount-long}${currency} > endpoint for gen qr
 
 # 3rd api
