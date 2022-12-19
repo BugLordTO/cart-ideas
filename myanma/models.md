@@ -35,10 +35,10 @@ public class TopupMexSession {
 public class WithdrawMtmSession {
     public string Id { get; set; }
 
-    public string SrcPaId { get; set; }
-    public string SrcDisplayName { get; set; }
-    public string SrcLogoHostFqdn { get; set; }
-    public string SrcLogoPath { get; set; }
+    public string PaId { get; set; }
+    public string DisplayName { get; set; }
+    public string LogoHostFqdn { get; set; }
+    public string LogoPath { get; set; }
 
     public string BankCode { get; set; }
     public string BankName { get; set; }
@@ -47,8 +47,8 @@ public class WithdrawMtmSession {
     public string AccountNo { get; set; }
     public string AccountName { get; set; }
 
-    public string? SrcWalletName { get; set; }
-    public string? SrcWalletId { get; set; }
+    public string? WalletName { get; set; }
+    public string? WalletId { get; set; }
     public MonetaryValue? Amount { get; set; }
     public MonetaryValue? Fee { get; set; }
     public string? PhoneNo { get; set; }
@@ -66,7 +66,7 @@ public class WithdrawMtmSession {
 }
 
 // --- Mana 3rd Api ---
-public class WithdrawRequest {
+public class WithdrawMtmRequest {
     public string SessionId { get; set; }
 
     public string PaId { get; set; }
@@ -90,7 +90,7 @@ public class WithdrawRequest {
     public DateTime RequestedDate { get; set; }
 }
 
-public class SendWithdrawResult {
+public class SendMTMWithdrawResult {
     public string SessionId { get; set; }
     public bool IsAccept { get; set; }
     public string SlipImageHostFqdn { get; set; }
@@ -128,3 +128,28 @@ public class CartAdhocMexExecuteResult {
     public string Message { get; set; }
 }
 ```
+
+
+
+RateRequest RateResult  AER     TxCnt   Vol     srcVol
+                        60      1000    500000  8300
+                        60.5    1001    520000  8600
+
+
+public class RateRequest
+{
+    public long Amount { get; set; }
+    public string Direction { get; set; } // src dest
+    public string SrcCurrency { get; set; }
+    public string DestCurrency { get; set; }
+}
+
+    public class RateResult
+{
+    public string RateId { get; set; }
+    public decimal Rate { get; set; }
+    public decimal SrcFee { get; set; }
+    public decimal DestFee { get; set; }
+    public MonetaryValue CalculatedAmount { get; set; }
+    public DateTime RateExpiration { get; set; }
+}
