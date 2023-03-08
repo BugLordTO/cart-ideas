@@ -1,0 +1,27 @@
+@startuml
+
+package ApimFeatures {
+    [Subscriptions] as [ApimSubscriptions]
+    [Products]
+    [Apis]
+}
+[ApimSubscriptions] --> [Products]
+[Products] --> [Apis] : 0..n
+
+package ManaFeatures {
+    [DevAccounts]
+    [Clubs]
+    [ApiSubscriptions]
+    note bottom
+    scopes >
+    {clubName}-{ApiSubscriptionsName}
+    end note
+    [Services]
+}
+[DevAccounts] -- [Clubs]
+[Clubs] -- [ApiSubscriptions]
+[DevAccounts] -- [Services]
+
+[ApimSubscriptions] ... [ApiSubscriptions]
+
+@enduml

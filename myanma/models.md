@@ -134,22 +134,3 @@ public class CartAdhocMexExecuteResult {
 RateRequest RateResult  AER     TxCnt   Vol     srcVol
                         60      1000    500000  8300
                         60.5    1001    520000  8600
-
-
-public class RateRequest
-{
-    public long Amount { get; set; }
-    public string Direction { get; set; } // src dest
-    public string SrcCurrency { get; set; }
-    public string DestCurrency { get; set; }
-}
-
-    public class RateResult
-{
-    public string RateId { get; set; }
-    public decimal Rate { get; set; }
-    public decimal SrcFee { get; set; }
-    public decimal DestFee { get; set; }
-    public MonetaryValue CalculatedAmount { get; set; }
-    public DateTime RateExpiration { get; set; }
-}

@@ -2,7 +2,7 @@
 
 ## 🤝 MTM Service
 
-- ID: 370840722997259
+- ID: 638066776010331728
 <details>
   <summary>ServiceData</summary>
   
@@ -56,8 +56,8 @@
   ```json
   {
       "_id" : "370840722997259",
-      "Name" : "Mex",
-      "Logo" : "manadevmaster.blob.core.windows.net/images/dfshop.png",
+      "Name" : "Mex DA",
+      "Logo" : "fileapi-devmaster.onmana.space/bizaccount/data/bizaccounts/370840722997259/logos/logomana.png",
       "BannerUrl" : null,
       "RefCode" : "52248",
       "Address" : null,
@@ -182,8 +182,8 @@
       },
       "Permission" : null,
       "CompleteDate" : ISODate("2022-12-15T08:03:46.797Z"),
-      "Logo" : "https://manadevmaster.blob.core.windows.net/images/dfshop.png",
-      "ShopName" : "Mex",
+      "Logo" : "https://fileapi-devmaster.onmana.space/bizaccount/data/bizaccounts/370840722997259/logos/logomana.png",
+      "ShopName" : "Mex DA",
       "Risk" : "low"
   }
   ```
@@ -251,8 +251,8 @@
   ```json
   {
       "_id" : "370840763891725",
-      "Name" : "MexMMK",
-      "Logo" : "manadevmaster.blob.core.windows.net/images/dfshop.png",
+      "Name" : "Mex MM",
+      "Logo" : "fileapi-devmaster.onmana.space/bizaccount/data/bizaccounts/370840722997259/logos/logomana.png",
       "BannerUrl" : null,
       "RefCode" : "e8beb",
       "Address" : null,
@@ -378,8 +378,8 @@
     },
     "Permission" : null,
     "CompleteDate" : ISODate("2022-12-15T08:04:16.799Z"),
-    "Logo" : "https://manadevmaster.blob.core.windows.net/images/dfshop.png",
-    "ShopName" : "MexMMK",
+    "Logo" : "https://fileapi-devmaster.onmana.space/bizaccount/data/bizaccounts/370840722997259/logos/logomana.png",
+    "ShopName" : "Mex MM",
     "Risk" : "low"
   }
   ```
@@ -431,7 +431,7 @@
   ```
 </details>
 
-## 🏪 MTM BA (THB)
+## 🏪 MEX BA (THB)
 
 - ID: 370840789057551
 - เอาไว้รับเงินจาก mana-th ใน flow เติมเงิน adhoc mm (mana mm สร้าง qr แล้ว mana th scan จ่าย)
@@ -446,8 +446,8 @@
   ```json
   {
     "_id" : "370840789057551",
-    "Name" : "MexTHB",
-    "Logo" : "manadevmaster.blob.core.windows.net/images/dfshop.png",
+    "Name" : "Mex TH",
+    "Logo" : "fileapi-devmaster.onmana.space/bizaccount/data/bizaccounts/370840722997259/logos/logomana.png",
     "BannerUrl" : null,
     "RefCode" : "3a9b1",
     "Address" : null,
@@ -572,8 +572,8 @@
     },
     "Permission" : null,
     "CompleteDate" : ISODate("2022-12-15T08:04:41.467Z"),
-    "Logo" : "https://manadevmaster.blob.core.windows.net/images/dfshop.png",
-    "ShopName" : "MexTHB",
+    "Logo" : "https://fileapi-devmaster.onmana.space/bizaccount/data/bizaccounts/370840722997259/logos/logomana.png",
+    "ShopName" : "Mex TH",
     "Risk" : "low"
   }
   ```
@@ -641,8 +641,8 @@
   ```json
   {
     "_id" : "370829497991177",
-    "Name" : "MTM",
-    "Logo" : "manadevmaster.blob.core.windows.net/images/dfshop.png",
+    "Name" : "MTM DA",
+    "Logo" : "fileapi-devmaster.onmana.space/bizaccount/data/bizaccounts/370829497991177/logos/logomtm.png",
     "BannerUrl" : null,
     "RefCode" : "bc86d",
     "Address" : null,
@@ -732,7 +732,7 @@
             "Security" : null,
             "CreatedDate" : ISODate("2022-12-15T05:06:02.098Z"),
             "DeletedDate" : null,
-            "Currency" : "THB"
+            "Currency" : "MMK"
         }
     ],
     "DefaultWalletId" : "370829497991177",
@@ -763,8 +763,8 @@
     },
     "Permission" : null,
     "CompleteDate" : ISODate("2022-12-15T05:06:01.888Z"),
-    "Logo" : "https://manadevmaster.blob.core.windows.net/images/dfshop.png",
-    "ShopName" : "MTM",
+    "Logo" : "https://fileapi-devmaster.onmana.space/bizaccount/data/bizaccounts/370829497991177/logos/logomtm.png",
+    "ShopName" : "MTM DA",
     "Risk" : "low"
   }
   ```
@@ -831,8 +831,8 @@
   ```json
   {
       "_id" : "370828626624517",
-      "Name" : "mtmSlip",
-      "Logo" : "manadevmaster.blob.core.windows.net/images/dfshop.png",
+      "Name" : "MTM",
+      "Logo" : "fileapi-devmaster.onmana.space/bizaccount/data/bizaccounts/370829497991177/logos/logomtm.png",
       "BannerUrl" : null,
       "RefCode" : "c88f2",
       "Address" : null,
@@ -953,8 +953,8 @@
     },
     "Permission" : null,
     "CompleteDate" : ISODate("2022-12-15T05:00:51.994Z"),
-    "Logo" : "https://manadevmaster.blob.core.windows.net/images/dfshop.png",
-    "ShopName" : "mtmSlip",
+    "Logo" : "https://fileapi-devmaster.onmana.space/bizaccount/data/bizaccounts/370829497991177/logos/logomtm.png",
+    "ShopName" : "MTM",
     "Risk" : "low"
   }
   ```

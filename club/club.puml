@@ -1,0 +1,33 @@
+@startuml
+
+[3rd party]
+[mana client]
+[apim]
+[clusters]
+
+component apim  {
+    port couponApi
+    [coupon proxy] <<inbound:Authorize❓>> <<SubscriptionKey>>
+}
+couponApi -- [coupon proxy]
+
+component clusters  {
+    port mcproxy.onmana.com
+    port xapimana.onmana.com
+    port api4partner.onmana.com
+    [mcproxy]
+    [xapimana] <<Authorize>>
+    [api4partner] <<Authorize ❓>>
+}
+
+[3rd party] -- couponApi
+
+[coupon proxy] -- api4partner.onmana.com
+[mana client] ---- mcproxy.onmana.com
+
+mcproxy.onmana.com -- [mcproxy]
+xapimana.onmana.com -l- [xapimana]
+api4partner.onmana.com -- [api4partner]
+[mcproxy] -- [xapimana]
+
+@enduml
