@@ -47,10 +47,11 @@ public class WithdrawMtmSession {
     public string AccountNo { get; set; }
     public string AccountName { get; set; }
 
-    public string? WalletName { get; set; }
-    public string? WalletId { get; set; }
+    public string? SrcWalletName { get; set; }
+    public string? SrcWalletId { get; set; }
     public MonetaryValue? Amount { get; set; }
     public MonetaryValue? Fee { get; set; }
+    public MonetaryValue? Total { get; set; }
     public string? PhoneNo { get; set; }
     public string? Remark { get; set; }
 
